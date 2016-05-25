@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <!--线色值-->
+    <color name="line_color_bg">#d7d7d7</color>
+    <!--背景色-->
+    <color name="color_bg">#EbEbEc</color>
+    <!--主题色-->
+    <color name="color_main">#fd71a3</color>
+    <color name="color_mian">#fd71a3</color>
+
+    <!--纯白-->
+    <color name="trans_color_white">#e5ffffff</color>
+    <!--纯白-->
+    <color name="color_white">@android:color/white</color>
+    <!--纯黑-->
+    <color name="color_black">@android:color/black</color>
+    <!-- 黑色2纯正 -->
+    <color name="color_black2">#595857</color>
+    <!-- 黑色3（介于纯正与暗黑之间） -->
+    <color name="color_black3">#646464</color>
+    <!-- 灰色 -->
+    <color name="color_black4">#8C8C8C</color>
+    <!-- 暗黑色 -->
+    <color name="color_gray">#a9a9a9</color>
+    <!-- 黑色线条 -->
+    <color name="color_black_line">#CBCAC9</color>
+
+    <color name="holo_blue">#FF33E5B5</color>
+    <!--标题字体颜色-->
+    <color name="xjk_title_text_color">#4dd5bc</color>
+    <!--标题字体颜色-->
+    <color name="line_color">#5e5e5e</color>
+    <!--自我诊断背景-->
+    <color name="disease_bg_nor">#5cc0ff</color>
+    <!--自我诊断背景-->
+    <color name="disease_bg_pre">#89deec</color>
+    <!--预约电话-->
+    <color name="phone_text_color">#36c0ff</color>
+    <!--灰色线的色值-->
+    <color name="line_gray_color">#e5e5e5</color>
+    <!--多币按钮背景色-->
+    <color name="db_bg_color">#f3b28f</color>
+    <!--日历字体颜色-->
+    <color name="time_text_color">#c3dab0</color>
+    <color name="noMonth">#c0c0c0</color>
+    <!--淡蓝色-->
+    <color name="blue_1">#cef3f9</color>
+    <!--深蓝色-->
+    <color name="blue_2">#3eafc0</color>
+    <!--深蓝色-->
+    <color name="blue_3">#8fd3f3</color>
+    <color name="window_background">#FFF5F5F5</color>
+    <!--科普知识-->
+    <color name="know_tv">#333333</color>
+    <!--科普知识-->
+    <color name="know_content">#5B5B5B</color>
+    <!--字体颜色深-->
+    <color name="text_color_deep">#080808</color>
+    <!--字体颜色中-->
+    <color name="text_color_well">#A4A4A4</color>
+    <!--字体颜色深-->
+    <color name="text_color_shal">#DCDCDC</color>
+    <!-- 图案解锁 -->
+    <color name="gesture_background">#ff303237</color>
+    <!--主黑字色-->
+    <color name="text_color">#333333</color>
+    <!--主黑字色-->
+    <color name="text_color_666">#666666</color>
+    <!--金黄色-->
+    <color name="login_bg">#ffc600</color>
+    <!--带透明度的黑色-->
+    <color name="trans_black">#48000000</color>
+    <!--评价字体颜色-->
+    <color name="assess_color">#a9a5a5</color>
+
+    <!-- 透明颜色 -->
+    <color name="color_alpha">#00000000</color>
+</resources>
