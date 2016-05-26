@@ -1,12 +1,12 @@
 package com.xiuman.xinjiankang.adapter;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,7 +18,8 @@ import com.xiuman.xinjiankang.Bean.BeanHomeTitle;
 import com.xiuman.xinjiankang.Bean.BeanHomeView;
 import com.xiuman.xinjiankang.base.ScienceDetail;
 import com.xiuman.xinjiankang.fragment.FragmentAD;
-import com.xiuman.xinjiankang.fragment.FragmentRecommendDoctorOrHospital;
+import com.xiuman.xinjiankang.fragment.FragmentRecommendDoctor;
+import com.xiuman.xinjiankang.fragment.FragmentRecommendHospitor;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -53,7 +54,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (viewType) {
             case VIEWTYPE_AD:
                 return new ADViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.layout_ad, parent, false));
+                        .inflate(R.layout.layout_ad, null));
             case VIEWTYPE_ZIXUN:
                 return new ZIXUNViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.layout_zixun, parent, false));
@@ -70,7 +71,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 return new AllpurposeViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_xjk_news, parent, false));
             case VIEWTYPE_HOSPITALlAYOUT:
-                return new AllpurposeViewHolder(LayoutInflater.from(parent.getContext())
+                return new HospitorViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.layout_recommend_hospitor, parent, false));
         }
 
@@ -82,9 +83,15 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ADViewHolder) {
             FragmentAD fragmentAD = (FragmentAD) fragment.getChildFragmentManager().findFragmentById(R.id.layoutAD);
-            if (fragmentAD == null){
-                fragment.getChildFragmentManager().beginTransaction().add(R.id.layoutAD, new FragmentAD()).commit();
+            if (fragmentAD == null) {
+                fragmentAD = (FragmentAD) homeViews.get(position).getBeanObj();
+                fragment.getChildFragmentManager().beginTransaction().add(R.id.layoutAD,fragmentAD).commit();
+            } else {
+                ((ADViewHolder) holder).getLayoutAD().removeAllViews();
+                ((ADViewHolder) holder).getLayoutAD().addView(fragmentAD.getThisView());
+                Log.i("HomepageAdapter",((ADViewHolder) holder).getLayoutAD().getChildCount()+"");
             }
+
         } else if (holder instanceof ZIXUNViewHolder) {
             ((ZIXUNViewHolder) holder).getLayoutZX().setOnClickListener(this);
             ((ZIXUNViewHolder) holder).getLayoutDoctor().setOnClickListener(this);
@@ -101,38 +108,38 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     ((ImageView) ((AllpurposeViewHolder) holder).getViewByID(R.id.ivIcon)).setImageResource(title.getImgID());
                     break;
                 case VIEWTYPE_DOCTORLAYOUT:
-                    FragmentRecommendDoctorOrHospital doctor;
-                    doctor = (FragmentRecommendDoctorOrHospital) fragment.getChildFragmentManager().findFragmentById(R.id.layoutRecommendDoctor);
+                    FragmentRecommendDoctor doctor;
+                    doctor = (FragmentRecommendDoctor) fragment.getChildFragmentManager().findFragmentById(R.id.layoutRecommendDoctor);
                     if (doctor == null) {
-                        doctor = new FragmentRecommendDoctorOrHospital();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(FragmentRecommendDoctorOrHospital.LOADTYPE, FragmentRecommendDoctorOrHospital.typeDoctor);
-                        doctor.setArguments(bundle);
+
+                        doctor = (FragmentRecommendDoctor) homeViews.get(position).getBeanObj();
                         fragment.getChildFragmentManager().beginTransaction().add(R.id.layoutRecommendDoctor, doctor).commit();
+                    } else {
+                        ((FrameLayout) ((AllpurposeViewHolder) holder).getViewByID(R.id.layoutRecommendDoctor)).removeAllViews();
+                        ((FrameLayout) ((AllpurposeViewHolder) holder).getViewByID(R.id.layoutRecommendDoctor)).addView(doctor.getThisView());
                     }
                     break;
                 case VIEWTYPE_LISTITEM:
-                    if (options == null){
-                        options = new ImageOptions.Builder().setRadius(20).build();
+                    if (options == null) {
+                        options = new ImageOptions.Builder().setRadius(20).setUseMemCache(true).build();
                     }
                     ScienceDetail detail = (ScienceDetail) homeViews.get(position).getBeanObj();
                     ((TextView) ((AllpurposeViewHolder) holder).getViewByID(R.id.title)).setText(detail.getTitle());
                     ((TextView) ((AllpurposeViewHolder) holder).getViewByID(R.id.content)).setText(detail.getDescription());
-                    x.image().bind((ImageView) ((AllpurposeViewHolder) holder).getViewByID(R.id.icon), detail.getIcon(),options);
+                    x.image().bind((ImageView) ((AllpurposeViewHolder) holder).getViewByID(R.id.icon), detail.getIcon(), options);
                     ((AllpurposeViewHolder) holder).itemView.setTag(detail.getTitle());
                     ((AllpurposeViewHolder) holder).itemView.setOnClickListener(this);
                     break;
-                case VIEWTYPE_HOSPITALlAYOUT:
-                    FragmentRecommendDoctorOrHospital hospital;
-                    hospital = (FragmentRecommendDoctorOrHospital) fragment.getChildFragmentManager().findFragmentById(R.id.layoutRecommendHospitor);
-                    if (hospital == null) {
-                        hospital = new FragmentRecommendDoctorOrHospital();
-                        Bundle bundle2 = new Bundle();
-                        bundle2.putInt(FragmentRecommendDoctorOrHospital.LOADTYPE, FragmentRecommendDoctorOrHospital.typeHospital);
-                        hospital.setArguments(bundle2);
-                        fragment.getChildFragmentManager().beginTransaction().add(R.id.layoutRecommendHospitor, hospital).commit();
-                    }
-                    break;
+            }
+        }else if (holder instanceof HospitorViewHolder){
+            FragmentRecommendHospitor hospital;
+            hospital = (FragmentRecommendHospitor) fragment.getChildFragmentManager().findFragmentById(R.id.layoutRecommendHospitor);
+            if (hospital == null) {
+                hospital = (FragmentRecommendHospitor) homeViews.get(position).getBeanObj();
+                fragment.getChildFragmentManager().beginTransaction().replace(R.id.layoutRecommendHospitor, hospital).commit();
+            } else {
+                (((HospitorViewHolder) holder).getLayoutHospitor()).removeAllViews();
+                (((HospitorViewHolder) holder).getLayoutHospitor()).addView(hospital.getThisView());
             }
         }
     }
@@ -145,15 +152,6 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        ((GridLayoutManager) recyclerView.getLayoutManager()).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                switch (getItemViewType(position)) {
-                    default:
-                        return SPAN_COUNT;
-                }
-            }
-        });
     }
 
     @Override
@@ -185,14 +183,14 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     class ADViewHolder extends RecyclerView.ViewHolder {
 
-        LinearLayout layoutAD;
+        FrameLayout layoutAD;
 
         public ADViewHolder(View itemView) {
             super(itemView);
-            layoutAD = (LinearLayout) itemView.findViewById(R.id.layoutAD);
+            layoutAD = (FrameLayout) itemView.findViewById(R.id.layoutAD);
         }
 
-        public LinearLayout getLayoutAD() {
+        public FrameLayout getLayoutAD() {
             return layoutAD;
         }
     }
@@ -242,7 +240,19 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return layoutXinli;
         }
     }
+    class HospitorViewHolder extends RecyclerView.ViewHolder {
 
+        FrameLayout layoutHospitor;
+
+        public HospitorViewHolder(View itemView) {
+            super(itemView);
+            layoutHospitor = (FrameLayout) itemView.findViewById(R.id.layoutRecommendHospitor);
+        }
+
+        public FrameLayout getLayoutHospitor() {
+            return layoutHospitor;
+        }
+    }
     class TitleMoreViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivIcon;

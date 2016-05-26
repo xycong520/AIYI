@@ -3,7 +3,7 @@ package com.xiuman.xinjiankang.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +37,10 @@ public class FragmentHomepage extends Fragment {
     RecyclerView mRecyclerView;
     HomepageAdapter mAdapter;
     List<BeanHomeView> viewTypes;
+    FragmentAD fragmentAD;
+    FragmentRecommendDoctor fragmentRecommendDoctor;
+    FragmentRecommendHospitor fragmentRecommendHospitor;
+
 
     @Nullable
     @Override
@@ -53,6 +57,12 @@ public class FragmentHomepage extends Fragment {
             parent.removeView(thisView);
         }
         return thisView;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
 
@@ -67,19 +77,9 @@ public class FragmentHomepage extends Fragment {
                     BeanHomeView newsItem = new BeanHomeView();
                     newsItem.setBeanObj(scienceDetail);
                     newsItem.setViewType(HomepageAdapter.VIEWTYPE_LISTITEM);
-                    viewTypes.add(newsItem);
+                    viewTypes.add(6,newsItem);
                 }
-                BeanHomeView titleHospitor = new BeanHomeView();
-                titleHospitor.setViewType(HomepageAdapter.VIEWTYPE_TITLE);
-                BeanHomeTitle title = new BeanHomeTitle();
-                title.setTitleName("推荐医院");
-                title.setRightText("附近");
-                title.setImgID(R.mipmap.xjk_pic_hospital);
-                titleHospitor.setBeanObj(title);
-                viewTypes.add(titleHospitor);
-                BeanHomeView typeHospitor = new BeanHomeView();
-                typeHospitor.setViewType(HomepageAdapter.VIEWTYPE_HOSPITALlAYOUT);
-                viewTypes.add(typeHospitor);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -90,15 +90,20 @@ public class FragmentHomepage extends Fragment {
 
     private void init() {
         viewTypes = new ArrayList<>();
+        //添加广告Fragment
         BeanHomeView typeAD = new BeanHomeView();
         typeAD.setViewType(HomepageAdapter.VIEWTYPE_AD);
+        typeAD.setBeanObj(fragmentAD = new FragmentAD());
         viewTypes.add(typeAD);
+        //添加资讯布局
         BeanHomeView typeZIXUN = new BeanHomeView();
         typeZIXUN.setViewType(HomepageAdapter.VIEWTYPE_ZIXUN);
         viewTypes.add(typeZIXUN);
+        //添加心理布局
         BeanHomeView typeXinli = new BeanHomeView();
         typeXinli.setViewType(HomepageAdapter.VIEWTYPE_XINLI);
         viewTypes.add(typeXinli);
+        //添加医师推荐标题布局
         BeanHomeView typeTitleRecommed = new BeanHomeView();
         typeTitleRecommed.setViewType(HomepageAdapter.VIEWTYPE_TITLE);
         BeanHomeTitle title = new BeanHomeTitle();
@@ -107,17 +112,36 @@ public class FragmentHomepage extends Fragment {
         title.setTitleName("推荐医师");
         typeTitleRecommed.setBeanObj(title);
         viewTypes.add(typeTitleRecommed);
+        //添加医师推荐Fragment
         BeanHomeView typeRecommendDoctor = new BeanHomeView();
         typeRecommendDoctor.setViewType(HomepageAdapter.VIEWTYPE_DOCTORLAYOUT);
+        typeRecommendDoctor.setBeanObj(fragmentRecommendDoctor = new FragmentRecommendDoctor());
         viewTypes.add(typeRecommendDoctor);
+        //添加资讯信息布局
+        typeTitleRecommed = new BeanHomeView();
+        typeTitleRecommed.setViewType(HomepageAdapter.VIEWTYPE_TITLE);
         title = new BeanHomeTitle();
         title.setImgID(R.mipmap.xjk_ic_news);
         title.setRightText("更多");
         title.setTitleName("资讯信息");
         typeTitleRecommed.setBeanObj(title);
         viewTypes.add(typeTitleRecommed);
+        //添加推荐医院标题布局
+        BeanHomeView titleHospitor = new BeanHomeView();
+        titleHospitor.setViewType(HomepageAdapter.VIEWTYPE_TITLE);
+        title = new BeanHomeTitle();
+        title.setTitleName("推荐医院");
+        title.setRightText("附近");
+        title.setImgID(R.mipmap.xjk_pic_hospital);
+        titleHospitor.setBeanObj(title);
+        viewTypes.add(titleHospitor);
+        //添加推荐医院Fragment
+        BeanHomeView typeHospitor = new BeanHomeView();
+        typeHospitor.setViewType(HomepageAdapter.VIEWTYPE_HOSPITALlAYOUT);
+        typeHospitor.setBeanObj(fragmentRecommendHospitor = new FragmentRecommendHospitor());
+        viewTypes.add(typeHospitor);
 
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter = new HomepageAdapter(viewTypes, this));
         mRecyclerView.setHasFixedSize(true);
         loadData();

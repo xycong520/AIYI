@@ -137,6 +137,10 @@ public class FragmentAD extends Fragment {
         });
     }
 
+    public View getThisView() {
+        return thisView;
+    }
+
     class AdPagerAdapter extends PagerAdapter {
         private List<Advertisiment> list;
         private Context context;
@@ -195,5 +199,35 @@ public class FragmentAD extends Fragment {
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 }
