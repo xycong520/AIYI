@@ -1,0 +1,5 @@
+package com.xiuman.xinjiankang.utils;
+
+public enum AnimDisplayMode {
+	PUSH_RIGHT, PUSH_LEFT, PUSH_TOP, PUSH_LEFT_ENTER, PUSH_LEFT_EXIT, PUSH_TOP_ENTER, PUSH_TOP_EXIT,PUSH_BOTTOM_ENTER,PUSH_BOTTOM_EXIT,FADE
+}

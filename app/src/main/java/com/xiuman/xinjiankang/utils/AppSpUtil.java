@@ -2,7 +2,9 @@ package com.xiuman.xinjiankang.utils;/**
  * Created by PCPC on 2015/7/13.
  */
 
+import com.google.gson.Gson;
 import com.xiuman.xinjiankang.app.AppConfig;
+import com.xiuman.xinjiankang.base.User;
 
 /**
  * 描述: Sp 工具类
@@ -31,10 +33,10 @@ public class AppSpUtil {
         SpUtils.setString(AppConfig.KEY_USER_INFO, json_user_info);
     }
 
-   /* *//**
+   /**
      * @return 2014-8-12
      * 描述：获取用户信息
-     *//*
+     */
     public User getUserInfo() {
         String json_user_info = SpUtils.getString(AppConfig.KEY_USER_INFO);
         User user = null;
@@ -42,7 +44,7 @@ public class AppSpUtil {
             user = new Gson().fromJson(json_user_info, User.class);
         }
         return user;
-    }*/
+    }
 
     /**
      * 描述：删除用户信息,并设置用户登录为false(用于获取购物车信息) 2014-8-12

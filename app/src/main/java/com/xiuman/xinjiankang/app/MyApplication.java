@@ -1,5 +1,7 @@
 package com.xiuman.xinjiankang.app;
 
+import com.xiuman.xinjiankang.utils.AppSpUtil;
+
 import org.xutils.x;
 
 /**
@@ -8,8 +10,8 @@ import org.xutils.x;
  */
 public class MyApplication extends GlobalContext {
     //获取到主线程的上下文
-    private static MyApplication mContext ;
-//    //获取到主线程的handler
+    private static MyApplication mContext;
+    //    //获取到主线程的handler
 //    private static Handler mMainThreadHandler ;
 //    //获取到主线程轮询器
 //    private static Looper mMainThreadLooper;
@@ -19,6 +21,7 @@ public class MyApplication extends GlobalContext {
 //    private static int mMainThreadId;
     // 单例
     private static MyApplication instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -30,7 +33,6 @@ public class MyApplication extends GlobalContext {
 //        mMainThread  = Thread.currentThread();
 //        mMainThreadId = android.os.Process.myTid();
     }
-
 
 
     /**
@@ -62,20 +64,20 @@ public class MyApplication extends GlobalContext {
         return IMEI;
     }
 
-    *//**
+    */
+
+    /**
      * @return 2014-8-12
      * 描述：查看用户是否登录
-     *//*
+     */
     public boolean isUserLogin() {
-//        if(SpUtils.getBoolean(AppConfig.KEY_USER_LOGIN, false)&& AppSpUtil.getInstance().getUserInfo()!=null&& AppSpUtil.getInstance().getUserLevel()!=null)
-//            return true;
-        if( AppSpUtil.getInstance().getUserInfo()!=null)
+        if (AppSpUtil.getInstance().getUserInfo() != null)
             return true;
         else {
             AppSpUtil.getInstance().deleteUserInfo();
             return false;
         }
-    }*/
+    }
     /**
      * return 描述：获取友盟渠道信息
      * 时间 2014-12-10
@@ -91,8 +93,10 @@ public class MyApplication extends GlobalContext {
         return msg;
 
     }*/
+
     /**
      * 获取单例
+     *
      * @return
      */
     public static MyApplication getInstance() {
@@ -100,7 +104,7 @@ public class MyApplication extends GlobalContext {
     }
 
     //对外暴露一个上下文
-    public static MyApplication getApplication(){
+    public static MyApplication getApplication() {
         return mContext;
     }
 //    //对外暴露一个主线程的handelr

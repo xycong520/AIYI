@@ -3,9 +3,11 @@ package com.xiuman.xinjiankang.Request;
 
 import android.content.Context;
 
+import com.xiuman.xinjiankang.app.MyApplication;
 import com.xiuman.xinjiankang.constant.Constant;
 import com.xiuman.xinjiankang.net.HttpDataTask;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
+import com.xiuman.xinjiankang.utils.AppSpUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -97,5 +99,77 @@ public class UserRequest {
         Map<String, Object> parametersPair = new HashMap<String, Object>();
         task.get(uri, parametersPair);
     }
+    /**
+     * 获取科普知识详情
+     *
+     * @param context
+     * @param listener
+     * @param id
+     */
+    public void getScienceTechologyDetail(Context context, HttpTaskListener listener, String id) {
+        String uri = Constant.http + "/jk_article!knowledgeDetail.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("id", id);
+        if (MyApplication.getInstance().isUserLogin()) {
+            parametersPair.put("memberId", AppSpUtil.getInstance().getUserInfo().getUserId());
+        }
+        task.get(uri, parametersPair);
+    }
+    /**
+     * 获取科普评论列表
+     *
+     * @param listener
+     */
+    public void getScienceTechologyCommentList(Context context,HttpTaskListener listener, String articleId, int page) {
+        String uri = Constant.http + "/jk_article_comment!getCommentAction.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("articleId", articleId);
+        parametersPair.put("flag", 0);
+        parametersPair.put("type", "DESC");
+        parametersPair.put("pageSizeApp", "10");
+        parametersPair.put("pageApp", page);
+        task.get(uri, parametersPair);
+    }/**
+     * 科普详情点赞
+     *
+     * @param listener
+     */
+    public void getScienceTechologyPraise(Context context,HttpTaskListener listener, String articleId) {
+        String uri = Constant.http + "/jk_article_praise!praise.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("articleId", articleId);
+        parametersPair.put("memberId", AppSpUtil.getInstance().getUserInfo().getUserId());
+        task.get(uri, parametersPair);
+    }
 
+    /**
+     * 科普详情发表评论
+     *
+     * @param listener
+     */
+    public void postScienceTechologyComment(Context context,HttpTaskListener listener, String articleId, String content) {
+        String uri = Constant.http + "/jk_article_comment!comment.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("articleId", articleId);
+        parametersPair.put("memberId", AppSpUtil.getInstance().getUserInfo().getUserId());
+        parametersPair.put("content", content);
+        task.post(uri, parametersPair);
+    }
+
+    /**
+     * 获取分享链接
+     *
+     * @param listener
+     */
+    public void getScienceTechologyShareUrl(Context context,HttpTaskListener listener,String id) {
+        String uri = Constant.textHttp + "/jk_article!getArticleShareUrl.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("id",id);
+        task.get(uri, parametersPair);
+    }
 }

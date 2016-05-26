@@ -7,6 +7,9 @@ package com.xiuman.xinjiankang.app;
  *          描述：常量信息的定义
  */
 public class AppConfig {
+    // 图片地址前缀
+    public static final String IMG_IP = "http://www.popodd.com/shopxx";
+
     // 渠道标识
 //    public final static String CHANNEL = MyApplication.getInstance().getUmengChannel();
     // 发起临时会话的腾讯ID

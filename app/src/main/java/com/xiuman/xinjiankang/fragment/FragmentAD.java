@@ -2,6 +2,7 @@ package com.xiuman.xinjiankang.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.Bean.Advertisiment;
 import com.xiuman.xinjiankang.Request.UserRequest;
+import com.xiuman.xinjiankang.activity.ScientifitDetailActivity;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
 import com.xiuman.xinjiankang.utils.SizeUtil;
@@ -172,18 +174,18 @@ public class FragmentAD extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Advertisiment bean = (Advertisiment) v.getTag();
-                    /*if ("app".equalsIgnoreCase(bean.getJumpType())) {
+                    if ("app".equalsIgnoreCase(bean.getJumpType())) {
                         if (bean.getQueryUrlOrValue()!=null && !"".equals(bean.getQueryUrlOrValue())) {
                             Intent intent = new Intent(context, ScientifitDetailActivity.class);
                             intent.putExtra("id", bean.getQueryUrlOrValue());
                             context.startActivity(intent);
                         }
-                    }else {
+                   /* }else {
                         Intent intent = new Intent(context, WebActivity.class);
                         intent.putExtra("url",bean.getQueryUrlOrValue());
-                        context.startActivity(intent);
+                        context.startActivity(intent);*/
                     }
-                    MobclickAgent.onEvent(context,"USER_AD");*/
+//                    MobclickAgent.onEvent(context,"USER_AD");
                 }
             });
             mpager.setObjectForPosition(view, count);

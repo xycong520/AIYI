@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by PCPC on 2016/5/24.
@@ -29,10 +28,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     WechatRadioGroup gradualRadioGroup;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+    protected void initView() {
         setupToolbar();
         List<Fragment> list = new ArrayList<Fragment>();
         FragmentHomepage fragmentHomepage = new FragmentHomepage();
@@ -49,8 +45,14 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         gradualRadioGroup.setViewPager(viewPager);
         setToolbarTitle("首页");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        setSwipeBackEnable(false);
+        setSwipeBackEnable(false);
     }
+
+    @Override
+    protected int getView() {
+        return R.layout.activity_main;
+    }
+
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
