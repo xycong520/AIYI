@@ -16,7 +16,7 @@ import com.xiuman.xinjiankang.Bean.BeanHomeTitle;
 import com.xiuman.xinjiankang.Bean.BeanHomeView;
 import com.xiuman.xinjiankang.Request.UserRequest;
 import com.xiuman.xinjiankang.adapter.HomepageAdapter;
-import com.xiuman.xinjiankang.base.ScienceDetail;
+import com.xiuman.xinjiankang.Bean.ScienceDetail;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
 

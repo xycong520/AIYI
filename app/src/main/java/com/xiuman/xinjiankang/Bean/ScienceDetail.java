@@ -1,4 +1,4 @@
-package com.xiuman.xinjiankang.base;
+package com.xiuman.xinjiankang.Bean;
 
 import java.io.Serializable;
 

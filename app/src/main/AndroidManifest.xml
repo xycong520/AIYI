@@ -21,13 +21,24 @@
                 <category android:name="android.intent.category.LAUNCHER"></category>
             </intent-filter>
         </activity>
-        <activity android:name="com.xiuman.xinjiankang.MainActivity" />
+        <activity android:name="com.xiuman.xinjiankang.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack" />
         <activity
             android:name="com.xiuman.xinjiankang.activity.ScientifitDetailActivity"
             android:label="知识详情"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SwipeBack" />
+
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.LoginActivity"
+            android:label="登录"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack" />
+
     </application>
 
 </manifest>

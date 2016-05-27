@@ -4,7 +4,7 @@ package com.xiuman.xinjiankang.utils;/**
 
 import com.google.gson.Gson;
 import com.xiuman.xinjiankang.app.AppConfig;
-import com.xiuman.xinjiankang.base.User;
+import com.xiuman.xinjiankang.Bean.User;
 
 /**
  * 描述: Sp 工具类

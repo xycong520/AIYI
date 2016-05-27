@@ -1,7 +1,10 @@
 package com.xiuman.xinjiankang.app;
 
+import android.widget.ImageView;
+
 import com.xiuman.xinjiankang.utils.AppSpUtil;
 
+import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 /**
@@ -21,6 +24,15 @@ public class MyApplication extends GlobalContext {
 //    private static int mMainThreadId;
     // 单例
     private static MyApplication instance;
+
+    public static ImageOptions optionsPhoto;
+
+    public static ImageOptions getOptionsPhoto() {
+        if (optionsPhoto == null) {
+            optionsPhoto = new ImageOptions.Builder().setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setCircular(true).build();
+        }
+        return optionsPhoto;
+    }
 
     @Override
     public void onCreate() {

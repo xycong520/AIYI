@@ -99,6 +99,22 @@ public class UserRequest {
         Map<String, Object> parametersPair = new HashMap<String, Object>();
         task.get(uri, parametersPair);
     }
+
+    /**
+     * 统计咨询阅读量
+     *
+     * @param httpTaskListener
+     */
+    public void saveStatistics(Context context,HttpTaskListener httpTaskListener, String id) {
+        String url = Constant.http + "/jk_cases!searchDisease.action";
+        HttpDataTask httpDataTask = new HttpDataTask(context, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("articleId",id);
+        if (MyApplication.getInstance().isUserLogin()) {
+            parametersPair.put("memberId", AppSpUtil.getInstance().getUserInfo().getUserId());
+        }
+        httpDataTask.get(url, parametersPair);
+    }
     /**
      * 获取科普知识详情
      *
@@ -171,5 +187,20 @@ public class UserRequest {
         Map<String, Object> parametersPair = new HashMap<String, Object>();
         parametersPair.put("id",id);
         task.get(uri, parametersPair);
+    }
+
+    /**
+     * 医师关注
+     *
+     * @param httpTaskListener
+     */
+    public void takeAttention(Context context,HttpTaskListener httpTaskListener, String jkId, int type) {
+        String url = Constant.http + "/jk_follow!saveFollow.action";
+        HttpDataTask httpDataTask = new HttpDataTask(context, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("jkId", jkId);
+        parametersPair.put("type", type);
+        parametersPair.put("memberId", AppSpUtil.getInstance().getUserInfo().getUserId());
+        httpDataTask.get(url, parametersPair);
     }
 }

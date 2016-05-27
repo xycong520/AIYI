@@ -29,5 +29,7 @@
     <dimen name="dashWidth">3dp</dimen>
     <dimen name="dashGap">3dp</dimen>
     <dimen name="dashHeight">1px</dimen>
+    <dimen name="detail_first_sreen_height">154dp</dimen>
+
 
 </resources>

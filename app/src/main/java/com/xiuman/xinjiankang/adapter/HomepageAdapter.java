@@ -2,7 +2,6 @@ package com.xiuman.xinjiankang.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import android.widget.Toast;
 import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.Bean.BeanHomeTitle;
 import com.xiuman.xinjiankang.Bean.BeanHomeView;
-import com.xiuman.xinjiankang.base.ScienceDetail;
+import com.xiuman.xinjiankang.Bean.ScienceDetail;
 import com.xiuman.xinjiankang.fragment.FragmentAD;
 import com.xiuman.xinjiankang.fragment.FragmentRecommendDoctor;
 import com.xiuman.xinjiankang.fragment.FragmentRecommendHospitor;
@@ -47,6 +46,9 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public HomepageAdapter(List<BeanHomeView> viewsData, Fragment fragment) {
         homeViews = viewsData;
         this.fragment = fragment;
+        if (options == null) {
+            options = new ImageOptions.Builder().setRadius(10).setImageScaleType(ImageView.ScaleType.FIT_XY).setUseMemCache(true).build();
+        }
     }
 
     @Override
@@ -89,7 +91,6 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else {
                 ((ADViewHolder) holder).getLayoutAD().removeAllViews();
                 ((ADViewHolder) holder).getLayoutAD().addView(fragmentAD.getThisView());
-                Log.i("HomepageAdapter",((ADViewHolder) holder).getLayoutAD().getChildCount()+"");
             }
 
         } else if (holder instanceof ZIXUNViewHolder) {
@@ -120,9 +121,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }
                     break;
                 case VIEWTYPE_LISTITEM:
-                    if (options == null) {
-                        options = new ImageOptions.Builder().setRadius(20).setUseMemCache(true).build();
-                    }
+
                     ScienceDetail detail = (ScienceDetail) homeViews.get(position).getBeanObj();
                     ((TextView) ((AllpurposeViewHolder) holder).getViewByID(R.id.title)).setText(detail.getTitle());
                     ((TextView) ((AllpurposeViewHolder) holder).getViewByID(R.id.content)).setText(detail.getDescription());

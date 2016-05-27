@@ -1,15 +1,15 @@
 <resources>
     <declare-styleable name="StateView">
-        <attr name="state_content" format="reference"/>
-        <attr name="state_error" format="reference"/>
-        <attr name="state_empty" format="reference"/>
-        <attr name="state_loading" format="reference"/>
+        <attr name="state_content" format="reference" />
+        <attr name="state_error" format="reference" />
+        <attr name="state_empty" format="reference" />
+        <attr name="state_loading" format="reference" />
         <attr name="state_current" format="enum">
-            <enum name="content" value="0"/>
-            <enum name="loading" value="1"/>
-            <enum name="error" value="2"/>
-            <enum name="empty" value="3"/>
-            <enum name="content_loading" value="4"/>
+            <enum name="content" value="0" />
+            <enum name="loading" value="1" />
+            <enum name="error" value="2" />
+            <enum name="empty" value="3" />
+            <enum name="content_loading" value="4" />
         </attr>
     </declare-styleable>
     <!-- Base application theme. -->
@@ -34,9 +34,9 @@
         <item name="shadow_bottom">@drawable/shadow_bottom</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <declare-styleable name="CircleImageView">
         <attr name="civ_border_width" format="dimension" />

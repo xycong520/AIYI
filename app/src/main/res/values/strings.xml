@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">爱医</string>
-
+    <!-- 用户登录界面 -->
+    <string name="login_hint_user_name">手机号码/性多多帐号</string>
+    <string name="login_find_psw">找回密码</string>
+    <string name="login_register1">没有账号？去</string>
+    <string name="login_register2">注册</string>
+    <string name="login_register3">只需3秒哦~</string>
+    <string name="login">登录</string>
+    <string name="login_hint_psw">6~16位密码</string>
+    <string name="login_forget_psw1">忘记密码？去</string>
+    <string name="login_forget_psw2">找回</string>
     <!--JazzyViewPager-->
     <string-array name="jazzy_effects">
         <item>Standard</item>
