@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiuman.xingjiankang.R;
-import com.xiuman.xinjiankang.Bean.BeanHomeView;
-import com.xiuman.xinjiankang.Bean.ScienceItemDetail;
-import com.xiuman.xinjiankang.Bean.ScientificComment;
+import com.xiuman.xinjiankang.bean.BeanHomeView;
+import com.xiuman.xinjiankang.bean.ScienceItemDetail;
+import com.xiuman.xinjiankang.bean.ScientificComment;
 import com.xiuman.xinjiankang.app.MyApplication;
 import com.xiuman.xinjiankang.utils.DateUtils;
 

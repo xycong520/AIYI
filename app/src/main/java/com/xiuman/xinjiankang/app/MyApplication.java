@@ -1,7 +1,12 @@
 package com.xiuman.xinjiankang.app;
 
+import android.content.Context;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.widget.ImageView;
 
+import com.umeng.socialize.PlatformConfig;
+import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.utils.AppSpUtil;
 
 import org.xutils.image.ImageOptions;
@@ -29,7 +34,7 @@ public class MyApplication extends GlobalContext {
 
     public static ImageOptions getOptionsPhoto() {
         if (optionsPhoto == null) {
-            optionsPhoto = new ImageOptions.Builder().setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setCircular(true).build();
+            optionsPhoto = new ImageOptions.Builder().setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setLoadingDrawableId(R.drawable.onloading3).setCircular(true).build();
         }
         return optionsPhoto;
     }
@@ -40,6 +45,12 @@ public class MyApplication extends GlobalContext {
         x.Ext.init(this);
         instance = this;
         mContext = this;
+        //微信 appid appsecret
+        PlatformConfig.setWeixin(AppConfig.WX_APP_ID, AppConfig.WX_SECRET);
+        //新浪微博 appkey appsecret
+        PlatformConfig.setSinaWeibo(AppConfig.Sina_APP_ID, AppConfig.Sina_APP_SECRET);
+        // QQ和Qzone appid appkey
+        PlatformConfig.setQQZone(AppConfig.QQ_APP_ID, AppConfig.QQ_APP_KEY);
 //        mMainThreadHandler = new Handler();
 //        mMainThreadLooper = getMainLooper();
 //        mMainThread  = Thread.currentThread();
@@ -51,8 +62,8 @@ public class MyApplication extends GlobalContext {
      * return IMEI
      * 描述：获取手机唯一标识码
      * 时间 2014-11-3
-     *//*
-    public  String getIMEI() {
+     */
+    public String getIMEI() {
         String IMEI = "";
         TelephonyManager tm = (TelephonyManager)
                 getSystemService(Context.TELEPHONY_SERVICE);
@@ -60,23 +71,22 @@ public class MyApplication extends GlobalContext {
             IMEI = tm.getDeviceId();
             String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             //000000000000000
-            if (IMEI == null||IMEI.contains("000000000") || IMEI.equals("") ) {
-                if (androidId == null||androidId.equals("9774d56d682e549c") || androidId.equals("") ) {//bug
+            if (IMEI == null || IMEI.contains("000000000") || IMEI.equals("")) {
+                if (androidId == null || androidId.equals("9774d56d682e549c") || androidId.equals("")) {//bug
                     //淘宝专用
-                    IMEI = UTDevice.getUtdid(GlobalContext.getInstance());
+//                    IMEI = UTDevice.getUtdid(GlobalContext.getInstance());
                 } else {
                     IMEI = androidId;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            IMEI = UTDevice.getUtdid(GlobalContext.getInstance());
+//            IMEI = UTDevice.getUtdid(GlobalContext.getInstance());
         }
 
         return IMEI;
     }
 
-    */
 
     /**
      * @return 2014-8-12

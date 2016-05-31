@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutScientificDetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,6 +9,7 @@
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -16,4 +18,45 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="3dip" >
+
+        <!-- 回复内容 -->
+
+        <EditText
+            android:id="@+id/et_reply"
+            android:layout_width="0dip"
+            android:paddingTop="5dip"
+            android:paddingRight="5dip"
+            android:paddingBottom="5dip"
+            android:paddingLeft="8dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:minHeight="40dp"
+            android:drawablePadding="7dp"
+            android:drawableLeft="@mipmap/xjk_ic_write"
+            android:background="@drawable/xjk_et_input_message"
+            android:hint="我要说两句"
+            android:singleLine="false"
+            android:textCursorDrawable="@drawable/xjk_text_cursor"
+            android:textColorHint="#888C89"
+            android:textColor="@color/color_black3"
+            android:textSize="@dimen/txt_size_14" />
+
+        <Button
+            android:id="@+id/btn_reply"
+            android:layout_width="50dp"
+            android:layout_height="40dip"
+            android:focusable="true"
+            android:minWidth="0dp"
+            android:layout_marginLeft="5dip"
+            android:textSize="@dimen/txt_size_14"
+            android:background="@drawable/xjk_btn_selete"
+            android:text="发送"
+            android:textColor="@color/color_black" />
+    </LinearLayout>
 </LinearLayout>

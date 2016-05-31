@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
-import com.xiuman.xinjiankang.Bean.Advertisiment;
+import com.xiuman.xinjiankang.bean.Advertisiment;
 import com.xiuman.xinjiankang.Request.UserRequest;
 import com.xiuman.xinjiankang.activity.ScientifitDetailActivity;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
@@ -35,6 +35,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ * 广告
  * Created by PCPC on 2016/5/24.
  */
 public class FragmentAD extends Fragment {

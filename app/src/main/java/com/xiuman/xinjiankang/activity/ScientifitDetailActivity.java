@@ -1,31 +1,46 @@
 package com.xiuman.xinjiankang.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
-import com.xiuman.xinjiankang.Bean.Attention;
-import com.xiuman.xinjiankang.Bean.BeanHomeView;
-import com.xiuman.xinjiankang.Bean.ScienceItemDetail;
-import com.xiuman.xinjiankang.Bean.ScientificComment;
-import com.xiuman.xinjiankang.Bean.ScientificPriase;
 import com.xiuman.xinjiankang.adapter.ScientifitDetailAdapter;
 import com.xiuman.xinjiankang.app.AppManager;
 import com.xiuman.xinjiankang.app.MyApplication;
 import com.xiuman.xinjiankang.base.BaseActivity;
+import com.xiuman.xinjiankang.bean.Attention;
+import com.xiuman.xinjiankang.bean.BeanHomeView;
+import com.xiuman.xinjiankang.bean.ScienceItemDetail;
+import com.xiuman.xinjiankang.bean.ScientificComment;
+import com.xiuman.xinjiankang.bean.ScientificCommentResult;
+import com.xiuman.xinjiankang.bean.ScientificPriase;
+import com.xiuman.xinjiankang.bean.ScientificShareUrl;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
+import com.xiuman.xinjiankang.share.Share;
+import com.xiuman.xinjiankang.share.UmengShareUtil;
+import com.xiuman.xinjiankang.utils.AppSpUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +50,18 @@ import butterknife.Bind;
 /**
  * Created by PCPC on 2016/5/26.
  */
-public class ScientifitDetailActivity extends BaseActivity implements View.OnClickListener {
+public class ScientifitDetailActivity extends BaseActivity implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.swipe)
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
     ScientifitDetailAdapter mAdapter;
+    @Bind(R.id.btn_reply)
+    Button btReplay;
+    @Bind(R.id.et_reply)
+    EditText etReply;
+
     //文章id
     private String categoryId;
     List<BeanHomeView> data = new ArrayList<>();
@@ -57,9 +77,9 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
     protected void initView() {
         setupToolbar();
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-//        swipeRefreshLayout.setProgressViewOffset(false, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+        swipeRefreshLayout.setProgressViewOffset(false, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
         swipeRefreshLayout.setRefreshing(true);
-
+        swipeRefreshLayout.setOnRefreshListener(this);
         categoryId = getIntent().getStringExtra("id");
         loadData();
         mAdapter = new ScientifitDetailAdapter(null);
@@ -86,6 +106,8 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
             }
         });
         animation = AnimationUtils.loadAnimation(mActivity, R.anim.xjk_zan_add_1);
+
+        btReplay.setOnClickListener(this);
     }
 
     @Override
@@ -106,6 +128,9 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
             //点击拨打客服热线
             case R.id.share:
                 AppManager.showToast(this, "分享");
+                if (scienceItemDetail!=null){
+                    showPop();
+                }
                 return true;
 
             default:
@@ -113,12 +138,39 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
         }
     }
 
+    String shareUrl;
+    //分享
+    private void share(String plate) {
+        if(pw!=null){
+            pw.dismiss();
+        }
+        UmengShareUtil shareUtils = new UmengShareUtil(mActivity);
+        shareUtils.share(plate, new Share(scienceItemDetail.getDatasource().getTitle(), scienceItemDetail.getDatasource().getTitle(),
+                shareUrl, scienceItemDetail.getDatasource().getGuideImg(), ""));
+    }
 
+    PopupWindow pw;
+    private void showPop() {
+        View shareView = mActivity.getLayoutInflater().inflate(R.layout.layout_share_pop, null);
+        pw = new PopupWindow(shareView, LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        ImageView sina = (ImageView) shareView.findViewById(R.id.bt_sina);
+        ImageView qzone = (ImageView) shareView.findViewById(R.id.bt_QZone);
+        ImageView wechat = (ImageView) shareView.findViewById(R.id.bt_wechat);
+        ImageView circle = (ImageView) shareView.findViewById(R.id.bt_circle);
+        sina.setOnClickListener(this);
+        wechat.setOnClickListener(this);
+        circle.setOnClickListener(this);
+        qzone.setOnClickListener(this);
+        pw.setOutsideTouchable(true);
+        pw.setBackgroundDrawable(new BitmapDrawable());
+        pw.showAtLocation(findViewById(R.id.layoutScientificDetail), Gravity.BOTTOM,0,0);
+    }
+    ScienceItemDetail scienceItemDetail;
     private void loadData() {
         AppManager.getUserRequest().getScienceTechologyDetail(this, new HttpTaskListener() {
             @Override
             public void dataSucceed(String result) {
-                ScienceItemDetail scienceItemDetail = new Gson().fromJson(result, ScienceItemDetail.class);
+                scienceItemDetail = new Gson().fromJson(result, ScienceItemDetail.class);
                 content = new BeanHomeView();
                 content.setViewType(ScientifitDetailAdapter.VIEWTYPE_CONTENT);
                 content.setBeanObj(scienceItemDetail);
@@ -132,13 +184,15 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
 
             @Override
             public void dataError(String result) {
+                swipeRefreshLayout.setRefreshing(false);
 //                AppManager.showToast(ScientifitDetailActivity.this,result);
             }
         }, categoryId);
         AppManager.getUserRequest().getScienceTechologyShareUrl(this, new HttpTaskListener() {
             @Override
             public void dataSucceed(String result) {
-
+                ScientificShareUrl scientificShareUrl = new Gson().fromJson(result, ScientificShareUrl.class);
+                shareUrl = scientificShareUrl.getDatasource().get(0).getUrl();
             }
 
             @Override
@@ -206,6 +260,22 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
     public void onClick(View view) {
         super.onClick(view);
         switch (view.getId()) {
+            //新浪分享
+            case R.id.bt_sina:
+                share(UmengShareUtil.SINA);
+                break;
+            //QQ空间分享
+            case R.id.bt_QZone:
+                share(UmengShareUtil.QZone);
+                break;
+            //微信分享
+            case R.id.bt_wechat:
+                share(UmengShareUtil.WX);
+                break;
+            //朋友圈分享
+            case R.id.bt_circle:
+                share(UmengShareUtil.CIRCLE);
+                break;
             case R.id.iv_collect:
                 takeCollect((TextView) view);
                 break;
@@ -216,9 +286,61 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
             case R.id.iv_support:
                 postSupport(view);
                 break;
+            case R.id.btn_reply:
+                if ("".equals(etReply.getText().toString().trim())) {
+                    AppManager.showToast(mActivity, "评论内容不能为空");
+                    return;
+                }
+                if (MyApplication.getInstance().isUserLogin()) {
+                    btReplay.setEnabled(false);
+                    postComment(etReply.getText().toString().trim());
+                } else {
+                    Intent intent = new Intent(mActivity, LoginActivity.class);
+                    startActivity(intent);
+                }
+                etReply.getText().toString();
+                break;
         }
-
     }
+
+    private void postComment(String comment) {
+        AppManager.getUserRequest().postScienceTechologyComment(this, new HttpTaskListener() {
+            @Override
+            public void dataSucceed(String result) {
+                ScientificCommentResult scientificCommentResult = new Gson().fromJson(result, ScientificCommentResult.class);
+                if (scientificCommentResult != null && scientificCommentResult.getMessage().equals("评论成功")) {
+                    ScientificComment comment = new ScientificComment();
+                    comment.setContent(etReply.getText().toString());
+                    comment.setAvatar(AppSpUtil.getInstance().getUserInfo().getAvatar());
+                    comment.setCreateDate(System.currentTimeMillis());
+                    comment.setNickname(AppSpUtil.getInstance().getUserInfo().getNickname());
+                    BeanHomeView oneComment = new BeanHomeView();
+                    oneComment.setViewType(ScientifitDetailAdapter.VIEWTYPE_COMMENT);
+                    oneComment.setBeanObj(comment);
+                    data.add(oneComment);
+                    mAdapter.setDatas(data);
+                    mAdapter.notifyDataSetChanged();
+                    HideKeyboard(etReply);
+                    etReply.setText("");
+                    AppManager.showToast(mActivity, "评论成功");
+                    sendBroadcast(new Intent("" + categoryId));
+                }
+                btReplay.setEnabled(true);
+            }
+
+            @Override
+            public void dataError(String result) {
+
+            }
+        }, categoryId, comment);
+    }
+
+    //隐藏软件键盘
+    public static void HideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+    }
+
 
     /**
      * 收藏
@@ -308,5 +430,11 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
             startActivity(login);
         }
 
+    }
+
+    @Override
+    public void onRefresh() {
+        data.clear();
+        loadData();
     }
 }

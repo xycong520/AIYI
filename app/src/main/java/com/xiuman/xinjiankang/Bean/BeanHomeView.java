@@ -1,4 +1,4 @@
-package com.xiuman.xinjiankang.Bean;
+package com.xiuman.xinjiankang.bean;
 
 /**
  * Created by PCPC on 2016/5/24.

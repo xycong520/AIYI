@@ -16,8 +16,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
-import com.xiuman.xinjiankang.Bean.RecommendHosipatal;
 import com.xiuman.xinjiankang.Request.UserRequest;
+import com.xiuman.xinjiankang.app.AppManager;
+import com.xiuman.xinjiankang.bean.RecommendHosipatal;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
 
@@ -28,6 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ * 推荐医院
  * Created by PCPC on 2016/5/26.
  */
 public class FragmentRecommendHospitor extends Fragment {
@@ -125,6 +127,16 @@ public class FragmentRecommendHospitor extends Fragment {
         public void onBindViewHolder(final ViewHolder viewHolder, int i) {
             x.image().bind(viewHolder.mImg, (dataList.getDatasource().get(i)).getHeadimgurl(), options);
             viewHolder.tvName.setText((dataList.getDatasource().get(i)).getName());
+            viewHolder.itemView.setTag(dataList.getDatasource().get(i).getHospitaId());
+            viewHolder.itemView.setOnClickListener(onClickListener);
         }
+
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppManager.showToast(v.getContext(), v.getTag().toString());
+            }
+        };
     }
 }

@@ -105,16 +105,17 @@ public class UserRequest {
      *
      * @param httpTaskListener
      */
-    public void saveStatistics(Context context,HttpTaskListener httpTaskListener, String id) {
+    public void saveStatistics(Context context, HttpTaskListener httpTaskListener, String id) {
         String url = Constant.http + "/jk_cases!searchDisease.action";
         HttpDataTask httpDataTask = new HttpDataTask(context, httpTaskListener);
         Map<String, Object> parametersPair = new HashMap<String, Object>();
-        parametersPair.put("articleId",id);
+        parametersPair.put("articleId", id);
         if (MyApplication.getInstance().isUserLogin()) {
             parametersPair.put("memberId", AppSpUtil.getInstance().getUserInfo().getUserId());
         }
         httpDataTask.get(url, parametersPair);
     }
+
     /**
      * 获取科普知识详情
      *
@@ -132,12 +133,13 @@ public class UserRequest {
         }
         task.get(uri, parametersPair);
     }
+
     /**
      * 获取科普评论列表
      *
      * @param listener
      */
-    public void getScienceTechologyCommentList(Context context,HttpTaskListener listener, String articleId, int page) {
+    public void getScienceTechologyCommentList(Context context, HttpTaskListener listener, String articleId, int page) {
         String uri = Constant.http + "/jk_article_comment!getCommentAction.action";
         HttpDataTask task = new HttpDataTask(context, listener);
         Map<String, Object> parametersPair = new HashMap<String, Object>();
@@ -147,12 +149,14 @@ public class UserRequest {
         parametersPair.put("pageSizeApp", "10");
         parametersPair.put("pageApp", page);
         task.get(uri, parametersPair);
-    }/**
+    }
+
+    /**
      * 科普详情点赞
      *
      * @param listener
      */
-    public void getScienceTechologyPraise(Context context,HttpTaskListener listener, String articleId) {
+    public void getScienceTechologyPraise(Context context, HttpTaskListener listener, String articleId) {
         String uri = Constant.http + "/jk_article_praise!praise.action";
         HttpDataTask task = new HttpDataTask(context, listener);
         Map<String, Object> parametersPair = new HashMap<String, Object>();
@@ -166,7 +170,7 @@ public class UserRequest {
      *
      * @param listener
      */
-    public void postScienceTechologyComment(Context context,HttpTaskListener listener, String articleId, String content) {
+    public void postScienceTechologyComment(Context context, HttpTaskListener listener, String articleId, String content) {
         String uri = Constant.http + "/jk_article_comment!comment.action";
         HttpDataTask task = new HttpDataTask(context, listener);
         Map<String, Object> parametersPair = new HashMap<String, Object>();
@@ -181,11 +185,11 @@ public class UserRequest {
      *
      * @param listener
      */
-    public void getScienceTechologyShareUrl(Context context,HttpTaskListener listener,String id) {
-        String uri = Constant.textHttp + "/jk_article!getArticleShareUrl.action";
+    public void getScienceTechologyShareUrl(Context context, HttpTaskListener listener, String id) {
+        String uri = Constant.http + "/jk_article!getArticleShareUrl.action";
         HttpDataTask task = new HttpDataTask(context, listener);
         Map<String, Object> parametersPair = new HashMap<String, Object>();
-        parametersPair.put("id",id);
+        parametersPair.put("id", id);
         task.get(uri, parametersPair);
     }
 
@@ -194,7 +198,7 @@ public class UserRequest {
      *
      * @param httpTaskListener
      */
-    public void takeAttention(Context context,HttpTaskListener httpTaskListener, String jkId, int type) {
+    public void takeAttention(Context context, HttpTaskListener httpTaskListener, String jkId, int type) {
         String url = Constant.http + "/jk_follow!saveFollow.action";
         HttpDataTask httpDataTask = new HttpDataTask(context, httpTaskListener);
         Map<String, Object> parametersPair = new HashMap<String, Object>();
@@ -202,5 +206,53 @@ public class UserRequest {
         parametersPair.put("type", type);
         parametersPair.put("memberId", AppSpUtil.getInstance().getUserInfo().getUserId());
         httpDataTask.get(url, parametersPair);
+    }
+
+
+    /**
+     * param mContext
+     * param httpTaskListener
+     * param singleurl
+     * param verappusername   用户名
+     * param verapppawss      密码 2014- -12
+     * 描述：用户登录
+     */
+    public void getUserLogin(Context mContext, HttpTaskListener httpTaskListener,
+                             String verappusername, String verapppawss) {
+        String url = Constant.userLoogin + "/member!LonginVer.action?";
+        HttpDataTask httpDataTask = new HttpDataTask(mContext, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("verappusername", verappusername);
+        parametersPair.put("verapppawss", verapppawss);
+        parametersPair.put("imie", MyApplication.getInstance().getIMEI());
+        httpDataTask.post(url, parametersPair);
+    }
+    /**
+     * 获取疾病类型列表
+     *
+     * @param context
+     * @param listener
+     */
+    public void getSelfDiagnoseList(Context context, HttpTaskListener listener) {
+        String uri = Constant.http + "/jk_cases!selfDiagnoseList.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        task.get(uri, parametersPair);
+    }
+
+    /**
+     * 获取案例列表
+     *
+     * @param context
+     * @param listener
+     */
+    public void getDiagnoseDetail(Context context, HttpTaskListener listener, String categoryId, int page, int pageSize) {
+        String uri = Constant.http + "/jk_vip_consulting!getConsultingList.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("diseaseCategoryId", categoryId);
+        parametersPair.put("pageApp", page);
+        parametersPair.put("pageSizeApp", pageSize);
+        task.get(uri, parametersPair);
     }
 }

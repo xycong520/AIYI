@@ -1,6 +1,5 @@
 package com.xiuman.xinjiankang;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -8,8 +7,10 @@ import android.support.v4.view.ViewPager;
 
 import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.base.BaseActivity;
-import com.xiuman.xinjiankang.fragment.DemoFragmet;
+import com.xiuman.xinjiankang.fragment.FragmentConsult;
 import com.xiuman.xinjiankang.fragment.FragmentHomepage;
+import com.xiuman.xinjiankang.fragment.FragmentMe;
+import com.xiuman.xinjiankang.fragment.FragmentNews;
 import com.xiuman.xinjiankang.widget.WechatRadioGroup;
 
 import java.util.ArrayList;
@@ -33,13 +34,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         List<Fragment> list = new ArrayList<Fragment>();
         FragmentHomepage fragmentHomepage = new FragmentHomepage();
         list.add(fragmentHomepage);
-        for (int i = 1; i < 4; i++) {
-            DemoFragmet fragment = new DemoFragmet();
-            Bundle bundle = new Bundle();
-            bundle.putInt("type", i);
-            fragment.setArguments(bundle);
-            list.add(fragment);
-        }
+        FragmentConsult fragmentConsult = new FragmentConsult();
+        list.add(fragmentConsult);
+        FragmentNews fragmentNews = new FragmentNews();
+        list.add(fragmentNews);
+        FragmentMe fragmentMe = new FragmentMe();
+        list.add(fragmentMe);
         viewPager.setAdapter(new DemoPagerAdapter(getSupportFragmentManager(), list));
         viewPager.addOnPageChangeListener(this);
         gradualRadioGroup.setViewPager(viewPager);

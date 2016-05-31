@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
-import com.xiuman.xinjiankang.Bean.BeanHomeTitle;
-import com.xiuman.xinjiankang.Bean.BeanHomeView;
+import com.xiuman.xinjiankang.bean.BeanHomeTitle;
+import com.xiuman.xinjiankang.bean.BeanHomeView;
 import com.xiuman.xinjiankang.Request.UserRequest;
 import com.xiuman.xinjiankang.adapter.HomepageAdapter;
-import com.xiuman.xinjiankang.Bean.ScienceDetail;
+import com.xiuman.xinjiankang.bean.ScienceDetail;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
 
@@ -27,6 +27,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ * 首页
  * Created by PCPC on 2016/5/24.
  */
 public class FragmentHomepage extends Fragment {
@@ -51,7 +52,7 @@ public class FragmentHomepage extends Fragment {
             ButterKnife.bind(this, thisView);
             init();
         }
-        //因为共用一个Fragment视图，所以当前这个视图已被加载到Activity中，必须先清除后再加入Activity
+
         ViewGroup parent = (ViewGroup) thisView.getParent();
         if (parent != null) {
             parent.removeView(thisView);
@@ -79,6 +80,7 @@ public class FragmentHomepage extends Fragment {
                     newsItem.setViewType(HomepageAdapter.VIEWTYPE_LISTITEM);
                     viewTypes.add(6,newsItem);
                 }
+                mAdapter.setHomeViews(viewTypes);
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -89,6 +91,8 @@ public class FragmentHomepage extends Fragment {
     }
 
     private void init() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(mAdapter = new HomepageAdapter(viewTypes, this));
         viewTypes = new ArrayList<>();
         //添加广告Fragment
         BeanHomeView typeAD = new BeanHomeView();
@@ -140,9 +144,10 @@ public class FragmentHomepage extends Fragment {
         typeHospitor.setViewType(HomepageAdapter.VIEWTYPE_HOSPITALlAYOUT);
         typeHospitor.setBeanObj(fragmentRecommendHospitor = new FragmentRecommendHospitor());
         viewTypes.add(typeHospitor);
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(mAdapter = new HomepageAdapter(viewTypes, this));
+        mAdapter.setHomeViews(viewTypes);
+        mAdapter.notifyDataSetChanged();
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        mRecyclerView.setAdapter(mAdapter = new HomepageAdapter(viewTypes, this));
         mRecyclerView.setHasFixedSize(true);
         loadData();
     }

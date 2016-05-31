@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.StaticLayout;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.RadioButton;
 
@@ -79,8 +80,12 @@ public class WechatRadioButton extends RadioButton {
         iconPadding = getCompoundDrawablePadding();
 
         Paint.FontMetrics fontMetrics = getPaint().getFontMetrics();
-        mFontHeight = (float) Math.ceil(fontMetrics.descent - fontMetrics.ascent);
         mTextWidth = StaticLayout.getDesiredWidth(getText(), getPaint());
+        mFontHeight = (float) Math.ceil(fontMetrics.descent - fontMetrics.ascent);
+        if (TextUtils.isEmpty(getText())){
+            mTextWidth = 0;
+            mFontHeight = 0;
+        }
 
         mDefocusBitmap = getBitmapFromDrawable(mDefocusDrawable);
         mFocusBitmap = getBitmapFromDrawable(mFocusDrawable);
@@ -108,12 +113,12 @@ public class WechatRadioButton extends RadioButton {
 
     private void drawDefocusIcon(Canvas canvas) {
         mDefocusPaint.setAlpha(255 - mAlpha);
-        canvas.drawBitmap(mDefocusBitmap, (getWidth() - iconWidth) / 2, iconPadding, mDefocusPaint);
+        canvas.drawBitmap(mDefocusBitmap, (getWidth() - iconWidth) / 2, (getHeight()-iconHeight-mFontHeight)/2, mDefocusPaint);
     }
 
     private void drawFocusIcon(Canvas canvas) {
         mFocusPaint.setAlpha(mAlpha);
-        canvas.drawBitmap(mFocusBitmap, (getWidth() - iconWidth) / 2, getPaddingTop(), mFocusPaint);
+        canvas.drawBitmap(mFocusBitmap, (getWidth() - iconWidth) / 2,(getHeight()-iconHeight-mFontHeight)/2, mFocusPaint);
     }
 
     private void drawDefocusText(Canvas canvas) {

@@ -16,7 +16,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
-import com.xiuman.xinjiankang.Bean.RecommendDoctor;
+import com.xiuman.xinjiankang.app.AppManager;
+import com.xiuman.xinjiankang.bean.RecommendDoctor;
 import com.xiuman.xinjiankang.Request.UserRequest;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
@@ -28,6 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ * 推荐医师
  * Created by PCPC on 2016/5/24.
  */
 public class FragmentRecommendDoctor extends Fragment {
@@ -36,6 +38,7 @@ public class FragmentRecommendDoctor extends Fragment {
     View thisView;
     @Bind(R.id.recyclerview_horizontal)
     RecyclerView recyclerView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,7 +76,7 @@ public class FragmentRecommendDoctor extends Fragment {
                 Wrapper<RecommendDoctor> doctorlist = new Gson().fromJson(result, new TypeToken<Wrapper<RecommendDoctor>>() {
                 }.getType());
                 //设置适配器
-                GalleryDoctorAdapter mAdapter = new GalleryDoctorAdapter(getActivity(), doctorlist);
+                GalleryDoctorAdapter mAdapter = new GalleryDoctorAdapter(mActivity, doctorlist);
                 recyclerView.setAdapter(mAdapter);
             }
 
@@ -116,17 +119,27 @@ public class FragmentRecommendDoctor extends Fragment {
             View view = mInflater.inflate(R.layout.item_recom_doctor,
                     viewGroup, false);
             ViewHolder viewHolder = new ViewHolder(view);
-
             viewHolder.mImg = (ImageView) view
                     .findViewById(R.id.icon);
             viewHolder.tvName = (TextView) view.findViewById(R.id.name);
+            ;
             return viewHolder;
         }
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppManager.showToast(v.getContext(), v.getTag().toString());
+            }
+        };
+
 
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, int i) {
             x.image().bind(viewHolder.mImg, (dataList.getDatasource().get(i)).getHeadimgurl(), options);
             viewHolder.tvName.setText((dataList.getDatasource().get(i)).getName());
+            viewHolder.itemView.setTag(dataList.getDatasource().get(i).getDoctorId());
+            viewHolder.itemView.setOnClickListener(onClickListener);
         }
     }
 }

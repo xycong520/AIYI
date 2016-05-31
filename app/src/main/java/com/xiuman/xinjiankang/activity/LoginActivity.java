@@ -5,10 +5,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.xiuman.xingjiankang.R;
+import com.xiuman.xinjiankang.bean.ActionValue;
+import com.xiuman.xinjiankang.bean.User;
 import com.xiuman.xinjiankang.app.AppManager;
 import com.xiuman.xinjiankang.base.BaseActivity;
+import com.xiuman.xinjiankang.net.HttpTaskListener;
+import com.xiuman.xinjiankang.utils.AppSpUtil;
 
 import net.frakbot.jumpingbeans.JumpingBeans;
 
@@ -30,7 +36,6 @@ public class LoginActivity extends BaseActivity {
     LinearLayout llytRegister;
     @Bind(R.id.llyt_forget_psw)
     LinearLayout llytForgetPsw;
-
 
 
     @Override
@@ -80,29 +85,55 @@ public class LoginActivity extends BaseActivity {
      * @描述：用户登录 2014-8-12
      */
     private void login() {
-        TextView tvLoading = (TextView) findViewById(R.id.tvLoading);
-        tvLoading.setVisibility(View.VISIBLE);
-        JumpingBeans jumpingBeans ;
-        jumpingBeans = JumpingBeans.with(tvLoading).appendJumpingDots()
-                .build();
+
         String user_name = et_login_user_name.getText().toString().trim();
         String user_psw = et_login_user_psw.getText().toString().trim();
         if (user_name.equals("")) {
             AppManager.showToast(this, "请输入您的用户名！");
-            jumpingBeans.stopJumping();
-            tvLoading.setVisibility(View.GONE);
             return;
         } else if (user_psw.equals("")) {
             AppManager.showToast(this, "请输入您的密码！");
-            jumpingBeans.stopJumping();
-            tvLoading.setVisibility(View.GONE);
             return;
         }
+       final  TextView tvLoading = (TextView) findViewById(R.id.tvLoading);
+        tvLoading.setVisibility(View.VISIBLE);
+        final JumpingBeans jumpingBeans;
+        jumpingBeans = JumpingBeans.with(tvLoading).appendJumpingDots()
+                .build();
+        AppManager.getUserRequest().getUserLogin(this, new HttpTaskListener() {
+                    @Override
+                    public void dataSucceed(String result) {
+                        ActionValue<User> value = new Gson().fromJson(result,
+                                new TypeToken<ActionValue<User>>() {
+                                }.getType());
+                        if (value.isSuccess()) {
+                            String user_info = new Gson().toJson(value.getDatasource().get(0));
+                            // 保存用户登录信息
+                            AppSpUtil.getInstance().saveUserInfo(user_info);
+                            AppManager.showToast(mActivity,"登录成功");
+                        }
+                        jumpingBeans.stopJumping();
+                        tvLoading.setVisibility(View.GONE);
+                        finish();
+                        /*if(value.getDatasource().get(0).getVerify()!=20){
+                            AppSpUtil.getInstance().deleteUserInfo();
+                            UserApproveResultActivity.actionStart(UserLoginActivity.this,mUser);
+                            ToastUtils.showToastShort(UserLoginActivity.this,mUser.getVerifyMsg());
+                            finish();
+                        }else {
+                            //获取用户等级信息
+                            getUserLevelInfo();
+                        }*/
+                    }
 
-        ;
-//        llyt_loading.setVisibility(View.VISIBLE);
-//        ModelManager.getInstance().getUserRequest().getUserLogin(this, new TaskUserLoginBack(handler), URLConfig.USER_LOGION,
-//                user_name, user_psw);
+                    @Override
+                    public void dataError(String result) {
+                        jumpingBeans.stopJumping();
+                        tvLoading.setVisibility(View.GONE);
+                    }
+                },
+                user_name, user_psw);
+
     }
 
 }

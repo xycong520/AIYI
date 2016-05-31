@@ -1,5 +1,6 @@
 package com.xiuman.xinjiankang.adapter;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,9 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xiuman.xingjiankang.R;
-import com.xiuman.xinjiankang.Bean.BeanHomeTitle;
-import com.xiuman.xinjiankang.Bean.BeanHomeView;
-import com.xiuman.xinjiankang.Bean.ScienceDetail;
+import com.xiuman.xinjiankang.activity.ScientifitDetailActivity;
+import com.xiuman.xinjiankang.bean.BeanHomeTitle;
+import com.xiuman.xinjiankang.bean.BeanHomeView;
+import com.xiuman.xinjiankang.bean.ScienceDetail;
 import com.xiuman.xinjiankang.fragment.FragmentAD;
 import com.xiuman.xinjiankang.fragment.FragmentRecommendDoctor;
 import com.xiuman.xinjiankang.fragment.FragmentRecommendHospitor;
@@ -49,6 +51,10 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (options == null) {
             options = new ImageOptions.Builder().setRadius(10).setImageScaleType(ImageView.ScaleType.FIT_XY).setUseMemCache(true).build();
         }
+    }
+
+    public void setHomeViews(List<BeanHomeView> homeViews) {
+        this.homeViews = homeViews;
     }
 
     @Override
@@ -87,7 +93,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             FragmentAD fragmentAD = (FragmentAD) fragment.getChildFragmentManager().findFragmentById(R.id.layoutAD);
             if (fragmentAD == null) {
                 fragmentAD = (FragmentAD) homeViews.get(position).getBeanObj();
-                fragment.getChildFragmentManager().beginTransaction().add(R.id.layoutAD,fragmentAD).commit();
+                fragment.getChildFragmentManager().beginTransaction().add(R.id.layoutAD, fragmentAD).commit();
             } else {
                 ((ADViewHolder) holder).getLayoutAD().removeAllViews();
                 ((ADViewHolder) holder).getLayoutAD().addView(fragmentAD.getThisView());
@@ -107,12 +113,13 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     ((TextView) ((AllpurposeViewHolder) holder).getViewByID(R.id.tvMoreOrOther)).setText(title.getRightText());
                     ((TextView) ((AllpurposeViewHolder) holder).getViewByID(R.id.tvTitle)).setText(title.getTitleName());
                     ((ImageView) ((AllpurposeViewHolder) holder).getViewByID(R.id.ivIcon)).setImageResource(title.getImgID());
+                    ((AllpurposeViewHolder) holder).itemView.setTag(title.getRightText());
+                    ((AllpurposeViewHolder) holder).itemView.setOnClickListener(this);
                     break;
                 case VIEWTYPE_DOCTORLAYOUT:
                     FragmentRecommendDoctor doctor;
                     doctor = (FragmentRecommendDoctor) fragment.getChildFragmentManager().findFragmentById(R.id.layoutRecommendDoctor);
                     if (doctor == null) {
-
                         doctor = (FragmentRecommendDoctor) homeViews.get(position).getBeanObj();
                         fragment.getChildFragmentManager().beginTransaction().add(R.id.layoutRecommendDoctor, doctor).commit();
                     } else {
@@ -126,11 +133,11 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     ((TextView) ((AllpurposeViewHolder) holder).getViewByID(R.id.title)).setText(detail.getTitle());
                     ((TextView) ((AllpurposeViewHolder) holder).getViewByID(R.id.content)).setText(detail.getDescription());
                     x.image().bind((ImageView) ((AllpurposeViewHolder) holder).getViewByID(R.id.icon), detail.getIcon(), options);
-                    ((AllpurposeViewHolder) holder).itemView.setTag(detail.getTitle());
+                    ((AllpurposeViewHolder) holder).itemView.setTag(detail.getId());
                     ((AllpurposeViewHolder) holder).itemView.setOnClickListener(this);
                     break;
             }
-        }else if (holder instanceof HospitorViewHolder){
+        } else if (holder instanceof HospitorViewHolder) {
             FragmentRecommendHospitor hospital;
             hospital = (FragmentRecommendHospitor) fragment.getChildFragmentManager().findFragmentById(R.id.layoutRecommendHospitor);
             if (hospital == null) {
@@ -155,7 +162,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return homeViews.size();
+        return homeViews == null ? 0 : homeViews.size();
     }
 
     @Override
@@ -175,6 +182,18 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 break;
             case R.id.xinli:
                 Toast.makeText(v.getContext(), "心理专栏", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.layoutNews:
+                Intent i = new Intent(v.getContext(), ScientifitDetailActivity.class);
+                i.putExtra("id",String.valueOf(v.getTag()));
+                fragment.startActivity(i);
+                break;
+            case R.id.layoutTitleMore:
+                String tag = String.valueOf(v.getTag());
+                Toast.makeText(v.getContext(), tag, Toast.LENGTH_SHORT).show();
+                if (tag.contains("附近")){
+
+                }
                 break;
         }
     }
@@ -239,6 +258,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return layoutXinli;
         }
     }
+
     class HospitorViewHolder extends RecyclerView.ViewHolder {
 
         FrameLayout layoutHospitor;
@@ -252,6 +272,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return layoutHospitor;
         }
     }
+
     class TitleMoreViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivIcon;

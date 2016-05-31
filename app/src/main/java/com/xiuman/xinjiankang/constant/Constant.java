@@ -5,12 +5,11 @@ package com.xiuman.xinjiankang.constant;
  * Created by hxy on 2015/8/20.
  */
 public class Constant {
-    public static final String textHttp = "http://www.popodd.com/shoxpx/app";
-//    public static final String http = "http://192.168.16.51:8080/shopxx/app"; //测试
+//    public static final String http = "http://120.55.242.236:8080/shopxx/app"; //测试
         public static final String http = "http://www.popodd.com/shopxx/app";   //线上
 
     //用户登录接口
-//    public static final String userLoogin = "http://192.168.16.51:8080/shopxx/shop";  //测试
+//    public static final String userLoogin = "http://120.55.242.236:8080/shopxx/app";  //测试
     public static final String userLoogin = "http://www.popodd.com/shopxx/shop";  //线上
 
 

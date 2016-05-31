@@ -19,10 +19,10 @@
         <item name="windowNoTitle">true</item>
         <item name="android:launchMode">singleTop</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsTranslucent">false</item>
         <item name="android:hardwareAccelerated">false</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/color_black_line</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -33,6 +33,8 @@
         <item name="shadow_right">@drawable/shadow_right</item>
         <item name="shadow_bottom">@drawable/shadow_bottom</item>
     </style>
+
+    <style name="Theme.UMDefault" parent="android:style/Theme.NoTitleBar"></style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -46,6 +48,7 @@
     </declare-styleable>
     <!--侧滑结束-->
     <style name="AppTheme.SwipeBack" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowBackground">@color/color_white</item>
         <item name="android:activityOpenEnterAnimation">@anim/xjk_push_left_in</item>
