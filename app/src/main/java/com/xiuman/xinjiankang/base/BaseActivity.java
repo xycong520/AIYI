@@ -3,9 +3,11 @@ package com.xiuman.xinjiankang.base;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.xiuman.xingjiankang.R;
@@ -60,7 +62,14 @@ public abstract class BaseActivity extends BaseSwipeActivity {
                 ab.setDisplayHomeAsUpEnabled(true);
             }
         }
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //设置工具栏标题

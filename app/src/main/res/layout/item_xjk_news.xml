@@ -24,14 +24,14 @@
         android:layout_marginLeft="@dimen/xjk_main_margin"
         android:layout_marginRight="@dimen/xjk_main_margin"
         android:layout_marginTop="18dp"
-        android:layout_toLeftOf="@+id/icon"
+        android:layout_toLeftOf="@+id/ivIcon"
         android:ellipsize="end"
         android:lines="2"
         android:textColor="@color/text_color_666"
         android:textSize="@dimen/txt_size_14" />
 
     <ImageView
-        android:id="@+id/icon"
+        android:id="@+id/ivIcon"
         android:layout_width="88dp"
         android:layout_height="62dp"
         android:layout_alignParentRight="true"
@@ -45,7 +45,7 @@
         android:id="@+id/view_line"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_below="@+id/icon"
+        android:layout_below="@+id/ivIcon"
         android:layout_marginTop="10dp"
         android:background="@color/line_color_bg" />
 </RelativeLayout>

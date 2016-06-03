@@ -38,7 +38,10 @@ public class FragmentConsult extends Fragment {
     //分类列表
     @Bind(R.id.lvData)
     ListView mListViewData;
-
+    @Bind(R.id.layoutLoading)
+    View layoutLoading;
+    @Bind(R.id.layout_network_error)
+    View layoutError;
     CommonAdapter mTypeAdapter, mDataAdapter;
     Context mContext;
     private int[][] drawable = new int[][]{
@@ -61,7 +64,7 @@ public class FragmentConsult extends Fragment {
             thisView = inflater.inflate(R.layout.fragment_consult, container, false);
             ButterKnife.bind(this, thisView);
             init();
-            loadTypeData();
+//            loadTypeData();
         }
 
         ViewGroup parent = (ViewGroup) thisView.getParent();
@@ -71,22 +74,37 @@ public class FragmentConsult extends Fragment {
         return thisView;
     }
 
+
     private void init() {
         mContext = getActivity();
+        layoutError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutLoading.setVisibility(View.VISIBLE);
+                loadTypeData();
+            }
+        });
     }
 
-    private void loadTypeData() {
+    public void loadTypeData() {
+        if (consult != null && consult.getDatasource() != null) {
+            return;
+        }
         AppManager.getUserRequest().getSelfDiagnoseList(mContext, new HttpTaskListener() {
             @Override
             public void dataSucceed(String result) {
                 consult = new Gson().fromJson(result, new TypeToken<Wrapper<MyConsult>>() {
                 }.getType());
                 setConsultData();
+                layoutLoading.setVisibility(View.GONE);
+                layoutError.setVisibility(View.GONE);
             }
 
             @Override
             public void dataError(String result) {
-
+                AppManager.showToast(mContext,result);
+                layoutLoading.setVisibility(View.GONE);
+                layoutError.setVisibility(View.VISIBLE);
             }
         });
     }

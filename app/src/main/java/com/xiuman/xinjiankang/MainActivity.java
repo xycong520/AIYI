@@ -27,18 +27,21 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     ViewPager viewPager;
     @Bind(R.id.radiogroup)
     WechatRadioGroup gradualRadioGroup;
-
+    FragmentHomepage fragmentHomepage;
+    FragmentConsult fragmentConsult;
+    FragmentNews fragmentNews;
+    FragmentMe fragmentMe;
     @Override
     protected void initView() {
         setupToolbar();
         List<Fragment> list = new ArrayList<Fragment>();
-        FragmentHomepage fragmentHomepage = new FragmentHomepage();
+        fragmentHomepage = new FragmentHomepage();
         list.add(fragmentHomepage);
-        FragmentConsult fragmentConsult = new FragmentConsult();
+        fragmentConsult = new FragmentConsult();
         list.add(fragmentConsult);
-        FragmentNews fragmentNews = new FragmentNews();
+        fragmentNews = new FragmentNews();
         list.add(fragmentNews);
-        FragmentMe fragmentMe = new FragmentMe();
+        fragmentMe = new FragmentMe();
         list.add(fragmentMe);
         viewPager.setAdapter(new DemoPagerAdapter(getSupportFragmentManager(), list));
         viewPager.addOnPageChangeListener(this);
@@ -67,6 +70,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 break;
             case 1:
                 setToolbarTitle("诊断");
+                if (fragmentConsult!=null){
+                    fragmentConsult.loadTypeData();
+                }
                 break;
             case 2:
                 setToolbarTitle("资讯");
@@ -85,10 +91,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     class DemoPagerAdapter extends FragmentStatePagerAdapter {
         List<Fragment> mData;
-
-        public DemoPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
 
         public DemoPagerAdapter(FragmentManager fm, List<Fragment> data) {
             super(fm);

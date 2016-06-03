@@ -1,5 +1,6 @@
 package com.xiuman.xinjiankang.activity;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import com.xiuman.xinjiankang.app.AppManager;
 import com.xiuman.xinjiankang.base.BaseActivity;
 import com.xiuman.xinjiankang.bean.BeanHomeView;
 import com.xiuman.xinjiankang.bean.Disease;
+import com.xiuman.xinjiankang.constant.Constant;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
 
@@ -26,7 +28,7 @@ import butterknife.Bind;
  * 描述：疾病详情
  * Created by hxy on 2015/8/10.
  */
-public class DiseaseDetailActivity extends BaseActivity implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener {
+public class DiseaseDetailActivity extends BaseActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerview;
@@ -39,7 +41,7 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
     BeanHomeView loadMore;
     int lastVisibleItem;
     String categoryId;
-    int page = 1, pageSize = 10;
+    int page = 1, pageSize = Constant.PAGE_SIZE;
 
     @Override
     protected int getView() {
@@ -49,9 +51,7 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void initView() {
         setupToolbar();
-        BeanHomeView headView = new BeanHomeView();
-        headView.setViewType(DiseaseDetailAdapter.VIEWTYPE_HEADVIEW);
-        mDatas.add(headView);
+
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         swipeRefreshLayout.setProgressViewOffset(false, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -60,12 +60,13 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
         mRecyclerview.setLayoutManager(layoutManager);
         mRecyclerview.setAdapter(mAdapter = new DiseaseDetailAdapter(mDatas));
         mRecyclerview.setHasFixedSize(true);
+        mRecyclerview.setOnClickListener(this);
         mRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItem + 1 == mAdapter.getItemCount()) {
+                        && lastVisibleItem + 1 == mAdapter.getItemCount() && loadMore!=null) {
                     page += 1;
                     loadData();
                 }
@@ -78,6 +79,7 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
             }
         });
         loadData();
+        mAdapter.setOnClickListener(this);
     }
 
     private void loadData() {
@@ -85,6 +87,11 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
         AppManager.getUserRequest().getDiagnoseDetail(this, new HttpTaskListener() {
             @Override
             public void dataSucceed(String result) {
+                if (page == 1) {
+                    BeanHomeView headView = new BeanHomeView();
+                    headView.setViewType(DiseaseDetailAdapter.VIEWTYPE_HEADVIEW);
+                    mDatas.add(headView);
+                }
                 Wrapper<Disease> wraper = new Gson().fromJson(result, new TypeToken<Wrapper<Disease>>() {
                 }.getType());
                 List<BeanHomeView> caseData = new ArrayList<BeanHomeView>();
@@ -126,6 +133,11 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
             @Override
             public void dataError(String result) {
                 swipeRefreshLayout.setRefreshing(false);
+                mDatas.clear();
+                BeanHomeView errorView = new BeanHomeView();
+                errorView.setViewType(DiseaseDetailAdapter.VIEWTYPE_HEADVIEW);
+                mDatas.add(errorView);
+                AppManager.showToast(mActivity, result);
             }
         }, categoryId, page, pageSize);
     }
@@ -134,6 +146,34 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onRefresh() {
         mDatas.clear();
+        page = 1;
         loadData();
+    }
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        switch (view.getId()) {
+            case R.id.tv_patient:
+                Intent intent = new Intent(mActivity,PatientDetailActivity.class);
+                intent.putExtra(PatientDetailActivity.parameId,categoryId);
+                startActivity(intent);
+                break;
+            case R.id.layout_network_error:
+                swipeRefreshLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+                    }
+                });
+                break;
+            case R.id.layoutDoctorInfo:
+                int position = (int) view.getTag();
+                Intent intent2 = new Intent(mActivity, CaseInfoActivity.class);
+                intent2.putExtra(CaseInfoActivity.parameId, ((Disease)mDatas.get(position).getBeanObj()).getConsultingId());
+                intent2.putExtra(CaseInfoActivity.parameIsDis,true);
+                startActivity(intent2);
+                break;
+        }
     }
 }

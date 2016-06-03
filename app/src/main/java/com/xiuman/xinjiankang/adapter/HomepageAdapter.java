@@ -132,7 +132,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     ScienceDetail detail = (ScienceDetail) homeViews.get(position).getBeanObj();
                     ((TextView) ((AllpurposeViewHolder) holder).getViewByID(R.id.title)).setText(detail.getTitle());
                     ((TextView) ((AllpurposeViewHolder) holder).getViewByID(R.id.content)).setText(detail.getDescription());
-                    x.image().bind((ImageView) ((AllpurposeViewHolder) holder).getViewByID(R.id.icon), detail.getIcon(), options);
+                    x.image().bind((ImageView) ((AllpurposeViewHolder) holder).getViewByID(R.id.ivIcon), detail.getIcon(), options);
                     ((AllpurposeViewHolder) holder).itemView.setTag(detail.getId());
                     ((AllpurposeViewHolder) holder).itemView.setOnClickListener(this);
                     break;

@@ -34,7 +34,7 @@ public class MyApplication extends GlobalContext {
 
     public static ImageOptions getOptionsPhoto() {
         if (optionsPhoto == null) {
-            optionsPhoto = new ImageOptions.Builder().setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setLoadingDrawableId(R.drawable.onloading3).setCircular(true).build();
+            optionsPhoto = new ImageOptions.Builder().setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setCircular(true).setFailureDrawableId(R.drawable.onloading3).setLoadingDrawableId(R.drawable.onloading3).build();
         }
         return optionsPhoto;
     }

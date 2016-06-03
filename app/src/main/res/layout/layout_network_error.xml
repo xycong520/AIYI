@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_network_error"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:clickable="true"
+    android:gravity="center"
+    android:visibility="gone"
+    android:orientation="vertical" >
+
+    <!-- 网络连接失败 -->
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/xjk_bg_network_error"
+        android:paddingBottom="100dip"/>
+
+</LinearLayout>

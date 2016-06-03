@@ -57,6 +57,18 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SwipeBack" />
+
+        <activity android:name="com.xiuman.xinjiankang.activity.PatientDetailActivity"
+            android:label="病情详情"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack"/>
+        <activity android:name="com.xiuman.xinjiankang.activity.CaseInfoActivity"
+            android:label="问题详情"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack"/>
+
         <!--==============友盟分享===============-->
         <meta-data
             android:name="UMENG_CHANNEL"

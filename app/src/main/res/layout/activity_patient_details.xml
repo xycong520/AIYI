@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_appbar"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_white"
+            android:orientation="vertical">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/color_bg"/>
+            <TextView
+                android:id="@+id/explain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@mipmap/xjk_icon_down_jiantou"
+                android:padding="@dimen/xjk_main_margin"
+                android:text="疾病说明"
+                android:background="@color/xjk_title_text_color"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/txt_size_15" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_color_bg" />
+
+            <TextView
+                android:id="@+id/explain_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="17dp"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_marginBottom="22dp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/txt_size_14" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_color_bg" />
+            <TextView
+                android:id="@+id/show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@mipmap/xjk_icon_up_jiantou"
+                android:padding="@dimen/xjk_main_margin"
+                android:text="临床表现"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/txt_size_15" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_color_bg" />
+
+            <TextView
+                android:id="@+id/show_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="17dp"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_marginBottom="22dp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/txt_size_14"
+                android:visibility="gone" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_color_bg" />
+            <TextView
+                android:id="@+id/pathogeny"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@mipmap/xjk_icon_up_jiantou"
+                android:padding="@dimen/xjk_main_margin"
+                android:text="病因"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/txt_size_15" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_color_bg" />
+
+            <TextView
+                android:id="@+id/pathogeny_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="17dp"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_marginBottom="22dp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/txt_size_14"
+                android:visibility="gone" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_color_bg" />
+            <TextView
+                android:id="@+id/diagnose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@mipmap/xjk_icon_up_jiantou"
+                android:padding="@dimen/xjk_main_margin"
+                android:text="检查和诊断"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/txt_size_15" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_color_bg" />
+
+            <TextView
+                android:id="@+id/diagnose_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="17dp"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_marginBottom="22dp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/txt_size_14"
+                android:visibility="gone" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_color_bg" />
+            <TextView
+                android:id="@+id/prevent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@mipmap/xjk_icon_up_jiantou"
+                android:padding="@dimen/xjk_main_margin"
+                android:text="预防"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/txt_size_15" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/line_color_bg" />
+
+            <TextView
+                android:id="@+id/prevent_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="17dp"
+                android:lineSpacingMultiplier="1.5"
+                android:layout_marginBottom="22dp"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/txt_size_14"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

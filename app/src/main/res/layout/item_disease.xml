@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/layoutDoctorInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -87,10 +88,23 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="10dp"
+            android:maxLines="3"
+            android:text="ssss"
             android:padding="5dp"
             android:textColor="@color/text_color_well"
             android:textSize="@dimen/txt_size_13"
             android:layout_below="@+id/llyt" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/tvExpand"
+            android:padding="10dp"
+            android:visibility="gone"
+            android:text="显示更多"
+            android:textColor="@color/md_light_blue_400"
+            android:layout_below="@+id/tvContent"
+            />
     </RelativeLayout>
 
 </LinearLayout>

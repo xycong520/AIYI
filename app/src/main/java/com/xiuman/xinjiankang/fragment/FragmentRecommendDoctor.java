@@ -120,7 +120,7 @@ public class FragmentRecommendDoctor extends Fragment {
                     viewGroup, false);
             ViewHolder viewHolder = new ViewHolder(view);
             viewHolder.mImg = (ImageView) view
-                    .findViewById(R.id.icon);
+                    .findViewById(R.id.ivIcon);
             viewHolder.tvName = (TextView) view.findViewById(R.id.name);
             ;
             return viewHolder;

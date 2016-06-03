@@ -10,6 +10,9 @@
     <string name="login_hint_psw">6~16位密码</string>
     <string name="login_forget_psw1">忘记密码？去</string>
     <string name="login_forget_psw2">找回</string>
+
+    <string name="net_error">网络请求失败，请稍后在试~</string>
+    <string name="load_error">加载失败，请重试~</string>
     <!--JazzyViewPager-->
     <string-array name="jazzy_effects">
         <item>Standard</item>

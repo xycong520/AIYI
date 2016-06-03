@@ -6,7 +6,7 @@
     >
 
     <ImageView
-        android:id="@+id/icon"
+        android:id="@+id/ivIcon"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_centerHorizontal="true"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:layout_below="@+id/icon"
+        android:layout_below="@+id/ivIcon"
         android:text="方阴雨"
         android:textColor="@color/color_black"
         android:textSize="@dimen/txt_size_12" />

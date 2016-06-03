@@ -255,4 +255,47 @@ public class UserRequest {
         parametersPair.put("pageSizeApp", pageSize);
         task.get(uri, parametersPair);
     }
+
+    /**
+     * 获取病情详解
+     *
+     * @param context
+     * @param listener
+     */
+    public void getPatientDetail(Context context, HttpTaskListener listener, String categoryId) {
+        String uri = Constant.http + "/jk_cases!getDiseaseDetail.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("diseaseCategoryId", categoryId);
+        task.get(uri, parametersPair);
+    }
+    /**
+     * 获取VIP咨询详情
+     *
+     * @param context
+     * @param listener
+     */
+    public void getCaseConsultDetail(Context context, HttpTaskListener listener, String casesId) {
+        String uri = Constant.http + "/jk_vip_consulting!getCounselDetail.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("counselId", casesId);
+        task.get(uri, parametersPair);
+    }
+
+    /**
+     * VIP咨询详情
+     *
+     * @param context
+     * @param listener
+     */
+    public void getVIPConsultDetail(Context context, HttpTaskListener listener, String counselId, int page, int pageSize) {
+        String uri = Constant.httpDoctor + "jk_vip_reply!getReplyies.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("counselId", counselId);
+        parametersPair.put("pageApp", page);
+        parametersPair.put("pageSizeApp", pageSize);
+        task.post(uri, parametersPair);
+    }
 }
