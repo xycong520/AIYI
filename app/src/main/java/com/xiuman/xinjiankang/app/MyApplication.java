@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.umeng.socialize.PlatformConfig;
 import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.utils.AppSpUtil;
+import com.xiuman.xinjiankang.utils.SizeUtil;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -30,13 +31,20 @@ public class MyApplication extends GlobalContext {
     // 单例
     private static MyApplication instance;
 
-    public static ImageOptions optionsPhoto;
+    public static ImageOptions optionsPhoto, optionsRadius;
 
     public static ImageOptions getOptionsPhoto() {
         if (optionsPhoto == null) {
-            optionsPhoto = new ImageOptions.Builder().setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setCircular(true).setFailureDrawableId(R.drawable.onloading3).setLoadingDrawableId(R.drawable.onloading3).build();
+            optionsPhoto = new ImageOptions.Builder().setCircular(true).setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setFailureDrawableId(R.drawable.onloading3).setLoadingDrawableId(R.drawable.onloading3).build();
         }
         return optionsPhoto;
+    }
+
+    public static ImageOptions getOptionsRadius() {
+        if (optionsRadius == null) {
+            optionsRadius = new ImageOptions.Builder().setRadius(SizeUtil.dip2px(instance, 10)).setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setFailureDrawableId(R.drawable.onloading3).setLoadingDrawableId(R.drawable.onloading3).build();
+        }
+        return optionsRadius;
     }
 
     @Override

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiuman.xingjiankang.R;
-import com.xiuman.xinjiankang.bean.BeanHomeView;
+import com.xiuman.xinjiankang.bean.BeanCommonViewType;
 import com.xiuman.xinjiankang.bean.ScienceItemDetail;
 import com.xiuman.xinjiankang.bean.ScientificComment;
 import com.xiuman.xinjiankang.app.MyApplication;
@@ -37,11 +37,11 @@ public class ScientifitDetailAdapter extends RecyclerView.Adapter {
     //评论空
     public static final int VIEWTYPE_COMMENT_EMPTEY = 3;
 
-    List<BeanHomeView> datas;
+    List<BeanCommonViewType> datas;
     Context mContext;
     ImageOptions options;
 
-    public ScientifitDetailAdapter(List<BeanHomeView> datas) {
+    public ScientifitDetailAdapter(List<BeanCommonViewType> datas) {
         this.datas = datas;
         options = new ImageOptions.Builder().setUseMemCache(true).setLoadingDrawableId(R.drawable.onloading3).setImageScaleType(ImageView.ScaleType.FIT_XY).build();
     }
@@ -129,7 +129,7 @@ public class ScientifitDetailAdapter extends RecyclerView.Adapter {
         return datas.get(position).getViewType();
     }
 
-    public void setDatas(List<BeanHomeView> datas) {
+    public void setDatas(List<BeanCommonViewType> datas) {
         this.datas = datas;
     }
 

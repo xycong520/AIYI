@@ -116,6 +116,20 @@ public class UserRequest {
         httpDataTask.get(url, parametersPair);
     }
 
+
+    /**
+     * 科普知识分类
+     *
+     * @param listener
+     */
+    public void getScienceTechologyClassify(Context context,HttpTaskListener listener) {
+        String uri = Constant.http + "/jk_article!getArticleCategory.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        task.get(uri, parametersPair);
+    }
+
+
     /**
      * 获取科普知识详情
      *
@@ -191,6 +205,23 @@ public class UserRequest {
         Map<String, Object> parametersPair = new HashMap<String, Object>();
         parametersPair.put("id", id);
         task.get(uri, parametersPair);
+    }
+    /**
+     * 科普知识列表
+     *
+     * @param listener
+     * @param page       页数
+     * @param pageSize   每页个数
+     * @param categoryId 分类Id
+     */
+    public void getScienceList(Context context, HttpTaskListener listener, int page, int pageSize, String categoryId) {
+        String uri = Constant.http + "/jk_article!knowledgeListByCategory.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("pageApp", page);
+        parametersPair.put("pageSizeApp", pageSize);
+        parametersPair.put("category", categoryId);
+        task.post(uri, parametersPair);
     }
 
     /**

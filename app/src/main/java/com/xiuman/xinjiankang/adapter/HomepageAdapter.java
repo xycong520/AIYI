@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.activity.ScientifitDetailActivity;
 import com.xiuman.xinjiankang.bean.BeanHomeTitle;
-import com.xiuman.xinjiankang.bean.BeanHomeView;
+import com.xiuman.xinjiankang.bean.BeanCommonViewType;
 import com.xiuman.xinjiankang.bean.ScienceDetail;
 import com.xiuman.xinjiankang.fragment.FragmentAD;
 import com.xiuman.xinjiankang.fragment.FragmentRecommendDoctor;
@@ -40,12 +40,12 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static final int VIEWTYPE_LISTITEM = 6;
     public static final int VIEWTYPE_HOSPITALlAYOUT = 7;
 
-    List<BeanHomeView> homeViews;
+    List<BeanCommonViewType> homeViews;
     int SPAN_COUNT = 1;
     Fragment fragment;
     ImageOptions options;
 
-    public HomepageAdapter(List<BeanHomeView> viewsData, Fragment fragment) {
+    public HomepageAdapter(List<BeanCommonViewType> viewsData, Fragment fragment) {
         homeViews = viewsData;
         this.fragment = fragment;
         if (options == null) {
@@ -53,7 +53,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public void setHomeViews(List<BeanHomeView> homeViews) {
+    public void setHomeViews(List<BeanCommonViewType> homeViews) {
         this.homeViews = homeViews;
     }
 

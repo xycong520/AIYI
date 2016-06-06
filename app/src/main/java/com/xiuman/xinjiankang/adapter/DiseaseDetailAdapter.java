@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.app.MyApplication;
-import com.xiuman.xinjiankang.bean.BeanHomeView;
+import com.xiuman.xinjiankang.bean.BeanCommonViewType;
 import com.xiuman.xinjiankang.bean.Disease;
 
 import net.frakbot.jumpingbeans.JumpingBeans;
@@ -37,10 +37,10 @@ public class DiseaseDetailAdapter extends RecyclerView.Adapter {
     public static final int VIEWTYPE_CASE = 2;
     public static final int VIEWTYPE_CASE_EMPTY = 3;
 
-    List<BeanHomeView> datas;
+    List<BeanCommonViewType> datas;
     ImageOptions options;
 
-    public DiseaseDetailAdapter(List<BeanHomeView> datas) {
+    public DiseaseDetailAdapter(List<BeanCommonViewType> datas) {
         this.datas = datas;
         options = MyApplication.getOptionsPhoto();
     }
@@ -141,7 +141,7 @@ public class DiseaseDetailAdapter extends RecyclerView.Adapter {
         return datas.get(position).getViewType();
     }
 
-    public void setDatas(List<BeanHomeView> datas) {
+    public void setDatas(List<BeanCommonViewType> datas) {
         this.datas = datas;
     }
 

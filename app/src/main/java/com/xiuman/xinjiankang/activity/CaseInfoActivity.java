@@ -30,6 +30,7 @@ import java.util.List;
 import butterknife.Bind;
 
 /**
+ * 案例详情
  * Created by PCPC on 2016/6/3.
  */
 public class CaseInfoActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener {
@@ -214,6 +215,7 @@ public class CaseInfoActivity extends BaseActivity implements SwipeRefreshLayout
     public void onRefresh() {
         page=1;
         mDatas.clear();
+        loadMore = null;
         loadData();
     }
 

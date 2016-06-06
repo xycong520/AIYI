@@ -30,7 +30,7 @@ import com.xiuman.xinjiankang.app.AppManager;
 import com.xiuman.xinjiankang.app.MyApplication;
 import com.xiuman.xinjiankang.base.BaseActivity;
 import com.xiuman.xinjiankang.bean.Attention;
-import com.xiuman.xinjiankang.bean.BeanHomeView;
+import com.xiuman.xinjiankang.bean.BeanCommonViewType;
 import com.xiuman.xinjiankang.bean.ScienceItemDetail;
 import com.xiuman.xinjiankang.bean.ScientificComment;
 import com.xiuman.xinjiankang.bean.ScientificCommentResult;
@@ -50,7 +50,7 @@ import butterknife.Bind;
 /**
  * Created by PCPC on 2016/5/26.
  */
-public class ScientifitDetailActivity extends BaseActivity implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener {
+public class ScientifitDetailActivity extends BaseActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.swipe)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -62,12 +62,13 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
     @Bind(R.id.et_reply)
     EditText etReply;
 
+    public static String parameID = "id";
     //文章id
     private String categoryId;
-    List<BeanHomeView> data = new ArrayList<>();
-    BeanHomeView content;
-    BeanHomeView loadMore;
-    List<BeanHomeView> comment;
+    List<BeanCommonViewType> data = new ArrayList<>();
+    BeanCommonViewType content;
+    BeanCommonViewType loadMore;
+    List<BeanCommonViewType> comment;
     Animation animation;
 
     int lastVisibleItem;
@@ -80,7 +81,7 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
         swipeRefreshLayout.setProgressViewOffset(false, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this);
-        categoryId = getIntent().getStringExtra("id");
+        categoryId = getIntent().getStringExtra(parameID);
         loadData();
         mAdapter = new ScientifitDetailAdapter(null);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -128,7 +129,7 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
             //点击拨打客服热线
             case R.id.share:
                 AppManager.showToast(this, "分享");
-                if (scienceItemDetail!=null){
+                if (scienceItemDetail != null) {
                     showPop();
                 }
                 return true;
@@ -139,9 +140,10 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
     }
 
     String shareUrl;
+
     //分享
     private void share(String plate) {
-        if(pw!=null){
+        if (pw != null) {
             pw.dismiss();
         }
         UmengShareUtil shareUtils = new UmengShareUtil(mActivity);
@@ -150,9 +152,10 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
     }
 
     PopupWindow pw;
+
     private void showPop() {
         View shareView = mActivity.getLayoutInflater().inflate(R.layout.layout_share_pop, null);
-        pw = new PopupWindow(shareView, LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        pw = new PopupWindow(shareView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ImageView sina = (ImageView) shareView.findViewById(R.id.bt_sina);
         ImageView qzone = (ImageView) shareView.findViewById(R.id.bt_QZone);
         ImageView wechat = (ImageView) shareView.findViewById(R.id.bt_wechat);
@@ -163,15 +166,17 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
         qzone.setOnClickListener(this);
         pw.setOutsideTouchable(true);
         pw.setBackgroundDrawable(new BitmapDrawable());
-        pw.showAtLocation(findViewById(R.id.layoutScientificDetail), Gravity.BOTTOM,0,0);
+        pw.showAtLocation(findViewById(R.id.layoutScientificDetail), Gravity.BOTTOM, 0, 0);
     }
+
     ScienceItemDetail scienceItemDetail;
+
     private void loadData() {
         AppManager.getUserRequest().getScienceTechologyDetail(this, new HttpTaskListener() {
             @Override
             public void dataSucceed(String result) {
                 scienceItemDetail = new Gson().fromJson(result, ScienceItemDetail.class);
-                content = new BeanHomeView();
+                content = new BeanCommonViewType();
                 content.setViewType(ScientifitDetailAdapter.VIEWTYPE_CONTENT);
                 content.setBeanObj(scienceItemDetail);
                 data.add(content);
@@ -209,9 +214,9 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
                 Wrapper<ScientificComment> ScienceDetail = new Gson().fromJson(result, new TypeToken<Wrapper<ScientificComment>>() {
                 }.getType());
                 if (ScienceDetail != null) {
-                    comment = new ArrayList<BeanHomeView>();
+                    comment = new ArrayList<BeanCommonViewType>();
                     for (int i = 0; i < ScienceDetail.getDatasource().size(); i++) {
-                        BeanHomeView oneComent = new BeanHomeView();
+                        BeanCommonViewType oneComent = new BeanCommonViewType();
                         oneComent.setViewType(ScientifitDetailAdapter.VIEWTYPE_COMMENT);
                         oneComent.setBeanObj(ScienceDetail.getDatasource().get(i));
                         comment.add(oneComent);
@@ -225,12 +230,12 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
                     //每页返回10条数据，如果等于10允许加载下一页，添加加载更多item
                     if (comment.size() == 10) {
                         if (loadMore == null) {
-                            loadMore = new BeanHomeView();
+                            loadMore = new BeanCommonViewType();
                             loadMore.setViewType(ScientifitDetailAdapter.VIEWTYPE_LOADMORE);
                             data.add(loadMore);
                         }
                     } else if (page == 1 && comment.size() == 0) {//还没有评论
-                        BeanHomeView emptyComment = new BeanHomeView();
+                        BeanCommonViewType emptyComment = new BeanCommonViewType();
                         emptyComment.setViewType(ScientifitDetailAdapter.VIEWTYPE_COMMENT_EMPTEY);
                         data.add(emptyComment);
                     } else {
@@ -314,7 +319,7 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
                     comment.setAvatar(AppSpUtil.getInstance().getUserInfo().getAvatar());
                     comment.setCreateDate(System.currentTimeMillis());
                     comment.setNickname(AppSpUtil.getInstance().getUserInfo().getNickname());
-                    BeanHomeView oneComment = new BeanHomeView();
+                    BeanCommonViewType oneComment = new BeanCommonViewType();
                     oneComment.setViewType(ScientifitDetailAdapter.VIEWTYPE_COMMENT);
                     oneComment.setBeanObj(comment);
                     data.add(oneComment);
@@ -434,6 +439,7 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
 
     @Override
     public void onRefresh() {
+        loadMore = null;
         data.clear();
         loadData();
     }

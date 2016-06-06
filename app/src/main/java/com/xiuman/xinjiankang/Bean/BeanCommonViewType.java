@@ -1,7 +1,7 @@
 package com.xiuman.xinjiankang.bean;
 
 /**
- * Created by PCPC on 2016/6/3.
+ * Created by PCPC on 2016/5/24.
  */
 public class BeanCommonViewType<T> {
     int viewType;
@@ -19,8 +19,8 @@ public class BeanCommonViewType<T> {
         return viewType;
     }
 
+
     public void setViewType(int viewType) {
         this.viewType = viewType;
     }
-
 }

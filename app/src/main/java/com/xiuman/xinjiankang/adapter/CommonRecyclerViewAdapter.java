@@ -15,25 +15,26 @@ import java.util.List;
  */
 public abstract class CommonRecyclerViewAdapter extends RecyclerView.Adapter {
     List<BeanCommonViewType> datas;
-    public ImageOptions options;
+    public ImageOptions options,optionsRadius;
 
     public CommonRecyclerViewAdapter(List<BeanCommonViewType> datas) {
         this.datas = datas;
         options = MyApplication.getOptionsPhoto();
+        optionsRadius = MyApplication.getOptionsRadius();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CommonViewHolder viewHolder = CommonViewHolder.get(parent.getContext(),parent,viewType);
+        CommonViewHolder viewHolder = CommonViewHolder.get(parent.getContext(), parent, viewType);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        convert((CommonViewHolder) holder,position);
+        convert((CommonViewHolder) holder, position);
     }
 
-    public abstract void convert(CommonViewHolder holder,int position);
+    public abstract void convert(CommonViewHolder holder, int position);
 
     @Override
     public int getItemCount() {

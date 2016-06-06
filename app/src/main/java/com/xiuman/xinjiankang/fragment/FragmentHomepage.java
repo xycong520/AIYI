@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.bean.BeanHomeTitle;
-import com.xiuman.xinjiankang.bean.BeanHomeView;
+import com.xiuman.xinjiankang.bean.BeanCommonViewType;
 import com.xiuman.xinjiankang.Request.UserRequest;
 import com.xiuman.xinjiankang.adapter.HomepageAdapter;
 import com.xiuman.xinjiankang.bean.ScienceDetail;
@@ -37,7 +37,7 @@ public class FragmentHomepage extends Fragment {
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
     HomepageAdapter mAdapter;
-    List<BeanHomeView> viewTypes;
+    List<BeanCommonViewType> viewTypes;
     FragmentAD fragmentAD;
     FragmentRecommendDoctor fragmentRecommendDoctor;
     FragmentRecommendHospitor fragmentRecommendHospitor;
@@ -75,7 +75,7 @@ public class FragmentHomepage extends Fragment {
                 }.getType());
                 for (int i = 0; i < 3; i++) {
                     ScienceDetail scienceDetail = ScienceDetail.getDatasource().get(i);
-                    BeanHomeView newsItem = new BeanHomeView();
+                    BeanCommonViewType newsItem = new BeanCommonViewType();
                     newsItem.setBeanObj(scienceDetail);
                     newsItem.setViewType(HomepageAdapter.VIEWTYPE_LISTITEM);
                     viewTypes.add(6,newsItem);
@@ -95,20 +95,20 @@ public class FragmentHomepage extends Fragment {
         mRecyclerView.setAdapter(mAdapter = new HomepageAdapter(viewTypes, this));
         viewTypes = new ArrayList<>();
         //添加广告Fragment
-        BeanHomeView typeAD = new BeanHomeView();
+        BeanCommonViewType typeAD = new BeanCommonViewType();
         typeAD.setViewType(HomepageAdapter.VIEWTYPE_AD);
         typeAD.setBeanObj(fragmentAD = new FragmentAD());
         viewTypes.add(typeAD);
         //添加资讯布局
-        BeanHomeView typeZIXUN = new BeanHomeView();
+        BeanCommonViewType typeZIXUN = new BeanCommonViewType();
         typeZIXUN.setViewType(HomepageAdapter.VIEWTYPE_ZIXUN);
         viewTypes.add(typeZIXUN);
         //添加心理布局
-        BeanHomeView typeXinli = new BeanHomeView();
+        BeanCommonViewType typeXinli = new BeanCommonViewType();
         typeXinli.setViewType(HomepageAdapter.VIEWTYPE_XINLI);
         viewTypes.add(typeXinli);
         //添加医师推荐标题布局
-        BeanHomeView typeTitleRecommed = new BeanHomeView();
+        BeanCommonViewType typeTitleRecommed = new BeanCommonViewType();
         typeTitleRecommed.setViewType(HomepageAdapter.VIEWTYPE_TITLE);
         BeanHomeTitle title = new BeanHomeTitle();
         title.setImgID(R.mipmap.xjk_ic_recommed_doctor);
@@ -117,12 +117,12 @@ public class FragmentHomepage extends Fragment {
         typeTitleRecommed.setBeanObj(title);
         viewTypes.add(typeTitleRecommed);
         //添加医师推荐Fragment
-        BeanHomeView typeRecommendDoctor = new BeanHomeView();
+        BeanCommonViewType typeRecommendDoctor = new BeanCommonViewType();
         typeRecommendDoctor.setViewType(HomepageAdapter.VIEWTYPE_DOCTORLAYOUT);
         typeRecommendDoctor.setBeanObj(fragmentRecommendDoctor = new FragmentRecommendDoctor());
         viewTypes.add(typeRecommendDoctor);
         //添加资讯信息布局
-        typeTitleRecommed = new BeanHomeView();
+        typeTitleRecommed = new BeanCommonViewType();
         typeTitleRecommed.setViewType(HomepageAdapter.VIEWTYPE_TITLE);
         title = new BeanHomeTitle();
         title.setImgID(R.mipmap.xjk_ic_news);
@@ -131,7 +131,7 @@ public class FragmentHomepage extends Fragment {
         typeTitleRecommed.setBeanObj(title);
         viewTypes.add(typeTitleRecommed);
         //添加推荐医院标题布局
-        BeanHomeView titleHospitor = new BeanHomeView();
+        BeanCommonViewType titleHospitor = new BeanCommonViewType();
         titleHospitor.setViewType(HomepageAdapter.VIEWTYPE_TITLE);
         title = new BeanHomeTitle();
         title.setTitleName("推荐医院");
@@ -140,7 +140,7 @@ public class FragmentHomepage extends Fragment {
         titleHospitor.setBeanObj(title);
         viewTypes.add(titleHospitor);
         //添加推荐医院Fragment
-        BeanHomeView typeHospitor = new BeanHomeView();
+        BeanCommonViewType typeHospitor = new BeanCommonViewType();
         typeHospitor.setViewType(HomepageAdapter.VIEWTYPE_HOSPITALlAYOUT);
         typeHospitor.setBeanObj(fragmentRecommendHospitor = new FragmentRecommendHospitor());
         viewTypes.add(typeHospitor);

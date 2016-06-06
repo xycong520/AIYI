@@ -73,8 +73,12 @@ public class FragmentRecommendHospitor extends Fragment {
             public void dataSucceed(String result) {
                 Wrapper<RecommendHosipatal> recomlist = new Gson().fromJson(result, new TypeToken<Wrapper<RecommendHosipatal>>() {
                 }.getType());
-                GalleryHospitorrAdapter mAdapter = new GalleryHospitorrAdapter(getActivity(), recomlist);
-                recyclerView.setAdapter(mAdapter);
+                if (getActivity()!=null){
+                    GalleryHospitorrAdapter mAdapter = new GalleryHospitorrAdapter(getActivity(), recomlist);
+                    recyclerView.setAdapter(mAdapter);
+                }else{
+
+                }
             }
 
             @Override

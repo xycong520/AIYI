@@ -13,7 +13,7 @@ import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.adapter.DiseaseDetailAdapter;
 import com.xiuman.xinjiankang.app.AppManager;
 import com.xiuman.xinjiankang.base.BaseActivity;
-import com.xiuman.xinjiankang.bean.BeanHomeView;
+import com.xiuman.xinjiankang.bean.BeanCommonViewType;
 import com.xiuman.xinjiankang.bean.Disease;
 import com.xiuman.xinjiankang.constant.Constant;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
@@ -37,8 +37,8 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
     @Bind(R.id.swipe)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    List<BeanHomeView> mDatas = new ArrayList<>();
-    BeanHomeView loadMore;
+    List<BeanCommonViewType> mDatas = new ArrayList<>();
+    BeanCommonViewType loadMore;
     int lastVisibleItem;
     String categoryId;
     int page = 1, pageSize = Constant.PAGE_SIZE;
@@ -88,15 +88,15 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
             @Override
             public void dataSucceed(String result) {
                 if (page == 1) {
-                    BeanHomeView headView = new BeanHomeView();
+                    BeanCommonViewType headView = new BeanCommonViewType();
                     headView.setViewType(DiseaseDetailAdapter.VIEWTYPE_HEADVIEW);
                     mDatas.add(headView);
                 }
                 Wrapper<Disease> wraper = new Gson().fromJson(result, new TypeToken<Wrapper<Disease>>() {
                 }.getType());
-                List<BeanHomeView> caseData = new ArrayList<BeanHomeView>();
+                List<BeanCommonViewType> caseData = new ArrayList<BeanCommonViewType>();
                 for (int i = 0; i < wraper.getDatasource().size(); i++) {
-                    BeanHomeView oneDisease = new BeanHomeView();
+                    BeanCommonViewType oneDisease = new BeanCommonViewType();
                     oneDisease.setViewType(DiseaseDetailAdapter.VIEWTYPE_CASE);
                     oneDisease.setBeanObj(wraper.getDatasource().get(i));
                     caseData.add(oneDisease);
@@ -110,12 +110,12 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
                 //每页返回10条数据，如果等于10允许加载下一页，添加加载更多item
                 if (caseData.size() == pageSize) {
                     if (loadMore == null) {
-                        loadMore = new BeanHomeView();
+                        loadMore = new BeanCommonViewType();
                         loadMore.setViewType(DiseaseDetailAdapter.VIEWTYPE_LOADMORE);
                         mDatas.add(loadMore);
                     }
                 } else if (page == 1 && caseData.size() == 0) {//还没有案例
-                    BeanHomeView emptyComment = new BeanHomeView();
+                    BeanCommonViewType emptyComment = new BeanCommonViewType();
                     emptyComment.setViewType(DiseaseDetailAdapter.VIEWTYPE_CASE_EMPTY);
                     mDatas.add(emptyComment);
                 } else {
@@ -134,7 +134,7 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
             public void dataError(String result) {
                 swipeRefreshLayout.setRefreshing(false);
                 mDatas.clear();
-                BeanHomeView errorView = new BeanHomeView();
+                BeanCommonViewType errorView = new BeanCommonViewType();
                 errorView.setViewType(DiseaseDetailAdapter.VIEWTYPE_HEADVIEW);
                 mDatas.add(errorView);
                 AppManager.showToast(mActivity, result);
@@ -147,6 +147,7 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
     public void onRefresh() {
         mDatas.clear();
         page = 1;
+        loadMore = null;
         loadData();
     }
 

@@ -7,35 +7,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.xiuman.xingjiankang.R;
-
 import butterknife.ButterKnife;
 
 /**
- * 我的
- * Created by PCPC on 2016/5/31.
+ * Created by PCPC on 2016/6/6.
  */
-public class FragmentMe extends Fragment {
-    View thisView;
-
+public abstract class BaseFragment extends Fragment{
+    View mView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        if (thisView == null) {
-            thisView = inflater.inflate(R.layout.fragment_me, container, false);
-            ButterKnife.bind(this, thisView);
+        if (mView == null){
+            mView = inflater.inflate(getViewID(),container,false);
+            ButterKnife.bind(this,mView);
             init();
         }
-
-        ViewGroup parent = (ViewGroup) thisView.getParent();
+        ViewGroup parent = (ViewGroup) mView.getParent();
         if (parent != null) {
-            parent.removeView(thisView);
+            parent.removeView(mView);
         }
-        return thisView;
+        return mView;
     }
-
-    private void init(){
-
-    }
+    public abstract int getViewID();
+    public abstract void init();
 }

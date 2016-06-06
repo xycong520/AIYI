@@ -76,7 +76,7 @@ public class HttpDataTask {
      * @param url
      * @param parametersPair
      */
-    public void post(String url, Map<String, Object> parametersPair) {
+    synchronized  public void post(String url, Map<String, Object> parametersPair) {
         if (!NetUtil.isHasNetAvailable(mContext)) {
             httpTaskListener.dataError("你的网络貌似不给力，重新连接试试");
             return;
