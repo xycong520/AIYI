@@ -128,9 +128,6 @@ public class FragmentAD extends Fragment {
     }
 
     public void loadData() {
-        if (wrapper!=null){
-            initPager(wrapper);
-        }
         new UserRequest().getAdvertisement(mActivity, new HttpTaskListener() {
             @Override
             public void dataSucceed(String result) {

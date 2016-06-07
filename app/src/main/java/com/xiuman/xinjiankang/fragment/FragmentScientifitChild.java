@@ -36,17 +36,25 @@ import butterknife.Bind;
  * Created by hxy on 2015/12/17.
  */
 public class FragmentScientifitChild extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
-
+    //传入参数KEY
     public static String parameID = "categoryId";
+    //查询ID
     String categoryId = "";
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
     CommonRecyclerViewAdapter mAdapter;
     @Bind(R.id.swipe)
     SwipeRefreshLayout swipeRefreshLayout;
+    //错误页
+    @Bind(R.id.layout_network_error)
+    View layoutError;
+    //数据集
     List<BeanCommonViewType> mDatas;
+    //请求页码
     int page = 1;
+    //加载更多
     BeanCommonViewType loadMore;
+    //滑动加载底部Item位置记录值
     int lastVisibleItem;
     LinearLayoutManager layoutManager;
     Context mContext;
@@ -58,6 +66,7 @@ public class FragmentScientifitChild extends BaseFragment implements SwipeRefres
 
     @Override
     public void init() {
+        layoutError.setOnClickListener(this);
         mContext = getActivity();
         categoryId = String.valueOf(getArguments().get(parameID));
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
@@ -115,7 +124,9 @@ public class FragmentScientifitChild extends BaseFragment implements SwipeRefres
     }
 
 
-    //显示下拉刷新动画
+    /**
+     * 显示下拉刷新动画并请求数据
+     */
     public void loadDataFromParent() {
         if (mDatas == null) {
             mDatas = new ArrayList<>();
@@ -164,6 +175,7 @@ public class FragmentScientifitChild extends BaseFragment implements SwipeRefres
                         loadMore = null;
                     }
                 }
+                layoutError.setVisibility(View.GONE);
                 mAdapter.setDatas(mDatas);
                 mAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
@@ -172,6 +184,7 @@ public class FragmentScientifitChild extends BaseFragment implements SwipeRefres
             @Override
             public void dataError(String result) {
                 swipeRefreshLayout.setRefreshing(false);
+                layoutError.setVisibility(View.VISIBLE);
                 AppManager.showToast(mContext, result);
             }
         }, page, Constant.PAGE_SIZE, categoryId);
@@ -187,9 +200,16 @@ public class FragmentScientifitChild extends BaseFragment implements SwipeRefres
 
     @Override
     public void onClick(View v) {
-        int position = (int) v.getTag();
-        Intent intent = new Intent(getActivity(), ScientifitDetailActivity.class);
-        intent.putExtra(ScientifitDetailActivity.parameID, ((ScienceDetail) mDatas.get(position).getBeanObj()).getId());
-        startActivity(intent);
+        switch (v.getId()){
+            case R.id.layoutScientificItem:
+                int position = (int) v.getTag();
+                Intent intent = new Intent(getActivity(), ScientifitDetailActivity.class);
+                intent.putExtra(ScientifitDetailActivity.parameID, ((ScienceDetail) mDatas.get(position).getBeanObj()).getId());
+                startActivity(intent);
+                break;
+            case R.id.layout_network_error:
+                loadDataFromParent();
+                break;
+        }
     }
 }

@@ -70,9 +70,6 @@ public class FragmentRecommendHospitor extends Fragment {
     }
 
     public void loadData() {
-        if (recyclerView.getAdapter()!=null && recyclerView.getAdapter().getItemCount()>0){
-            return;
-        }
         new UserRequest().getRecommendHospitalList(mActivity, new HttpTaskListener() {
             @Override
             public void dataSucceed(String result) {

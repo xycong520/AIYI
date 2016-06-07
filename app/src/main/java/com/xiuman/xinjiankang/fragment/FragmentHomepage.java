@@ -3,6 +3,7 @@ package com.xiuman.xinjiankang.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.Request.UserRequest;
 import com.xiuman.xinjiankang.adapter.HomepageAdapter;
+import com.xiuman.xinjiankang.app.AppManager;
 import com.xiuman.xinjiankang.bean.BeanCommonViewType;
 import com.xiuman.xinjiankang.bean.BeanHomeTitle;
 import com.xiuman.xinjiankang.bean.ScienceDetail;
@@ -23,6 +25,7 @@ import com.xiuman.xinjiankang.net.Wrapper;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,18 +34,23 @@ import butterknife.ButterKnife;
  * 首页
  * Created by PCPC on 2016/5/24.
  */
-public class FragmentHomepage extends Fragment {
+public class FragmentHomepage extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    //当前视图
     View thisView;
 
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
     HomepageAdapter mAdapter;
+    @Bind(R.id.swipe)
+    SwipeRefreshLayout swipeRefreshLayout;
     List<BeanCommonViewType> viewTypes;
     FragmentAD fragmentAD;
     FragmentRecommendDoctor fragmentRecommendDoctor;
     FragmentRecommendHospitor fragmentRecommendHospitor;
 
+    //用来控制是否刷新数据时资讯信息重复加入列表
+    boolean isRefresh;
 
     @Nullable
     @Override
@@ -65,7 +73,7 @@ public class FragmentHomepage extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (mAdapter!=null){
+        if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
         }
     }
@@ -74,27 +82,47 @@ public class FragmentHomepage extends Fragment {
         new UserRequest().getScienceTechologyList2(getActivity(), new HttpTaskListener() {
             @Override
             public void dataSucceed(String result) {
-                Wrapper<ScienceDetail> ScienceDetail = new Gson().fromJson(result, new TypeToken<Wrapper<ScienceDetail>>() {
+                Wrapper<ScienceDetail> resultDatas = new Gson().fromJson(result, new TypeToken<Wrapper<ScienceDetail>>() {
                 }.getType());
+                //下拉刷新数据
+                if (isRefresh){
+                    //如果已存在则清除
+                    for(int i=0;i<viewTypes.size();i++){
+                        if (HomepageAdapter.VIEWTYPE_LISTITEM == viewTypes.get(i).getViewType()){
+                            viewTypes.remove(i);
+                            //移除后下标i-1防止跳过
+                            i--;
+                        }
+                    }
+                }
                 for (int i = 0; i < 3; i++) {
-                    ScienceDetail scienceDetail = ScienceDetail.getDatasource().get(i);
+                    int random = new Random().nextInt(resultDatas.getDatasource().size());
+                    ScienceDetail scienceDetail = resultDatas.getDatasource().get(random);
+                    resultDatas.getDatasource().remove(random);
                     BeanCommonViewType newsItem = new BeanCommonViewType();
                     newsItem.setBeanObj(scienceDetail);
                     newsItem.setViewType(HomepageAdapter.VIEWTYPE_LISTITEM);
-                    viewTypes.add(6,newsItem);
+                    viewTypes.add(6, newsItem);
                 }
+
                 mAdapter.setHomeViews(viewTypes);
                 mAdapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void dataError(String result) {
+                swipeRefreshLayout.setRefreshing(false);
+                AppManager.showToast(getActivity(), result);
             }
         });
     }
 
 
     private void init() {
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter = new HomepageAdapter(viewTypes, this));
         viewTypes = new ArrayList<>();
@@ -159,7 +187,7 @@ public class FragmentHomepage extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-         try {
+        try {
             Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
             childFragmentManager.setAccessible(true);
             childFragmentManager.set(this, null);
@@ -168,5 +196,14 @@ public class FragmentHomepage extends Fragment {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        fragmentAD.loadData();
+        fragmentRecommendDoctor.loadData();
+        fragmentRecommendHospitor.loadData();
+        isRefresh = true;
+        loadData();
     }
 }

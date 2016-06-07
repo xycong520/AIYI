@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_lunwen"
-        android:layout_marginLeft="32dp"
+        android:layout_marginLeft="28dp"
         android:layout_marginTop="3dp"
         android:text="四部必看："
         android:textColor="#a2a2a2"
@@ -30,22 +30,22 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/tv_4"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="32dp"
-        android:gravity="bottom"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="14dp"
+        android:gravity="center_vertical"
         android:text="夫妻感情新鲜快乐的"
         android:textColor="@color/color_black"
         android:textSize="15sp" />
 
     <TextView
+        android:id="@+id/tv_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/tv_5"
         android:layout_below="@+id/tv_4"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="14dp"
         android:layout_toRightOf="@+id/tv_5"
-        android:gravity="bottom"
+        android:gravity="center_vertical"
         android:text="“金钥匙”"
         android:textColor="#f6cb20"
         android:textSize="15sp" />
@@ -54,7 +54,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/tv_6"
         android:layout_centerVertical="true"
-        android:layout_marginRight="22dp"
+        android:layout_marginRight="18dp"
         android:src="@mipmap/xjk_xinli_pic" />
 </RelativeLayout>

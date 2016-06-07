@@ -52,6 +52,7 @@ public class AutoScrollViewPager extends JazzyViewPager {
     private boolean                isAutoScroll                = false;
     private boolean                isStopByTouch               = false;
     private float                  touchX                      = 0f, downX = 0f;
+    private float                  touchY                      = 0f, downY = 0f;
     private CustomDurationScroller scroller                    = null;
 
     public static final int        SCROLL_WHAT                 = 0;
@@ -204,6 +205,14 @@ public class AutoScrollViewPager extends JazzyViewPager {
                 }
                 return super.dispatchTouchEvent(ev);
             }
+        }
+        if (action == MotionEvent.ACTION_DOWN){
+            downY = ev.getY();
+        }//判端下滑高度大于50让父组件拦截，高度的大小影响横向滑动切换体验
+        if (action == MotionEvent.ACTION_MOVE && ev.getY() -downY>50){
+            //向下滑动，通知父组件拦截下滑事件，此控件不做下滑事件处理
+            getParent().requestDisallowInterceptTouchEvent(false);
+            return super.dispatchTouchEvent(ev);
         }
         getParent().requestDisallowInterceptTouchEvent(true);
 
