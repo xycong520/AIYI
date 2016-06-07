@@ -12,14 +12,15 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
-import com.xiuman.xinjiankang.bean.BeanHomeTitle;
-import com.xiuman.xinjiankang.bean.BeanCommonViewType;
 import com.xiuman.xinjiankang.Request.UserRequest;
 import com.xiuman.xinjiankang.adapter.HomepageAdapter;
+import com.xiuman.xinjiankang.bean.BeanCommonViewType;
+import com.xiuman.xinjiankang.bean.BeanHomeTitle;
 import com.xiuman.xinjiankang.bean.ScienceDetail;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,9 @@ public class FragmentHomepage extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        if (mAdapter!=null){
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private void loadData() {
@@ -89,6 +92,7 @@ public class FragmentHomepage extends Fragment {
             }
         });
     }
+
 
     private void init() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -150,5 +154,19 @@ public class FragmentHomepage extends Fragment {
 //        mRecyclerView.setAdapter(mAdapter = new HomepageAdapter(viewTypes, this));
         mRecyclerView.setHasFixedSize(true);
         loadData();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+         try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -2,8 +2,9 @@ package com.xiuman.xinjiankang;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.ViewGroup;
 
 import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.base.BaseActivity;
@@ -89,7 +90,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
 
-    class DemoPagerAdapter extends FragmentStatePagerAdapter {
+    class DemoPagerAdapter extends FragmentPagerAdapter {
         List<Fragment> mData;
 
         public DemoPagerAdapter(FragmentManager fm, List<Fragment> data) {
@@ -100,6 +101,16 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         @Override
         public Fragment getItem(int position) {
             return mData.get(position);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            return super.instantiateItem(container, position);
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            super.destroyItem(container, position, object);
         }
 
         @Override

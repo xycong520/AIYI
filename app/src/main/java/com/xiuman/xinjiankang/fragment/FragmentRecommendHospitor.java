@@ -25,6 +25,8 @@ import com.xiuman.xinjiankang.net.Wrapper;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
+import java.lang.reflect.Field;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -68,6 +70,9 @@ public class FragmentRecommendHospitor extends Fragment {
     }
 
     public void loadData() {
+        if (recyclerView.getAdapter()!=null && recyclerView.getAdapter().getItemCount()>0){
+            return;
+        }
         new UserRequest().getRecommendHospitalList(mActivity, new HttpTaskListener() {
             @Override
             public void dataSucceed(String result) {
@@ -77,7 +82,6 @@ public class FragmentRecommendHospitor extends Fragment {
                     GalleryHospitorrAdapter mAdapter = new GalleryHospitorrAdapter(getActivity(), recomlist);
                     recyclerView.setAdapter(mAdapter);
                 }else{
-
                 }
             }
 
@@ -142,5 +146,19 @@ public class FragmentRecommendHospitor extends Fragment {
                 AppManager.showToast(v.getContext(), v.getTag().toString());
             }
         };
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

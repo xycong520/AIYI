@@ -16,14 +16,16 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
+import com.xiuman.xinjiankang.Request.UserRequest;
 import com.xiuman.xinjiankang.app.AppManager;
 import com.xiuman.xinjiankang.bean.RecommendDoctor;
-import com.xiuman.xinjiankang.Request.UserRequest;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
+
+import java.lang.reflect.Field;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,6 +72,9 @@ public class FragmentRecommendDoctor extends Fragment {
     }
 
     public void loadData() {
+        if (recyclerView.getAdapter()!=null && recyclerView.getAdapter().getItemCount()>0){
+            return;
+        }
         new UserRequest().getRecommendDoctorList(mActivity, new HttpTaskListener() {
             @Override
             public void dataSucceed(String result) {
@@ -140,6 +145,20 @@ public class FragmentRecommendDoctor extends Fragment {
             viewHolder.tvName.setText((dataList.getDatasource().get(i)).getName());
             viewHolder.itemView.setTag(dataList.getDatasource().get(i).getDoctorId());
             viewHolder.itemView.setOnClickListener(onClickListener);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 }

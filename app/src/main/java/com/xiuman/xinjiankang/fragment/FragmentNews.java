@@ -48,9 +48,6 @@ public class FragmentNews extends Fragment {
             thisView = inflater.inflate(R.layout.fragment_news, container, false);
             ButterKnife.bind(this, thisView);
             init();
-        }else{
-            mViewPager.setAdapter(mAdapter = new MyAdapter(getChildFragmentManager(),fragments));
-            tabLayout.setViewPager(mViewPager, titles);
         }
 
         ViewGroup parent = (ViewGroup) thisView.getParent();
@@ -145,9 +142,9 @@ public class FragmentNews extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        fragments.clear();
-//        thisView = null;
-//        titles = null;
+        fragments.clear();
+        thisView = null;
+        titles = null;
     }
 
     @Override

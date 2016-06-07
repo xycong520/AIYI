@@ -18,9 +18,9 @@ import android.widget.RelativeLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
-import com.xiuman.xinjiankang.bean.Advertisiment;
 import com.xiuman.xinjiankang.Request.UserRequest;
 import com.xiuman.xinjiankang.activity.ScientifitDetailActivity;
+import com.xiuman.xinjiankang.bean.Advertisiment;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
 import com.xiuman.xinjiankang.utils.SizeUtil;
@@ -52,6 +52,7 @@ public class FragmentAD extends Fragment {
     private Activity mActivity;
 
     View thisView;
+    Wrapper<Advertisiment> wrapper;
 
     @Nullable
     @Override
@@ -127,10 +128,13 @@ public class FragmentAD extends Fragment {
     }
 
     public void loadData() {
+        if (wrapper!=null){
+            initPager(wrapper);
+        }
         new UserRequest().getAdvertisement(mActivity, new HttpTaskListener() {
             @Override
             public void dataSucceed(String result) {
-                Wrapper<Advertisiment> wrapper = new Gson().fromJson(result, new TypeToken<Wrapper<Advertisiment>>() {}.getType());
+                wrapper = new Gson().fromJson(result, new TypeToken<Wrapper<Advertisiment>>() {}.getType());
                 initPager(wrapper);
             }
 
@@ -209,9 +213,19 @@ public class FragmentAD extends Fragment {
         super.onDetach();
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+       /* try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }*/
     }
 
     @Override
@@ -233,4 +247,6 @@ public class FragmentAD extends Fragment {
     public void onStart() {
         super.onStart();
     }
+
+
 }

@@ -15,8 +15,9 @@ import android.widget.Toast;
 
 import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.activity.ScientifitDetailActivity;
-import com.xiuman.xinjiankang.bean.BeanHomeTitle;
+import com.xiuman.xinjiankang.app.MyApplication;
 import com.xiuman.xinjiankang.bean.BeanCommonViewType;
+import com.xiuman.xinjiankang.bean.BeanHomeTitle;
 import com.xiuman.xinjiankang.bean.ScienceDetail;
 import com.xiuman.xinjiankang.fragment.FragmentAD;
 import com.xiuman.xinjiankang.fragment.FragmentRecommendDoctor;
@@ -49,7 +50,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         homeViews = viewsData;
         this.fragment = fragment;
         if (options == null) {
-            options = new ImageOptions.Builder().setRadius(10).setImageScaleType(ImageView.ScaleType.FIT_XY).setUseMemCache(true).build();
+            options = MyApplication.getOptionsRadius();/*new ImageOptions.Builder().setRadius(10).setImageScaleType(ImageView.ScaleType.FIT_XY).setUseMemCache(true).build()*/;
         }
     }
 
@@ -93,7 +94,11 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             FragmentAD fragmentAD = (FragmentAD) fragment.getChildFragmentManager().findFragmentById(R.id.layoutAD);
             if (fragmentAD == null) {
                 fragmentAD = (FragmentAD) homeViews.get(position).getBeanObj();
-                fragment.getChildFragmentManager().beginTransaction().add(R.id.layoutAD, fragmentAD).commit();
+                fragment.getChildFragmentManager().beginTransaction().replace(R.id.layoutAD, fragmentAD).commit();
+                if (fragmentAD.getThisView()!=null){
+                    ((ADViewHolder) holder).getLayoutAD().removeAllViews();
+                    ((ADViewHolder) holder).getLayoutAD().addView(fragmentAD.getThisView());
+                }
             } else {
                 ((ADViewHolder) holder).getLayoutAD().removeAllViews();
                 ((ADViewHolder) holder).getLayoutAD().addView(fragmentAD.getThisView());
@@ -121,7 +126,11 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     doctor = (FragmentRecommendDoctor) fragment.getChildFragmentManager().findFragmentById(R.id.layoutRecommendDoctor);
                     if (doctor == null) {
                         doctor = (FragmentRecommendDoctor) homeViews.get(position).getBeanObj();
-                        fragment.getChildFragmentManager().beginTransaction().add(R.id.layoutRecommendDoctor, doctor).commit();
+                        fragment.getChildFragmentManager().beginTransaction().replace(R.id.layoutRecommendDoctor, doctor).commit();
+                        if (doctor.getThisView()!=null){
+                            ((FrameLayout) ((AllpurposeViewHolder) holder).getViewByID(R.id.layoutRecommendDoctor)).removeAllViews();
+                            ((FrameLayout) ((AllpurposeViewHolder) holder).getViewByID(R.id.layoutRecommendDoctor)).addView(doctor.getThisView());
+                        }
                     } else {
                         ((FrameLayout) ((AllpurposeViewHolder) holder).getViewByID(R.id.layoutRecommendDoctor)).removeAllViews();
                         ((FrameLayout) ((AllpurposeViewHolder) holder).getViewByID(R.id.layoutRecommendDoctor)).addView(doctor.getThisView());
@@ -143,6 +152,10 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if (hospital == null) {
                 hospital = (FragmentRecommendHospitor) homeViews.get(position).getBeanObj();
                 fragment.getChildFragmentManager().beginTransaction().replace(R.id.layoutRecommendHospitor, hospital).commit();
+                if (hospital.getThisView()!=null){
+                    (((HospitorViewHolder) holder).getLayoutHospitor()).removeAllViews();
+                    (((HospitorViewHolder) holder).getLayoutHospitor()).addView(hospital.getThisView());
+                }
             } else {
                 (((HospitorViewHolder) holder).getLayoutHospitor()).removeAllViews();
                 (((HospitorViewHolder) holder).getLayoutHospitor()).addView(hospital.getThisView());
@@ -311,6 +324,7 @@ public class HomepageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return itemView.findViewById(id);
         }
     }
+
 
 
 }
