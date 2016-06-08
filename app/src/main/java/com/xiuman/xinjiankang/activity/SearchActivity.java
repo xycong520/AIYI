@@ -77,7 +77,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 }.getType());
                 List<SearchHistory> mDatas = wrapper.getDatasource();
                 for (int i = 0; i < mDatas.size(); i++) {
-                    mGridLayout.addView(getText(i, mDatas.get(i))/*,params*/);
+                    mGridLayout.addView(getText(i, mDatas.get(i)));
                 }
             }
 
@@ -132,12 +132,17 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         String text = s.getHostKey();
         tv.setText(text);
         tv.setTextColor(Color.rgb(8, 8, 8));
-//        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
-//        tv.setGravity(Gravity.CENTER);
-//        int textPaddingV = SizeUtil.dip2px(this, 4);
-//        int textPaddingH = SizeUtil.dip2px(this, 7);
-//        tv.setPadding(textPaddingH, textPaddingV, textPaddingH, textPaddingV);
         return inflate;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            getHistoryList();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -145,6 +150,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         super.onClick(view);
         switch (view.getId()) {
             case R.id.clean:
+                historyKey.clear();
+                Wrapper<SearchHistory> wrapper = new Wrapper<>();
+                wrapper.setDatasource(historyKey);
+                SpUtils.setString(AppConfig.KEY_SEARCH_LIST, new Gson().toJson(wrapper));
+                mHistoryListLayout.removeAllViews();
                 break;
             case R.id.search:
                 String trim = etSearch.getText().toString().trim();
@@ -157,7 +167,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     SearchHistory curKey = new SearchHistory();
                     curKey.setHostKey(trim);
                     historyKey.add(curKey);
-                    Wrapper<SearchHistory> wrapper = new Wrapper<>();
+                    wrapper = new Wrapper<>();
                     wrapper.setDatasource(historyKey);
                     SpUtils.setString(AppConfig.KEY_SEARCH_LIST, new Gson().toJson(wrapper));
                     Intent intent = new Intent(mActivity, SearchResultActivity.class);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -87,14 +88,24 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"></LinearLayout>
 
-            <TextView
-                android:id="@+id/clean"
+            <com.balysv.materialripple.MaterialRippleLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_white"
-                android:gravity="center_horizontal"
-                android:padding="10dp"
-                android:text="清除搜索历史" />
+                app:mrl_rippleAlpha="0.3"
+                app:mrl_rippleColor="@color/xjk_title_text_color"
+                app:mrl_rippleDuration="300"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+                <TextView
+                    android:id="@+id/clean"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_white"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:text="清除搜索历史" />
+            </com.balysv.materialripple.MaterialRippleLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
