@@ -313,6 +313,39 @@ public class UserRequest {
         parametersPair.put("counselId", casesId);
         task.get(uri, parametersPair);
     }
+    /**
+     * 查找案例
+     *
+     * @param mContext
+     * @param httpTaskListener
+     */
+    public void getCaseList(Context mContext, HttpTaskListener httpTaskListener, String search, int page, int pageSize) {
+        String url = Constant.http + "/jk_cases!searchDisease.action";
+        HttpDataTask httpDataTask = new HttpDataTask(mContext, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("search", search);
+        parametersPair.put("pageApp", page);
+        parametersPair.put("pageSizeApp", pageSize);
+        httpDataTask.post(url, parametersPair);
+    }
+    /**
+     * 搜索结果
+     *
+     * @param context
+     * @param listener
+     * @param page     页码
+     * @param pageSize 每页长度
+     * @param keywork  搜索关键字
+     */
+    public void getSearchResult(Context context, HttpTaskListener listener, int page, int pageSize, String keywork) {
+        String uri = Constant.http + "/jk_article!knowledgeSearch.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("pageApp", page);
+        parametersPair.put("pageSizeApp", pageSize);
+        parametersPair.put("key", keywork);
+        task.get(uri, parametersPair);
+    }
 
     /**
      * VIP咨询详情
@@ -328,5 +361,17 @@ public class UserRequest {
         parametersPair.put("pageApp", page);
         parametersPair.put("pageSizeApp", pageSize);
         task.post(uri, parametersPair);
+    }
+    /**
+     * 搜索历史
+     *
+     * @param context
+     * @param listener
+     */
+    public void getSearchHistory(Context context, HttpTaskListener listener) {
+        String uri = Constant.http + "/jk_article!knowledgeSearchPage.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        task.get(uri, parametersPair);
     }
 }

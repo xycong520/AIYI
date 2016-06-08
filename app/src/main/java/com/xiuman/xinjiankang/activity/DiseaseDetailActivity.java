@@ -135,7 +135,7 @@ public class DiseaseDetailActivity extends BaseActivity implements View.OnClickL
                 swipeRefreshLayout.setRefreshing(false);
                 mDatas.clear();
                 BeanCommonViewType errorView = new BeanCommonViewType();
-                errorView.setViewType(DiseaseDetailAdapter.VIEWTYPE_HEADVIEW);
+                errorView.setViewType(DiseaseDetailAdapter.VIEWTYPE_CASE_EMPTY);
                 mDatas.add(errorView);
                 AppManager.showToast(mActivity, result);
             }

@@ -1,12 +1,17 @@
 package com.xiuman.xinjiankang;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.xiuman.xingjiankang.R;
+import com.xiuman.xinjiankang.activity.SearchActivity;
 import com.xiuman.xinjiankang.base.BaseActivity;
 import com.xiuman.xinjiankang.fragment.FragmentConsult;
 import com.xiuman.xinjiankang.fragment.FragmentHomepage;
@@ -32,6 +37,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     FragmentConsult fragmentConsult;
     FragmentNews fragmentNews;
     FragmentMe fragmentMe;
+    //标记搜索图表是否显示
+    boolean isSearchShow;
+    //标记是否是诊断页进入搜索
+    boolean isConsul;
+
     @Override
     protected void initView() {
         setupToolbar();
@@ -63,25 +73,44 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     }
 
+
     @Override
     public void onPageSelected(int position) {
+        ActionBar actionBar = getSupportActionBar();
         switch (position) {
             case 0:
-                setToolbarTitle("首页");
+                actionBar.setTitle("首页");
+                isSearchShow = false;
                 break;
             case 1:
-                setToolbarTitle("诊断");
-                if (fragmentConsult!=null){
+                actionBar.setTitle("诊断");
+                if (fragmentConsult != null) {
                     fragmentConsult.loadTypeData();
                 }
+                isSearchShow = true;
+                isConsul = true;
                 break;
             case 2:
-                setToolbarTitle("资讯");
+                actionBar.setTitle("资讯");
+                isSearchShow = true;
+                isConsul = false;
                 break;
             case 3:
-                setToolbarTitle("我的");
+                actionBar.setTitle("我的");
+                isSearchShow = false;
                 break;
         }
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (isSearchShow) {
+            menu.findItem(R.id.search).setVisible(true);
+        } else {
+            menu.findItem(R.id.search).setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -118,4 +147,21 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             return mData.size();
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.search) {
+            Intent intent = new Intent(mActivity, SearchActivity.class);
+            intent.putExtra(SearchActivity.parameIsConsul,isConsul);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        return true;
+    }
+
 }

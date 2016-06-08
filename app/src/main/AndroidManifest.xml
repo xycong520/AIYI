@@ -68,6 +68,15 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SwipeBack"/>
+        <activity android:name="com.xiuman.xinjiankang.activity.SearchActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack"/>
+        <activity android:name="com.xiuman.xinjiankang.activity.SearchResultActivity"
+            android:launchMode="singleTask"
+            android:label="搜索结果"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack"/>
 
         <!--==============友盟分享===============-->
         <meta-data

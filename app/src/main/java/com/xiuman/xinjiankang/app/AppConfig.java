@@ -248,8 +248,6 @@ public class AppConfig {
     public static final String KEY_COLLECT_GOODS = "key_collect_goods";
     //购物车商品数量
     public static final String KEY_GOODS_NUMBER = "key_goods_number";
-    //搜索关键字
-    public static final String KEY_SEARCH = "key_search";
     //泡吧未读消息数
     public static final String KEY_BBS_UNREAD_MSG = "key_message";
     //帖子收藏
@@ -274,6 +272,8 @@ public class AppConfig {
     public static final String KEY_USER_INFO = "key_user_info";
     //用户登录状态
     public static final String KEY_USER_LOGIN = "key_user_login";
+    //用户的搜索记录
+    public static final String KEY_SEARCH_LIST="key_search_list";
 
     public static final String WX_APP_ID = "wx8f7b132f5d7daf5c";
     public static final String WX_SECRET = "5e13b717092cb332408a224b3188f2f3";

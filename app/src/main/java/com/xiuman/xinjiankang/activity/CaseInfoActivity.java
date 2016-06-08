@@ -171,7 +171,7 @@ public class CaseInfoActivity extends BaseActivity implements SwipeRefreshLayout
                         viewReplay.setViewType(R.layout.item_recorder_right);
                     }
                     viewReplay.setBeanObj(entity.getDatasource().get(i));
-                    mDatas.add(viewReplay);
+                    replyData.add(viewReplay);
                 }
                 //如果是加载更多数据插入到loding前面
                 if (mDatas.contains(loadMore)) {

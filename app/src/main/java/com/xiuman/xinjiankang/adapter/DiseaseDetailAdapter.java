@@ -55,6 +55,8 @@ public class DiseaseDetailAdapter extends RecyclerView.Adapter {
             return new HeadViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_disrase_detail_head, parent, false));
         } else if (viewType == VIEWTYPE_LOADMORE) {
             return new AllpurposeViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loadmore, parent, false));
+        }else if (viewType==VIEWTYPE_CASE_EMPTY){
+            return new AllpurposeViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_no_comment, parent, false));
         }
         throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
     }
@@ -63,6 +65,9 @@ public class DiseaseDetailAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
+            case VIEWTYPE_CASE_EMPTY:
+                ((TextView)((AllpurposeViewHolder)holder).getViewByID(R.id.tvEmptyText)).setText("还没有相关案例~~~");
+                break;
             case VIEWTYPE_HEADVIEW:
                 ((HeadViewHolder) holder).getTvPatient().setOnClickListener(onClickListener);
                 break;
