@@ -374,4 +374,75 @@ public class UserRequest {
         Map<String, Object> parametersPair = new HashMap<String, Object>();
         task.get(uri, parametersPair);
     }
+
+    /**
+     * 免费咨询数量
+     *
+     * @param mContext
+     * @param httpTaskListener
+     */
+    public void getFreeListCount(Context mContext, HttpTaskListener httpTaskListener) {
+        String url = Constant.http + "/jk_free_consult!getCasesCount.action";
+        HttpDataTask httpDataTask = new HttpDataTask(mContext, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        httpDataTask.get(url, parametersPair);
+    }
+    /**
+     * 获取科室列表
+     *
+     * @param httpTaskListener
+     */
+    public void getDepartmentList(Context context,HttpTaskListener httpTaskListener) {
+        String url = Constant.http + "/jk_department!departmentList.action";
+        HttpDataTask httpDataTask = new HttpDataTask(context, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        httpDataTask.get(url, parametersPair);
+    }
+    /**
+     * 获取区域列表
+     *
+     * @param httpTaskListener
+     */
+    public void getAreaList(Context context,HttpTaskListener httpTaskListener) {
+        String url = Constant.http + "/area!areaList.action";
+        HttpDataTask httpDataTask = new HttpDataTask(context, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        httpDataTask.get(url, parametersPair);
+    }
+
+    /**
+     * 查找医师列表
+     *
+     * @param context
+     * @param listener
+     * @param page
+     * @param pageSize
+     * @param lng
+     * @param lat
+     * @param areaId     区域id
+     * @param sequence   排序方式
+     * @param sections   科室
+     * @param docService 服务类别
+     */
+    public void getDoctorList(Context context, HttpTaskListener listener, int page, int pageSize, double lng, double lat, String areaId, int sequence, String sections, int docService, String keyWord) {
+        String uri = Constant.http + "/jk_doctor!searchDoctor.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("pageApp", page);
+        parametersPair.put("pageSizeApp", pageSize);
+        parametersPair.put("lng", lng);
+        parametersPair.put("lat", lat);
+        if (areaId != null && !areaId.endsWith(",") && !"".equals(areaId)) {
+            parametersPair.put("area", areaId);
+        }
+        if (!"".equals(keyWord) && keyWord != null) {
+            parametersPair.put("keyWord", keyWord);
+        }
+        parametersPair.put("sequence", sequence);
+        if (!"".equals(sections) && sections != null) {
+            parametersPair.put("sections", sections);
+        }
+        parametersPair.put("docService", docService);
+        task.get(uri, parametersPair);
+    }
 }

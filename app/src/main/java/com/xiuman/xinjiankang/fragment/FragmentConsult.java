@@ -64,7 +64,7 @@ public class FragmentConsult extends Fragment {
             thisView = inflater.inflate(R.layout.fragment_consult, container, false);
             ButterKnife.bind(this, thisView);
             init();
-//            loadTypeData();
+            loadTypeData();
         }
 
         ViewGroup parent = (ViewGroup) thisView.getParent();

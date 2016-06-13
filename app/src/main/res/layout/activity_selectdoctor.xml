@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llyt_title"
+        android:layout_width="match_parent"
+        android:layout_height="43dip"
+        android:background="@color/color_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@mipmap/xjk_back_icon"
+            android:drawablePadding="3dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/xjk_main_margin"
+            android:paddingRight="16dp"
+            android:textColor="@color/xjk_title_text_color"
+            android:textSize="@dimen/txt_size_18" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="医师"
+            android:textColor="@color/colorAccent"
+            android:visibility="gone" />
+        <!-- 搜索界面的标题栏 -->
+        <RelativeLayout
+            android:id="@+id/layoutSearch"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_margin="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/xjk_search_doctor_bg"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:id="@+id/tv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:src="@mipmap/xjk_btn_search_doctor" />
+            <!-- 输入框 -->
+
+            <EditText
+                android:id="@+id/et_search_input_keyword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/tv_search"
+                android:background="@null"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="地区、疾病、医生名字"
+                android:paddingLeft="5dp"
+                android:paddingRight="30dip"
+                android:singleLine="true"
+                android:textColor="#89888d"
+                android:textCursorDrawable="@drawable/txt_cursor_drawable"
+                android:textSize="@dimen/txt_size_15" />
+            <!-- 清除按钮 -->
+
+            <ImageView
+                android:id="@+id/btn_clear_search_input"
+                android:layout_width="35dip"
+                android:layout_height="35dip"
+                android:layout_alignParentRight="true"
+                android:layout_margin="5dip"
+                android:src="@mipmap/xjk_btn_delete_doctor"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/search_option"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:id="@+id/llyt_address_select"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableRight="@drawable/xjk_jiantou_bg_select"
+                android:gravity="center"
+                android:text="全部地区"
+                android:textColor="@color/xjk_rbtn_main_selector"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:background="#e3e3e3" />
+
+        <LinearLayout
+            android:id="@+id/llyt_sort_select"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_sort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/xjk_jiantou_bg_select"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="排序"
+                android:textColor="@color/xjk_rbtn_main_selector"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:background="#e3e3e3" />
+
+        <LinearLayout
+            android:id="@+id/llyt_classify_select"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_classify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/xjk_jiantou_bg_select"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="科室"
+                android:textColor="@color/xjk_rbtn_main_selector"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

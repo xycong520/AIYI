@@ -11,15 +11,13 @@ import android.widget.TextView;
 /**
  * Created by PCPC on 2016/5/31.
  */
-public class ViewHolder
-{
+public class ViewHolder {
     private final SparseArray<View> mViews;
     private int mPosition;
     private View mConvertView;
 
     private ViewHolder(Context context, ViewGroup parent, int layoutId,
-                       int position)
-    {
+                       int position) {
         this.mPosition = position;
         this.mViews = new SparseArray<View>();
         mConvertView = LayoutInflater.from(context).inflate(layoutId, parent,
@@ -39,17 +37,17 @@ public class ViewHolder
      * @return
      */
     public static ViewHolder get(Context context, View convertView,
-                                 ViewGroup parent, int layoutId, int position)
-    {
-        if (convertView == null)
-        {
+                                 ViewGroup parent, int layoutId, int position) {
+        if (convertView == null) {
             return new ViewHolder(context, parent, layoutId, position);
+        } else {
+            ViewHolder holder = (ViewHolder) convertView.getTag();
+            holder.setmPosition(position);
+            return holder;
         }
-        return (ViewHolder) convertView.getTag();
     }
 
-    public View getConvertView()
-    {
+    public View getConvertView() {
         return mConvertView;
     }
 
@@ -59,11 +57,9 @@ public class ViewHolder
      * @param viewId
      * @return
      */
-    public <T extends View> T getView(int viewId)
-    {
+    public <T extends View> T getView(int viewId) {
         View view = mViews.get(viewId);
-        if (view == null)
-        {
+        if (view == null) {
             view = mConvertView.findViewById(viewId);
             mViews.put(viewId, view);
         }
@@ -77,8 +73,7 @@ public class ViewHolder
      * @param text
      * @return
      */
-    public ViewHolder setText(int viewId, String text)
-    {
+    public ViewHolder setText(int viewId, String text) {
         TextView view = getView(viewId);
         view.setText(text);
         return this;
@@ -91,8 +86,7 @@ public class ViewHolder
      * @param drawableId
      * @return
      */
-    public ViewHolder setImageResource(int viewId, int drawableId)
-    {
+    public ViewHolder setImageResource(int viewId, int drawableId) {
         ImageView view = getView(viewId);
         view.setImageResource(drawableId);
 
@@ -100,9 +94,11 @@ public class ViewHolder
     }
 
 
-    public int getPosition()
-    {
+    public int getPosition() {
         return mPosition;
     }
 
+    public void setmPosition(int mPosition) {
+        this.mPosition = mPosition;
+    }
 }

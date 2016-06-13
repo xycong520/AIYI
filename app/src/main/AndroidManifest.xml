@@ -34,7 +34,8 @@
                 <category android:name="android.intent.category.LAUNCHER"></category>
             </intent-filter>
         </activity>
-        <activity android:name="com.xiuman.xinjiankang.MainActivity"
+        <activity
+            android:name="com.xiuman.xinjiankang.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -58,25 +59,58 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SwipeBack" />
 
-        <activity android:name="com.xiuman.xinjiankang.activity.PatientDetailActivity"
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.PatientDetailActivity"
             android:label="病情详情"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.SwipeBack"/>
-        <activity android:name="com.xiuman.xinjiankang.activity.CaseInfoActivity"
+            android:theme="@style/AppTheme.SwipeBack" />
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.CaseInfoActivity"
             android:label="问题详情"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.SwipeBack"/>
-        <activity android:name="com.xiuman.xinjiankang.activity.SearchActivity"
+            android:theme="@style/AppTheme.SwipeBack" />
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.SearchActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.SwipeBack"/>
-        <activity android:name="com.xiuman.xinjiankang.activity.SearchResultActivity"
-            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.SwipeBack" />
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.SearchResultActivity"
             android:label="搜索结果"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.SwipeBack"/>
+            android:theme="@style/AppTheme.SwipeBack" />
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.FragmentInActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack" />
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.FreeConsultActivity"
+            android:label="免费咨询"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack" />
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.LocalAlbumActivity"
+            android:label="选择图片"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack" />
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.LocalAlbumPreActivity"
+            android:label="选择图片"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack" />
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.SelectDoctorActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack">
+        </activity>
 
         <!--==============友盟分享===============-->
         <meta-data
@@ -92,53 +126,55 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="560a0d54e0f55abd9a004883"/>
+            android:value="560a0d54e0f55abd9a004883" />
 
         <activity
             android:name="com.umeng.socialize.editorpage.ShareActivity"
             android:excludeFromRecents="true"
-            android:theme="@style/Theme.UMDefault"/>
+            android:theme="@style/Theme.UMDefault" />
         <activity
             android:name="com.xiuman.xinjiankang.share.WBShareActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
+
         <service
             android:name="com.sina.weibo.sdk.net.DownloadService"
-            android:exported="false">
-        </service>
+            android:exported="false"></service>
+
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
             android:noHistory="true">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="tencent100424468"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent100424468" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
             android:name="com.xiuman.xinjiankang.share.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- ############ QQ空间和QQ SSO授权的Activity注册 ############ -->
         <!--=================友盟分享结束====-->

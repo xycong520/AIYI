@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#55000000"
+    android:id="@+id/layoutPop"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llyt_pop_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="12dip"
+        android:layout_marginRight="12dip"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/xjk_whole_bg_normal_selector2"
+            android:orientation="vertical">
+
+            <!-- 拍照 -->
+            <Button
+                android:id="@+id/btn_pop_photo_camera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="10dip"
+                android:text="相机"
+                android:textColor="@color/xjk_title_text_color"
+                android:textSize="@dimen/txt_size_20" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dip"
+                android:background="@color/line_color_bg" />
+            <!-- 相册选择 -->
+            <Button
+                android:id="@+id/btn_pop_photo_album"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="10dip"
+                android:text="相册"
+                android:textColor="@color/xjk_title_text_color"
+                android:textSize="@dimen/txt_size_20" />
+
+        </LinearLayout>
+        <!-- 取消 -->
+        <Button
+            android:id="@+id/btn_pop_photo_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10.0dip"
+            android:background="@drawable/xjk_whole_bg_normal_selector2"
+            android:padding="10dip"
+            android:text="取 消"
+            android:textColor="@color/xjk_title_text_color"
+            android:textSize="@dimen/txt_size_20" />
+    </LinearLayout>
+
+</LinearLayout>

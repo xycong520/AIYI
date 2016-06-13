@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_appbar" />
+
+    <GridView
+        android:id="@+id/media_in_folder_gv"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="6.0dip"
+        android:layout_marginRight="6.0dip"
+        android:layout_weight="1"
+        android:background="@null"
+        android:cacheColorHint="#00000000"
+        android:columnWidth="100.0dip"
+        android:descendantFocusability="blocksDescendants"
+        android:fadingEdgeLength="0.0dip"
+        android:gravity="center"
+        android:horizontalSpacing="4.0dip"
+        android:listSelector="#00ffffff"
+        android:numColumns="auto_fit"
+        android:overScrollMode="never"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="4.0dip" />
+
+    <RelativeLayout
+        android:id="@+id/album_footer_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/xjk_personactivity_bigphoto_button_bg"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/media_preview"
+            android:layout_width="80.0dip"
+            android:layout_height="35.0dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:background="@drawable/xjk_image_preview_btn"
+            android:enabled="false"
+            android:gravity="center"
+            android:text="预览"
+            android:textColor="@color/color_white"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/media_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10.0dip"
+            android:background="@drawable/xjk_title_act_btn"
+            android:gravity="center"
+            android:minWidth="90.0dip"
+            android:text="完成"
+            android:textColor="@color/color_white"
+            android:textSize="14sp" />
+
+            <include layout="@layout/layout_media_selected_count"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+
+

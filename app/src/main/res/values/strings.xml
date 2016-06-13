@@ -13,6 +13,8 @@
 
     <string name="net_error">网络请求失败，请稍后在试~</string>
     <string name="load_error">加载失败，请重试~</string>
+
+    <string name="select_photo_at_most">最多选取%1$d张</string>
     <!--JazzyViewPager-->
     <string-array name="jazzy_effects">
         <item>Standard</item>
