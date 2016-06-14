@@ -1,6 +1,7 @@
 package com.xiuman.xinjiankang.net;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class Wrapper<T>  implements Serializable{
     private int page;
     private int totalpage;
     private boolean success;
-    private List<T> datasource;
+    private List<T> datasource = new ArrayList<>();
 
     public String getMessage() {
         return message;

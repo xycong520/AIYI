@@ -122,7 +122,7 @@ public class UserRequest {
      *
      * @param listener
      */
-    public void getScienceTechologyClassify(Context context,HttpTaskListener listener) {
+    public void getScienceTechologyClassify(Context context, HttpTaskListener listener) {
         String uri = Constant.http + "/jk_article!getArticleCategory.action";
         HttpDataTask task = new HttpDataTask(context, listener);
         Map<String, Object> parametersPair = new HashMap<String, Object>();
@@ -206,6 +206,7 @@ public class UserRequest {
         parametersPair.put("id", id);
         task.get(uri, parametersPair);
     }
+
     /**
      * 科普知识列表
      *
@@ -258,6 +259,7 @@ public class UserRequest {
         parametersPair.put("imie", MyApplication.getInstance().getIMEI());
         httpDataTask.post(url, parametersPair);
     }
+
     /**
      * 获取疾病类型列表
      *
@@ -300,6 +302,7 @@ public class UserRequest {
         parametersPair.put("diseaseCategoryId", categoryId);
         task.get(uri, parametersPair);
     }
+
     /**
      * 获取VIP咨询详情
      *
@@ -313,6 +316,7 @@ public class UserRequest {
         parametersPair.put("counselId", casesId);
         task.get(uri, parametersPair);
     }
+
     /**
      * 查找案例
      *
@@ -328,6 +332,7 @@ public class UserRequest {
         parametersPair.put("pageSizeApp", pageSize);
         httpDataTask.post(url, parametersPair);
     }
+
     /**
      * 搜索结果
      *
@@ -362,6 +367,7 @@ public class UserRequest {
         parametersPair.put("pageSizeApp", pageSize);
         task.post(uri, parametersPair);
     }
+
     /**
      * 搜索历史
      *
@@ -387,23 +393,25 @@ public class UserRequest {
         Map<String, Object> parametersPair = new HashMap<String, Object>();
         httpDataTask.get(url, parametersPair);
     }
+
     /**
      * 获取科室列表
      *
      * @param httpTaskListener
      */
-    public void getDepartmentList(Context context,HttpTaskListener httpTaskListener) {
+    public void getDepartmentList(Context context, HttpTaskListener httpTaskListener) {
         String url = Constant.http + "/jk_department!departmentList.action";
         HttpDataTask httpDataTask = new HttpDataTask(context, httpTaskListener);
         Map<String, Object> parametersPair = new HashMap<String, Object>();
         httpDataTask.get(url, parametersPair);
     }
+
     /**
      * 获取区域列表
      *
      * @param httpTaskListener
      */
-    public void getAreaList(Context context,HttpTaskListener httpTaskListener) {
+    public void getAreaList(Context context, HttpTaskListener httpTaskListener) {
         String url = Constant.http + "/area!areaList.action";
         HttpDataTask httpDataTask = new HttpDataTask(context, httpTaskListener);
         Map<String, Object> parametersPair = new HashMap<String, Object>();
@@ -443,6 +451,90 @@ public class UserRequest {
             parametersPair.put("sections", sections);
         }
         parametersPair.put("docService", docService);
+        task.get(uri, parametersPair);
+    }
+
+    /**
+     * 查找医师列表
+     *
+     * @param context
+     * @param listener
+     * @param page     页码
+     * @param pageSize 条数
+     * @param lng      精度
+     * @param lat      纬度
+     */
+    public void getDoctorList(Context context, HttpTaskListener listener, int page, int pageSize, double lng, double lat) {
+        String uri = Constant.http + "/jk_doctor!selectDoctorArea.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("pageApp", page);
+        parametersPair.put("pageSizeApp", pageSize);
+        parametersPair.put("lng", lng);
+        parametersPair.put("lat", lat);
+        task.get(uri, parametersPair);
+    }
+
+    /**
+     * 获取送心意列表
+     *
+     * @param context
+     * @param listener
+     */
+    public void getMindList(Context context, HttpTaskListener listener, String id) {
+        String uri = Constant.http + "/jk_mind!getMindMessage.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("id", id);
+        task.get(uri, parametersPair);
+    }
+
+    /**
+     * 医师详情
+     *
+     * @param context
+     * @param listener
+     * @param doctorID 医师ID
+     */
+    public void getDoctorDetail(Context context, HttpTaskListener listener, String doctorID) {
+        String uri = Constant.http + "/jk_doctor!getDoctorDetail.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("doctorId", doctorID);
+        if (MyApplication.getInstance().isUserLogin()) {
+            parametersPair.put("userId", AppSpUtil.getInstance().getUserInfo().getUserId());
+        }
+        task.get(uri, parametersPair);
+    }
+
+    /**
+     * 医师问诊模块
+     *
+     * @param context
+     * @param listener
+     * @param doctorID 医师ID
+     */
+    public void getDoctorInquiryList(Context context, HttpTaskListener listener, String doctorID) {
+        String uri = Constant.http + "/jk_inquiry!searchInquiryList.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("doctorId", doctorID);
+        parametersPair.put("sortType", "ASC");
+        task.get(uri, parametersPair);
+    }
+
+    /**
+     * 医师用户反馈积分
+     *
+     * @param context
+     * @param listener
+     * @param doctorID 医师ID
+     */
+    public void getDoctorUserFreeback(Context context, HttpTaskListener listener, String doctorID) {
+        String uri = Constant.http + "/jk_feedback!searchFeedbackList.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("doctorId", doctorID);
         task.get(uri, parametersPair);
     }
 }

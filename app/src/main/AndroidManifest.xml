@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xiuman.xingjiankang">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"> </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"> </uses-permission>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -27,6 +29,19 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="com.baidu.location.service_v2.2" >
+                </action>
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="89a71f9ec7d052fc520cf4bee371be4e" />
 
         <activity android:name="com.xiuman.xinjiankang.activity.WelcomeActivity">
             <intent-filter>
@@ -111,6 +126,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SwipeBack">
         </activity>
+
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.DoctorDetailActivity"
+            android:launchMode="singleTask"
+            android:label="医师详情"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack">
+        </activity>
+
 
         <!--==============友盟分享===============-->
         <meta-data

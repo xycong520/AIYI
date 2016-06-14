@@ -23,6 +23,8 @@ public abstract class CommonRecyclerViewAdapter extends RecyclerView.Adapter {
         optionsRadius = MyApplication.getOptionsRadius();
     }
 
+
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CommonViewHolder viewHolder = CommonViewHolder.get(parent.getContext(), parent, viewType);

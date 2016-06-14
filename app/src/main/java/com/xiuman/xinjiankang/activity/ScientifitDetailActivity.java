@@ -154,7 +154,7 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
     PopupWindow pw;
 
     private void showPop() {
-        View shareView = mActivity.getLayoutInflater().inflate(R.layout.layout_share_pop, null);
+        View shareView = mActivity.getLayoutInflater().inflate(R.layout.layout_pop_share, null);
         pw = new PopupWindow(shareView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ImageView sina = (ImageView) shareView.findViewById(R.id.bt_sina);
         ImageView qzone = (ImageView) shareView.findViewById(R.id.bt_QZone);

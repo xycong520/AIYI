@@ -51,7 +51,6 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.3.0'
     compile 'com.balysv:material-ripple:1.0.2'
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.0.6@aar'
-
     compile files('libs/SocialSDK_Sina.jar')
     compile files('libs/weiboSDKCore_3.1.4.jar')
     compile files('libs/SocialSDK_QQZone_3.jar')
@@ -61,4 +60,5 @@ dependencies {
     compile files('libs/libammsdk.jar')
     compile files('libs/SocialSDK_WeiXin_2.jar')
     compile files('libs/httpmime-4.1.3.jar')
+    compile files('libs/locSDK_6.23.jar')
 }

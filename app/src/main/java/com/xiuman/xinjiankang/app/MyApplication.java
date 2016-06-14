@@ -35,7 +35,7 @@ public class MyApplication extends GlobalContext {
 
     public static ImageOptions getOptionsPhoto() {
         if (optionsPhoto == null) {
-            optionsPhoto = new ImageOptions.Builder().setCircular(true).setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setFailureDrawableId(R.drawable.onloading3).setLoadingDrawableId(R.drawable.onloading3).build();
+            optionsPhoto = new ImageOptions.Builder().setCircular(true).setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setFailureDrawableId(R.mipmap.xjk_pic_head_logo).setLoadingDrawableId(R.mipmap.xjk_pic_head_logo).build();
         }
         return optionsPhoto;
     }

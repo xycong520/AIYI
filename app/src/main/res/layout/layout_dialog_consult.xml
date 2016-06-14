@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/xjk_dialog_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/xjk_ic_inquiry_image"
+        android:layout_marginTop="22dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="15dp"
+        android:text="图文咨询"
+        android:textColor="@color/color_black" />
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginRight="25dp"
+        android:text="服务介绍:通过文字、图片进行一对一咨询。￥10元/次"/>
+    <TextView
+        android:id="@+id/tv_once_consult"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:text="我要咨询"
+        android:textSize="15sp"
+        android:textColor="@color/color_white"
+        android:background="@drawable/xjk_goto_consult_bg"/>
+</LinearLayout>
