@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent">
 
     <RelativeLayout
         android:layout_width="100.0dip"
         android:layout_height="100.0dip"
         android:layout_centerInParent="true"
-        android:background="#ffcecece"
-        android:padding="1.0dip" >
+        android:padding="1.0dip">
 
         <ImageView
             android:id="@+id/media_thumb"
             android:layout_width="99.0dp"
             android:layout_height="99.0dp"
+            android:adjustViewBounds="true"
             android:scaleType="centerCrop" />
 
         <CheckBox

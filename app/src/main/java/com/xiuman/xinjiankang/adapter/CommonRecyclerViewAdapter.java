@@ -19,7 +19,7 @@ public abstract class CommonRecyclerViewAdapter extends RecyclerView.Adapter {
 
     public CommonRecyclerViewAdapter(List<BeanCommonViewType> datas) {
         this.datas = datas;
-        options = MyApplication.getOptionsPhoto();
+        options = MyApplication.getOptionsCircularPhoto();
         optionsRadius = MyApplication.getOptionsRadius();
     }
 

@@ -5,7 +5,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -13,17 +12,21 @@ import android.widget.TextView;
  */
 public class ViewHolder {
     private final SparseArray<View> mViews;
-    private int mPosition;
     private View mConvertView;
+    private int position;
 
     private ViewHolder(Context context, ViewGroup parent, int layoutId,
                        int position) {
-        this.mPosition = position;
         this.mViews = new SparseArray<View>();
         mConvertView = LayoutInflater.from(context).inflate(layoutId, parent,
                 false);
-        // setTag
+        //setTag
         mConvertView.setTag(this);
+        this.position = position;
+    }
+
+    public int getPosition() {
+        return position;
     }
 
     /**
@@ -38,18 +41,16 @@ public class ViewHolder {
      */
     public static ViewHolder get(Context context, View convertView,
                                  ViewGroup parent, int layoutId, int position) {
+
         if (convertView == null) {
             return new ViewHolder(context, parent, layoutId, position);
         } else {
             ViewHolder holder = (ViewHolder) convertView.getTag();
-            holder.setmPosition(position);
-            return holder;
+            holder.position = position;
         }
+        return (ViewHolder) convertView.getTag();
     }
 
-    public View getConvertView() {
-        return mConvertView;
-    }
 
     /**
      * 通过控件的Id获取对于的控件，如果没有则加入views
@@ -58,6 +59,7 @@ public class ViewHolder {
      * @return
      */
     public <T extends View> T getView(int viewId) {
+
         View view = mViews.get(viewId);
         if (view == null) {
             view = mConvertView.findViewById(viewId);
@@ -66,39 +68,18 @@ public class ViewHolder {
         return (T) view;
     }
 
-    /**
-     * 为TextView设置字符串
-     *
-     * @param viewId
-     * @param text
-     * @return
-     */
+    public void setTag(int viewID, Object obj) {
+        getView(viewID).setTag(viewID, obj);
+    }
+
     public ViewHolder setText(int viewId, String text) {
         TextView view = getView(viewId);
         view.setText(text);
         return this;
     }
 
-    /**
-     * 为ImageView设置图片
-     *
-     * @param viewId
-     * @param drawableId
-     * @return
-     */
-    public ViewHolder setImageResource(int viewId, int drawableId) {
-        ImageView view = getView(viewId);
-        view.setImageResource(drawableId);
-
-        return this;
+    public View getConvertView() {
+        return mConvertView;
     }
 
-
-    public int getPosition() {
-        return mPosition;
-    }
-
-    public void setmPosition(int mPosition) {
-        this.mPosition = mPosition;
-    }
 }

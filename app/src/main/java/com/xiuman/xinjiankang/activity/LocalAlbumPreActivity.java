@@ -2,12 +2,16 @@ package com.xiuman.xinjiankang.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -21,6 +25,7 @@ import com.xiuman.xinjiankang.base.BaseActivity;
 import com.xiuman.xinjiankang.bean.AlbumEntity;
 import com.xiuman.xinjiankang.bean.ImageEntity;
 
+import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -39,6 +44,7 @@ public class LocalAlbumPreActivity extends BaseActivity implements OnClickListen
     private boolean IsFromHoutai;                           // 标记是不是从后台图片管理的上传按钮过来的
     private boolean isSetPhoto;                           // 标记是不是选择头像
     int selectCount = 0;
+    ImageOptions options;
 
     @Override
     protected void initView() {
@@ -50,6 +56,7 @@ public class LocalAlbumPreActivity extends BaseActivity implements OnClickListen
         mGridView = (GridView) findViewById(R.id.media_in_folder_gv);
         hintFromat = getResources().getString(R.string.select_photo_at_most);
         btnSend.setOnClickListener(this);
+        options = new ImageOptions.Builder().setConfig(Bitmap.Config.RGB_565).setUseMemCache(true).setImageScaleType(ImageView.ScaleType.CENTER_CROP).setFailureDrawableId(R.drawable.onloading).setLoadingDrawableId(R.drawable.onloading).build();
         obtainData();
     }
 
@@ -67,6 +74,7 @@ public class LocalAlbumPreActivity extends BaseActivity implements OnClickListen
         maxImagesCount = intent.getIntExtra("maxImageCount", 9);
 
         AlbumEntity entity = LocalAlbumActivity.mData.get(albumName);
+        setToolbarTitle(albumName);
         albumImages = entity.getImages();
 
         mAdapter = new CommonAdapter<ImageEntity>(this, albumImages, R.layout.item_grid_album_pre) {
@@ -75,7 +83,7 @@ public class LocalAlbumPreActivity extends BaseActivity implements OnClickListen
                 CheckBox mCheckBox = helper.getView(R.id.media_cbx);
                 mCheckBox.setTag(helper.getPosition());
                 ImageView iv = helper.getView(R.id.media_thumb);
-                x.image().bind(iv,item.getPath());
+                x.image().bind(iv,item.getPath(), options);
                 if (item.isSelected()) {
                     mCheckBox.setChecked(true);
                 } else {
@@ -105,10 +113,11 @@ public class LocalAlbumPreActivity extends BaseActivity implements OnClickListen
                 }
             };
         };
-        mGridView.setAdapter(mAdapter);
+
+
+        mGridView.setAdapter(mAdapter/*new MyAdapter()*/);
         mGridView.setOnItemClickListener(this);
     }
-
     private void updataSelectCount() {
         if (selectCount>0){
             selectedCountBg.setVisibility(View.VISIBLE);
@@ -248,6 +257,48 @@ public class LocalAlbumPreActivity extends BaseActivity implements OnClickListen
             default:
                 break;
         }*/
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+    }
+
+    class MyAdapter extends BaseAdapter{
+
+        @Override
+        public int getCount() {
+            return albumImages.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Holder holder = null;
+            if (convertView == null){
+                holder = new Holder();
+                convertView = LayoutInflater.from(mActivity).inflate(R.layout.item_grid_album_pre,null);
+                holder.ivPic = (ImageView) convertView.findViewById(R.id.media_thumb);
+                convertView.setTag(holder);
+            }else{
+                holder = (Holder) convertView.getTag();
+            }
+            x.image().bind(holder.ivPic,albumImages.get(position).getPath(),options);
+            return convertView;
+        }
+        class Holder {
+            ImageView ivPic;
+        }
     }
 
 }

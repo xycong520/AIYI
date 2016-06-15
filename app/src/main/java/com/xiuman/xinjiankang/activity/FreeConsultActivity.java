@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -32,9 +35,12 @@ import com.xiuman.xinjiankang.app.MyApplication;
 import com.xiuman.xinjiankang.base.BaseActivity;
 import com.xiuman.xinjiankang.bean.Dministartive;
 import com.xiuman.xinjiankang.bean.FreeConsultNum;
+import com.xiuman.xinjiankang.bean.ImageEntity;
+import com.xiuman.xinjiankang.bean.VipConsultNum;
 import com.xiuman.xinjiankang.constant.Constant;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
+import com.xiuman.xinjiankang.utils.UIHelper;
 
 import org.xutils.x;
 
@@ -48,6 +54,9 @@ import butterknife.OnClick;
  * Created by PCPC on 2016/6/12.
  */
 public class FreeConsultActivity extends BaseActivity implements OnClickListener {
+    //标示是否是免费咨询
+    public static final String parameIS_FRESS = "isFress";
+    boolean isFree = true;
     @Bind(R.id.rgSex)
     RadioGroup rgSex;
     //年龄
@@ -84,7 +93,8 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
 //    private ImageEntity listEnty;
     private int isAnonymity = 1;
     private int Sex = 0;
-    private int maxImageCount = 5;
+    private final int maxImageCount = 5;
+    private int canGetImageCount = 5;
     private String str = "%s用户已咨询";
     private ProgressDialog pd;
     private String dministartiveId = "";
@@ -92,6 +102,14 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
     @Override
     protected void initView() {
         setupToolbar();
+        isFree = getIntent().getBooleanExtra(parameIS_FRESS, true);
+        if (isFree){
+            findViewById(R.id.layoutAddPic).setVisibility(View.GONE);
+        }else{
+            setToolbarTitle("VIP咨询");
+            findViewById(R.id.layoutClassify).setVisibility(View.GONE);
+            findViewById(R.id.layoutAddPic).setVisibility(View.VISIBLE);
+        }
         rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -111,22 +129,36 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
         requestDepartment();
     }
 
+    //获取咨询数
     public void requestData() {
-        AppManager.getUserRequest().getFreeListCount(mActivity, new HttpTaskListener() {
-            @Override
-            public void dataSucceed(String result) {
-                FreeConsultNum message = new Gson().fromJson(result, FreeConsultNum.class);
-                if (message != null && message.isSuccess()) {
-                    consultNum.setText(String.format(str, message.getDatasource().getCount()));
-                }
-            }
-
-            @Override
-            public void dataError(String result) {
-                AppManager.showToast(mActivity, result);
-            }
-        });
+        if (isFree) {
+            AppManager.getUserRequest().getFreeListCount(mActivity, consultNumListener);
+        } else {
+            AppManager.getUserRequest().getVipListCount(mActivity, consultNumListener);
+        }
     }
+
+    HttpTaskListener consultNumListener =
+            new HttpTaskListener() {
+                @Override
+                public void dataSucceed(String result) {
+                    if (isFree){
+                        FreeConsultNum message = new Gson().fromJson(result, FreeConsultNum.class);
+                        if (message != null && message.isSuccess()) {
+                            consultNum.setText(String.format(str, message.getDatasource().getCount()));
+                        }
+                    }else{
+                        VipConsultNum message = new Gson().fromJson(result,VipConsultNum.class);
+                        if (message != null && message.getSuccess()) {
+                            consultNum.setText(String.format(str, message.getDatasource()));
+                        }
+                    }
+                }
+                @Override
+                public void dataError(String result) {
+                    AppManager.showToast(mActivity, result);
+                }
+            };
 
     //请求科室
     private void requestDepartment() {
@@ -174,6 +206,7 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
                 break;
             //相机选择照片
             case R.id.btn_pop_photo_camera:
+                doTakePhoto();
                 if (popupWindow != null) {
                     popupWindow.dismiss();
                 }
@@ -181,7 +214,7 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
             //相册选择照片
             case R.id.btn_pop_photo_album:
                 Intent i = new Intent(mActivity, LocalAlbumActivity.class);
-                i.putExtra(LocalAlbumActivity.MAX_IMAGE_COUNT, maxImageCount);// 最多3张图片
+                i.putExtra(LocalAlbumActivity.MAX_IMAGE_COUNT, canGetImageCount);// 可选张数
                 startActivityForResult(i, Constant.GET_IMAGE_FROM_ALBUM);
                 if (popupWindow != null) {
                     popupWindow.dismiss();
@@ -271,6 +304,7 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
         return super.onCreateOptionsMenu(menu);
     }
 
+    ArrayList<String> imgsPath = new ArrayList<>();
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -283,15 +317,44 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
                         findViewById(R.id.llyt_tv_message).setVisibility(View.GONE);
                         //加入选择的照片并将最大可选图片数减小
                         for (String url : imgs) {
+                            imgsPath.add(url);
                             layoutPic.addView(getImageView(url));
-                            maxImageCount--;
+                            canGetImageCount--;
                         }
-                        if (layoutPic.getChildCount() >= 5) {
+                        if (layoutPic.getChildCount() >= maxImageCount) {
                             ivAddPic.setVisibility(View.GONE);
-                        }else{
+                        } else {
                             ivAddPic.setVisibility(View.VISIBLE);
                         }
                     }
+                }
+                break;
+            case Constant.GET_IMAGE_BY_TAKE_PHOTO:
+                if (resultCode == Activity.RESULT_OK) {
+                    ImageEntity entity = new ImageEntity();
+                    entity.setPath(fileUri.toString());
+                    layoutPic.addView(getImageView(fileUri.toString()));
+                    imgsPath.add(fileUri.toString());
+                    canGetImageCount--;
+                    if (layoutPic.getChildCount() >= maxImageCount) {
+                        ivAddPic.setVisibility(View.GONE);
+                    } else {
+                        ivAddPic.setVisibility(View.VISIBLE);
+                    }/*
+                    images.add(entity);
+                    if (images.size() > 0) {
+                        llyt_tv_message.setVisibility(View.GONE);
+                    } else {
+                        llyt_tv_message.setVisibility(View.VISIBLE);
+                    }
+                    if (images.size() >= 5) {
+                        iv_add_picture.setVisibility(View.GONE);
+                        iv_add_picture.setClickable(false);
+                    } else {
+                        iv_add_picture.setVisibility(View.VISIBLE);
+                        iv_add_picture.setClickable(true);
+                    }
+                    initPicture();*/
                 }
                 break;
         }
@@ -302,5 +365,43 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
         ImageView iv = (ImageView) v.findViewById(R.id.ivImage);
         x.image().bind(iv, url, MyApplication.getOptionsRadius());
         return v;
+    }
+    //打开相机并制定照片路径
+    public void doTakePhoto() {
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            Intent intent2 = new Intent("android.media.action.IMAGE_CAPTURE");
+            fileUri = UIHelper.getOutputMediaFileUri(UIHelper.MEDIA_TYPE_IMAGE);
+            intent2.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+            startActivityForResult(intent2, Constant.GET_IMAGE_BY_TAKE_PHOTO);
+        } else {
+            Toast.makeText(mActivity, "SD卡不存在", Toast.LENGTH_SHORT).show();
+        }
+    }
+    ArrayList<String> paths = new ArrayList<>();
+    private void initPicture() {
+//        llyt_picture.removeAllViews();
+//        for (int i = 0; i < images.size(); i++) {
+//            View view = LayoutInflater.from(mActivity).inflate(R.layout.xjk_item_vip_grida, null);
+//            RoundedImageView imageview = (RoundedImageView) view.findViewById(R.id.item_grida_image);
+//            paths.add(images.get(i).getPath());
+//            loader.displayImage(images.get(i).getPath(), imageview, options);
+//            imageview.setTag(i);
+//            imageview.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    int tag = (int) v.getTag();
+//                    Intent intent = new Intent(mActivity, PhotoPagerActivity.class/*AlbumSelectedGalleryActivity.class*/);
+//                    intent.putExtra(PhotoPagerActivity.EXTRA_CURRENT_ITEM, tag);
+//                    intent.putExtra(PhotoPagerActivity.EXTRA_PHOTOS, paths);
+//                    intent.putExtra(PhotoPagerActivity.EXTRA_SHOW_DELETE, false);
+//                    intent.putExtra(PhotoPagerActivity.EXTRA_TYPE, 2);
+////                    intent.putExtra("datas", images);
+////                    intent.putExtra("position", tag);
+//                    startActivityForResult(intent, RequestCoder.SEND_ALBUM_PRE_GALLERY);
+//                }
+//            });
+//            llyt_picture.addView(view);
+//        }
     }
 }

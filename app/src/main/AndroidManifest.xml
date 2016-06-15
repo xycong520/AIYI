@@ -105,19 +105,16 @@
         <activity
             android:name="com.xiuman.xinjiankang.activity.FreeConsultActivity"
             android:label="免费咨询"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SwipeBack" />
         <activity
             android:name="com.xiuman.xinjiankang.activity.LocalAlbumActivity"
             android:label="选择图片"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SwipeBack" />
         <activity
             android:name="com.xiuman.xinjiankang.activity.LocalAlbumPreActivity"
             android:label="选择图片"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SwipeBack" />
         <activity

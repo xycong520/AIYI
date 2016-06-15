@@ -1,6 +1,7 @@
 package com.xiuman.xinjiankang.app;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.widget.ImageView;
@@ -31,18 +32,18 @@ public class MyApplication extends GlobalContext {
     // 单例
     private static MyApplication instance;
 
-    public static ImageOptions optionsPhoto, optionsRadius;
+    public static ImageOptions optionsCircularPhoto, optionsRadius;
 
-    public static ImageOptions getOptionsPhoto() {
-        if (optionsPhoto == null) {
-            optionsPhoto = new ImageOptions.Builder().setCircular(true).setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setFailureDrawableId(R.mipmap.xjk_pic_head_logo).setLoadingDrawableId(R.mipmap.xjk_pic_head_logo).build();
+    public static ImageOptions getOptionsCircularPhoto() {
+        if (optionsCircularPhoto == null) {
+            optionsCircularPhoto = new ImageOptions.Builder().setCircular(true).setConfig(Bitmap.Config.RGB_565).setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setFailureDrawableId(R.mipmap.xjk_pic_head_logo).setLoadingDrawableId(R.mipmap.xjk_pic_head_logo).build();
         }
-        return optionsPhoto;
+        return optionsCircularPhoto;
     }
 
     public static ImageOptions getOptionsRadius() {
         if (optionsRadius == null) {
-            optionsRadius = new ImageOptions.Builder().setRadius(SizeUtil.dip2px(instance, 10)).setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setFailureDrawableId(R.drawable.onloading3).setLoadingDrawableId(R.drawable.onloading3).build();
+            optionsRadius = new ImageOptions.Builder().setRadius(SizeUtil.dip2px(instance, 10)).setConfig(Bitmap.Config.RGB_565).setUseMemCache(true).setImageScaleType(ImageView.ScaleType.FIT_XY).setFailureDrawableId(R.drawable.onloading).setLoadingDrawableId(R.drawable.onloading).build();
         }
         return optionsRadius;
     }

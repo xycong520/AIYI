@@ -3,15 +3,19 @@ package com.xiuman.xinjiankang.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.provider.MediaStore.MediaColumns;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +30,7 @@ import com.xiuman.xinjiankang.bean.ImageEntity;
 import com.xiuman.xinjiankang.constant.Constant;
 import com.xiuman.xinjiankang.utils.UIHelper;
 
+import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -48,6 +53,7 @@ public class LocalAlbumActivity extends BaseActivity implements OnItemClickListe
 
     private boolean IsFromHoutai;      // 标记是不是从后台管理的上传图片过来的
     private Uri fileUri;
+    ImageOptions options;
 
     private static final String[] PROJECTION = {MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.BUCKET_DISPLAY_NAME, // file
             // name
@@ -60,6 +66,7 @@ public class LocalAlbumActivity extends BaseActivity implements OnItemClickListe
     protected void initView() {
         setupToolbar();
         boolean isTakePhoto = getIntent().getBooleanExtra("isTakePhoto", false);
+        options = new ImageOptions.Builder().setConfig(Bitmap.Config.RGB_565).setUseMemCache(true).setImageScaleType(ImageView.ScaleType.CENTER_CROP).setFailureDrawableId(R.drawable.onloading).setLoadingDrawableId(R.drawable.onloading).build();
         if (isTakePhoto) {
             //takePicture();
         } else {
@@ -106,13 +113,13 @@ public class LocalAlbumActivity extends BaseActivity implements OnItemClickListe
                 ImageView iv = holder.getView(R.id.folder_thumb);
                 TextView tvCount = holder.getView(R.id.media_files_count);
                 TextView tvName = holder.getView(R.id.folder_name);
-                x.image().bind(iv, item.getCoverUri());
+                x.image().bind(iv, item.getCoverUri(),options);
                 tvCount.setText(item.getImages().size() + "");
                 tvName.setText(item.getName());
                 iv.setTag(item.getName());
             }
         };
-        mGridView.setAdapter(adapter);
+        mGridView.setAdapter(adapter/*new MyAdapter()*/);
     }
 
     private HashMap<String, AlbumEntity> find() {
@@ -209,6 +216,41 @@ public class LocalAlbumActivity extends BaseActivity implements OnItemClickListe
                 break;
             default:
                 break;
+        }
+    }
+    class MyAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return mData.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Holder holder = null;
+            if (convertView == null){
+                holder = new Holder();
+                convertView = LayoutInflater.from(mActivity).inflate(R.layout.item_grid_album,null);
+                holder.ivPic = (ImageView) convertView.findViewById(R.id.folder_thumb);
+                convertView.setTag(holder);
+            }else{
+                holder = (Holder) convertView.getTag();
+            }
+            x.image().bind(holder.ivPic,mDatas.get(position).getCoverUri(),options);
+            return convertView;
+        }
+        class Holder {
+            ImageView ivPic;
         }
     }
 }

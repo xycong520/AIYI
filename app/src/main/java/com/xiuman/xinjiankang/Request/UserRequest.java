@@ -393,6 +393,18 @@ public class UserRequest {
         Map<String, Object> parametersPair = new HashMap<String, Object>();
         httpDataTask.get(url, parametersPair);
     }
+    /**
+     * VIP咨询数量
+     *
+     * @param mContext
+     * @param httpTaskListener
+     */
+    public void getVipListCount(Context mContext, HttpTaskListener httpTaskListener) {
+        String url = Constant.http + "/jk_vip_consulting!getFinishCount.action";
+        HttpDataTask httpDataTask = new HttpDataTask(mContext, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        httpDataTask.get(url, parametersPair);
+    }
 
     /**
      * 获取科室列表

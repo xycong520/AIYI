@@ -275,7 +275,7 @@ public class DoctorDetailActivity extends BaseActivity implements View.OnClickLi
             tvAttention.setText("关注ta");
         }
 
-        x.image().bind(icon, datasource.getHeadimgurl(), MyApplication.getOptionsPhoto());
+        x.image().bind(icon, datasource.getHeadimgurl(), MyApplication.getOptionsCircularPhoto());
 
         name.setText(datasource.getDoctorName());
         prefossion.setText(datasource.getPosition());
@@ -395,13 +395,13 @@ public class DoctorDetailActivity extends BaseActivity implements View.OnClickLi
             //立即就诊
             case R.id.tv_once_consult:
                 if (doctorDetail != null) {
-//                    Intent vip = new Intent(mActivity, VIPActivity.class);
-//                    vip.putExtra("doctorName", doctorDetail.getDatasource().getDoctorName());
-//                    vip.putExtra("doctorID", doctorDetail.getDatasource().getDoctorId());
-//                    vip.putExtra("username", doctorDetail.getDatasource().getUsername());
-//                    vip.putExtra("icon", doctorDetail.getDatasource().getHeadimgurl());
-//                    startActivity(vip);
-//                    UIHelper.animSwitchActivity(mActivity, AnimDisplayMode.PUSH_LEFT);
+                    Intent vip = new Intent(mActivity, FreeConsultActivity.class);
+                    vip.putExtra(FreeConsultActivity.parameIS_FRESS, false);
+                    vip.putExtra("doctorName", doctorDetail.getDatasource().getDoctorName());
+                    vip.putExtra("doctorID", doctorDetail.getDatasource().getDoctorId());
+                    vip.putExtra("username", doctorDetail.getDatasource().getUsername());
+                    vip.putExtra("icon", doctorDetail.getDatasource().getHeadimgurl());
+                    startActivity(vip);
                     mDialog.dismiss();
                 }
                 break;

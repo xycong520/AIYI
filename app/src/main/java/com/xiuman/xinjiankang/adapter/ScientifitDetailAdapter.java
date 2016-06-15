@@ -43,7 +43,7 @@ public class ScientifitDetailAdapter extends RecyclerView.Adapter {
 
     public ScientifitDetailAdapter(List<BeanCommonViewType> datas) {
         this.datas = datas;
-        options = new ImageOptions.Builder().setUseMemCache(true).setLoadingDrawableId(R.drawable.onloading3).setImageScaleType(ImageView.ScaleType.FIT_XY).build();
+        options = new ImageOptions.Builder().setUseMemCache(true).setLoadingDrawableId(R.drawable.onloading).setImageScaleType(ImageView.ScaleType.FIT_XY).build();
     }
 
     @Override
@@ -94,7 +94,7 @@ public class ScientifitDetailAdapter extends RecyclerView.Adapter {
                 CommentViewHolder commentViewHolder = (CommentViewHolder) holder;
                 commentViewHolder.getTvContent().setText(comment.getContent());
                 commentViewHolder.getTvName().setText(comment.getNickname());
-                x.image().bind(commentViewHolder.getIvIcon(), comment.getAvatar(), MyApplication.getOptionsPhoto());
+                x.image().bind(commentViewHolder.getIvIcon(), comment.getAvatar(), MyApplication.getOptionsCircularPhoto());
                 commentViewHolder.getTvDate().setText(DateUtils.dateFormat2(comment.getCreateDate()));
                 break;
             case VIEWTYPE_COMMENT_EMPTEY:

@@ -42,7 +42,7 @@ public class DiseaseDetailAdapter extends RecyclerView.Adapter {
 
     public DiseaseDetailAdapter(List<BeanCommonViewType> datas) {
         this.datas = datas;
-        options = MyApplication.getOptionsPhoto();
+        options = MyApplication.getOptionsCircularPhoto();
     }
 
     @Override
