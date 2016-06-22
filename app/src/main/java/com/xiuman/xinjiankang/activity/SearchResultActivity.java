@@ -23,6 +23,8 @@ import com.xiuman.xinjiankang.constant.Constant;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
 
+import net.frakbot.jumpingbeans.JumpingBeans;
+
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -97,6 +99,9 @@ public class SearchResultActivity extends BaseActivity implements SwipeRefreshLa
                         x.image().bind(ivPhoto, item.getIcon(), optionsRadius);
                         break;
                     case R.layout.item_loadmore:
+                        TextView tvLoading = holder.getView(R.id.tvLoading);
+                        JumpingBeans.with(tvLoading).appendJumpingDots()
+                                .build();
                         break;
 
                 }

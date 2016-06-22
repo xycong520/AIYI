@@ -83,10 +83,10 @@
                             android:id="@+id/address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/llyt_name"
+                            android:layout_below="@+id/hospital_name"
                             android:layout_marginLeft="6dp"
                             android:layout_marginTop="12dp"
-                            android:layout_toRightOf="@+id/hospital_name"
+                            android:layout_alignLeft="@+id/hospital_name"
                             android:textColor="@color/text_color"
                             android:textSize="@dimen/txt_size_12" />
 

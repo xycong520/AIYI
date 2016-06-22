@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">爱医</string>
+    <string name="app_name_debug">爱医-debug</string>
     <!-- 用户登录界面 -->
     <string name="login_hint_user_name">手机号码/性多多帐号</string>
     <string name="login_find_psw">找回密码</string>
@@ -10,7 +11,34 @@
     <string name="login_hint_psw">6~16位密码</string>
     <string name="login_forget_psw1">忘记密码？去</string>
     <string name="login_forget_psw2">找回</string>
-
+    <!-- 用户信息界面 -->
+    <string name="user_info">个人资料</string>
+    <string name="user_head">头像</string>
+    <string name="user_rank">会员等级</string>
+    <string name="user_name">昵称</string>
+    <string name="user_address">我的收货地址</string>
+    <string name="user_sex">性别</string>
+    <string name="user_email">我的邮箱</string>
+    <string name="user_update">修改密码</string>
+    <string name="user_update_info">编辑个人信息</string>
+    <string name="user_create">注册时间</string>
+    <string name="user_exit">退出登录</string>
+    <!-- 修改个人信息界面 -->
+    <string name="update_info_phone">联系方式：</string>
+    <string name="update_info_sex">性别：</string>
+    <string name="update_info_ems">邮政编码：</string>
+    <string name="update_info_birth">出生日期：</string>
+    <string name="update_info_name">姓名：</string>
+    <string name="update_info_nickname">昵称：</string>
+    <string name="update_hint_address">请选择您所在的地区</string>
+    <string name="update_hint_address_info">请填写您的详细地址</string>
+    <string name="update_hint_birth">请选择您的出生日期</string>
+    <string name="update_hint_phone">请输入您的联系方式</string>
+    <string name="update_hint_name">请输入您的姓名</string>
+    <string name="update_hint_nickname">请输入您的昵称</string>
+    <string name="update_hint_sex">请选择您的性别</string>
+    <string name="update_submit">提交修改</string>
+    <string name="Are_logged_out">正在退出登录..</string>
     <string name="net_error">网络请求失败，请稍后在试~</string>
     <string name="load_error">加载失败，请重试~</string>
 
@@ -30,4 +58,7 @@
         <item>RotateDown</item>
         <item>Accordion</item>
     </string-array>
+    <!--环信-->
+    <string name="text_delivered_msg">送达</string>
+    <string name="text_ack_msg">已读</string>
 </resources>

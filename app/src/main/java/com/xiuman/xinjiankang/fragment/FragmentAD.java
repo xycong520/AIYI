@@ -79,6 +79,13 @@ public class FragmentAD extends Fragment {
         return thisView;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        myPager.stopAutoScroll();
+    }
+
+
     //初始化viewpager角标
     private void initPager(Wrapper<Advertisiment> wrapper) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -228,6 +235,7 @@ public class FragmentAD extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        myPager.startAutoScroll();
     }
 
     @Override

@@ -1,15 +1,22 @@
 package com.xiuman.xinjiankang.app;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.widget.ImageView;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMOptions;
 import com.umeng.socialize.PlatformConfig;
 import com.xiuman.xingjiankang.R;
-import com.xiuman.xinjiankang.utils.AppSpUtil;
+import com.xiuman.xinjiankang.constant.Constant;
+import com.xiuman.xinjiankang.utils.AppInfoUtils;
 import com.xiuman.xinjiankang.utils.SizeUtil;
+import com.xiuman.xinjiankang.utils.logger.LogLevel;
+import com.xiuman.xinjiankang.utils.logger.Logger;
 
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
@@ -19,8 +26,6 @@ import org.xutils.x;
  * Created by csx on 15/4/15.
  */
 public class MyApplication extends GlobalContext {
-    //获取到主线程的上下文
-    private static MyApplication mContext;
     //    //获取到主线程的handler
 //    private static Handler mMainThreadHandler ;
 //    //获取到主线程轮询器
@@ -32,6 +37,7 @@ public class MyApplication extends GlobalContext {
     // 单例
     private static MyApplication instance;
 
+    //图片配置器，圆形图和圆角图
     public static ImageOptions optionsCircularPhoto, optionsRadius;
 
     public static ImageOptions getOptionsCircularPhoto() {
@@ -51,9 +57,22 @@ public class MyApplication extends GlobalContext {
     @Override
     public void onCreate() {
         super.onCreate();
+        //环信初始化-----------------------
+        EMOptions options = new EMOptions();
+        // 默认添加好友时，是不需要验证的，改成需要验证
+        options.setAcceptInvitationAlways(false);
+        // 设置是否需要已读回执
+        options.setRequireAck(true);
+        // 设置是否需要已送达回执
+        options.setRequireDeliveryAck(false);
+        //初始化
+        EMClient.getInstance().init(this, options);
+        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+        EMClient.getInstance().setDebugMode(true);
+        //--------------------END-----------------------//
+        //xUtils初始化
         x.Ext.init(this);
         instance = this;
-        mContext = this;
         //微信 appid appsecret
         PlatformConfig.setWeixin(AppConfig.WX_APP_ID, AppConfig.WX_SECRET);
         //新浪微博 appkey appsecret
@@ -64,6 +83,13 @@ public class MyApplication extends GlobalContext {
 //        mMainThreadLooper = getMainLooper();
 //        mMainThread  = Thread.currentThread();
 //        mMainThreadId = android.os.Process.myTid();
+        if (AppConfig.isDebug) {
+            Logger.init(AppInfoUtils.getApplicationName()).setLogLevel(LogLevel.FULL);
+        } else {
+            Constant.http = "http://www.popodd.com/shopxx/app";
+            Constant.userLoogin = "http://www.popodd.com/shopxx/shop";
+            Logger.init(AppInfoUtils.getApplicationName()).setLogLevel(LogLevel.NONE);
+        }
     }
 
 
@@ -96,48 +122,31 @@ public class MyApplication extends GlobalContext {
         return IMEI;
     }
 
+        /**
+         * return 描述：获取友盟渠道信息
+         * 时间 2014-12-10
+         */
+        public String getUmengChannel() {
+            ApplicationInfo appInfo = null;
+            try {
+                appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String msg = appInfo.metaData.getString("UMENG_CHANNEL");
+            return msg;
 
-    /**
-     * @return 2014-8-12
-     * 描述：查看用户是否登录
-     */
-    public boolean isUserLogin() {
-        if (AppSpUtil.getInstance().getUserInfo() != null)
-            return true;
-        else {
-            AppSpUtil.getInstance().deleteUserInfo();
-            return false;
         }
-    }
-    /**
-     * return 描述：获取友盟渠道信息
-     * 时间 2014-12-10
-     */
-    /*public String getUmengChannel() {
-        ApplicationInfo appInfo = null;
-        try {
-            appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        /**
+         * 获取单例
+         *
+         * @return
+         */
+        public static MyApplication getInstance() {
+            return instance;
         }
-        String msg = appInfo.metaData.getString("UMENG_CHANNEL");
-        return msg;
 
-    }*/
-
-    /**
-     * 获取单例
-     *
-     * @return
-     */
-    public static MyApplication getInstance() {
-        return instance;
-    }
-
-    //对外暴露一个上下文
-    public static MyApplication getApplication() {
-        return mContext;
-    }
 //    //对外暴露一个主线程的handelr
 //    public static Handler getMainThreadHandler(){
 //        return mMainThreadHandler;
@@ -154,4 +163,4 @@ public class MyApplication extends GlobalContext {
 //    public static int getMainThreadId(){
 //        return mMainThreadId;
 //    }
-}
+    }

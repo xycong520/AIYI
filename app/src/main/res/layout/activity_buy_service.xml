@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/layout_appbar" />
+
+    <LinearLayout
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appbar"
+        android:background="@color/color_bg"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/color_bg"></View>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_white">
+
+            <TextView
+                android:id="@+id/douctor_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/xjk_main_margin"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/txt_size_12" />
+
+            <TextView
+                android:id="@+id/tv_service"
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@+id/douctor_name"
+                android:background="@drawable/xjk_service_doctor_bg"
+                android:gravity="center"
+                android:padding="1dp"
+                android:text="文字问诊"
+                android:textColor="@color/color_white"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/tv_cost_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text="10元"
+                android:textColor="#ff0000"
+                android:textSize="@dimen/txt_size_14" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line_color_bg"></View>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/color_white"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/xjk_main_margin"
+            android:text="选择付款方式"
+            android:textSize="@dimen/txt_size_15" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/line_color_bg"></View>
+
+        <LinearLayout
+            android:id="@+id/ll_zhifubao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/xjk_main_margin"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@mipmap/xjk_icon_pay_zhifubao" />
+
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="支付宝支付"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/txt_size_12" />
+
+                <TextView
+                    android:id="@+id/tv_order_pay_zhifubao_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:text="推荐安装支付宝客户端的用户使用"
+                    android:textSize="9dp" />
+            </LinearLayout>
+
+            <!-- 选择框 -->
+            <CheckBox
+                android:id="@+id/zhifubao_cb"
+                android:layout_width="20dip"
+                android:layout_height="20dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/xjk_main_margin"
+                android:background="@drawable/xjk_select_cb"
+                android:button="@null"
+                android:clickable="false"
+                android:focusable="false" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line_color_bg"></View>
+
+        <LinearLayout
+            android:id="@+id/ll_wechat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/xjk_main_margin"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@mipmap/xjk_icon_pay_wechat" />
+
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="微信支付"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/txt_size_12" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip"
+                    android:text="推荐安装微信5.0及以上版本的用户使用"
+                    android:textColor="@color/text_color_666"
+                    android:textSize="9dp" />
+            </LinearLayout>
+
+            <!-- 选择框 -->
+            <CheckBox
+                android:id="@+id/wechat_cb"
+                android:layout_width="20dip"
+                android:layout_height="20dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/xjk_select_cb"
+                android:button="@null"
+                android:clickable="false"
+                android:focusable="false" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e5e5e5"></View>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="#e5e5e5"
+            android:visibility="gone"></View>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_above="@+id/once_pay"
+                android:background="#e5e5e5"></View>
+
+            <Button
+                android:id="@+id/once_pay"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:background="@color/color_white"
+                android:gravity="center"
+                android:text="立即支付"
+                android:textColor="@color/xjk_title_text_color"
+                android:textSize="@dimen/txt_size_18" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <include layout="@layout/layout_loading" />
+</RelativeLayout>

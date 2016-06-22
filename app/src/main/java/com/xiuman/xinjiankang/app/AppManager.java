@@ -2,10 +2,12 @@ package com.xiuman.xinjiankang.app;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.widget.Toast;
 
 import com.xiuman.xinjiankang.Request.UserRequest;
+import com.xiuman.xinjiankang.utils.AppSpUtil;
 
 import java.util.Stack;
 
@@ -20,7 +22,7 @@ public class AppManager {
     public static Stack<Activity> activityStack;
     private static AppManager instance;
 
-    public int count = 0;
+    public static int count = 0;
 
     private AppManager() {
     }
@@ -42,7 +44,7 @@ public class AppManager {
      * @描述：添加Activity到堆栈
      * @日期：2014-12-8
      */
-    public void addActivity(Activity activity) {
+    public static void addActivity(Activity activity) {
         if (activityStack == null) {
             activityStack = new Stack<Activity>();
         }
@@ -53,7 +55,7 @@ public class AppManager {
     /**
      * 获取当前Activity（堆栈中最后一个压入的）
      */
-    public Activity currentActivity() {
+    public static Activity currentActivity() {
         Activity activity = activityStack.lastElement();
         return activity;
     }
@@ -62,7 +64,7 @@ public class AppManager {
      * @描述：结束当前Activity（堆栈中最后一个压入的）
      * @日期：2014-12-8
      */
-    public void finishActivity() {
+    public static void finishActivity() {
         Activity activity = activityStack.lastElement();
         finishActivity(activity);
     }
@@ -72,7 +74,7 @@ public class AppManager {
      * @描述：结束指定的Activity
      * @日期：2014-12-8
      */
-    public void finishActivity(Activity activity) {
+    public static void finishActivity(Activity activity) {
         if (activity != null) {
             activityStack.remove(activity);
             activity.finish();
@@ -135,5 +137,37 @@ public class AppManager {
 
     public static void showToast(Context c, String msg) {
         Toast.makeText(c, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    static ProgressDialog pd;
+
+    public static void showDialog(Context context) {
+        pd = new ProgressDialog(context);
+        pd.setMessage("请稍等...");
+        pd.setCanceledOnTouchOutside(false);
+        pd.show();
+    }
+
+    public static void dismiss() {
+        if (pd!=null){
+            pd.dismiss();
+            pd = null;
+        }
+    }
+
+    /**
+     * @return 2014-8-12
+     * 描述：查看用户是否登录
+     */
+    public static boolean isUserLogin() {
+        if (AppSpUtil.getInstance().getUserInfo() != null)
+            return true;
+        else {
+            AppSpUtil.getInstance().deleteUserInfo();
+            return false;
+        }
+    }
+    public static void loginOut(){
+        AppSpUtil.getInstance().deleteUserInfo();
     }
 }

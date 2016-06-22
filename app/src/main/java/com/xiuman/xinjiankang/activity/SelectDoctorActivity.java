@@ -5,9 +5,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -36,6 +38,8 @@ import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
 import com.xiuman.xinjiankang.utils.LocationUtils;
 
+import net.frakbot.jumpingbeans.JumpingBeans;
+
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -63,6 +67,12 @@ public class SelectDoctorActivity extends BaseActivity implements View.OnClickLi
     LinearLayout layoutOption;
     @Bind(R.id.tvTitle)
     TextView tvTitle;
+    @Bind(R.id.btn_clear_search_input)
+    ImageView ivClean;
+    @Bind(R.id.tv_search)
+    ImageView btSearch;
+    @Bind(R.id.et_search_input_keyword)
+    EditText etSearch;
 
     @Bind(R.id.tv_area)
     TextView tvAre;
@@ -108,6 +118,9 @@ public class SelectDoctorActivity extends BaseActivity implements View.OnClickLi
             public void convert(CommonViewHolder holder, int position) {
                 switch (getItemViewType(position)) {
                     case R.layout.item_loadmore:
+                        TextView tvLoading = holder.getView(R.id.tvLoading);
+                        JumpingBeans.with(tvLoading).appendJumpingDots()
+                                .build();
                         break;
                     case R.layout.item_search_doctor:
                         holder.itemView.setTag(position);
@@ -292,7 +305,7 @@ public class SelectDoctorActivity extends BaseActivity implements View.OnClickLi
     //初始化排序的PopupWindow
     private void initSortPop() {
         View inflate = inflater.inflate(R.layout.layout_pop_sort, null);
-        sortPop = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        sortPop = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         LinearLayout llty_sort_content = (LinearLayout) inflate.findViewById(R.id.llty_sort_content);
         TextView capacity = (TextView) inflate.findViewById(R.id.capacity);
         TextView assess = (TextView) inflate.findViewById(R.id.assess);
@@ -320,7 +333,7 @@ public class SelectDoctorActivity extends BaseActivity implements View.OnClickLi
     //初始化分类的PopupWindow
     private void initClassifyPop() {
         View inflate = inflater.inflate(R.layout.layout_pop_classify, null);
-        classifyPop = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        classifyPop = new PopupWindow(inflate, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         LinearLayout llyt_classify_content = (LinearLayout) inflate.findViewById(R.id.llyt_classify_content);
         ListView listview = (ListView) inflate.findViewById(R.id.listview);
 
@@ -359,14 +372,30 @@ public class SelectDoctorActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    @OnClick({R.id.tv_area, R.id.tv_sort, R.id.tv_classify})
+    @OnClick({R.id.tv_area, R.id.back, R.id.tv_sort, R.id.tv_classify, R.id.btn_clear_search_input, R.id.tv_search})
     public void onClick(View view) {
         super.onClick(view);
+
         switch (view.getId()) {
+            case R.id.back:
+                finish();
+                break;
+            case R.id.btn_clear_search_input:
+                etSearch.setText("");
+                break;
+            case R.id.tv_search:
+                keyWord = etSearch.getText().toString();
+                if (TextUtils.isEmpty(keyWord)) {
+                    AppManager.showToast(mActivity, "请输入搜索内容");
+                    return;
+                }
+                showSwipe();
+                requestData();
+                break;
             case R.id.layoutSearchDoctor:
                 int index = (int) view.getTag();
                 Intent i = new Intent(mActivity, DoctorDetailActivity.class);
-                i.putExtra(DoctorDetailActivity.parameID,((Doctor)mDatas.get(index).getBeanObj()).getDoctorId());
+                i.putExtra(DoctorDetailActivity.parameID, ((Doctor) mDatas.get(index).getBeanObj()).getDoctorId());
                 startActivity(i);
                 break;
             //选择地区

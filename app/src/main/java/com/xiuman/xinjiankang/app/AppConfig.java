@@ -7,11 +7,12 @@ package com.xiuman.xinjiankang.app;
  *          描述：常量信息的定义
  */
 public class AppConfig {
+    public static boolean isDebug = true;
     // 图片地址前缀
     public static final String IMG_IP = "http://www.popodd.com/shopxx";
 
     // 渠道标识
-//    public final static String CHANNEL = MyApplication.getInstance().getUmengChannel();
+    public final static String CHANNEL = MyApplication.getInstance().getUmengChannel();
     // 发起临时会话的腾讯ID
     public final static String APP_ID = "1104742357";
     //友盟在线参数 debug false无限制，true>10min

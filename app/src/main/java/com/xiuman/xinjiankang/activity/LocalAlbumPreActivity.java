@@ -83,7 +83,7 @@ public class LocalAlbumPreActivity extends BaseActivity implements OnClickListen
                 CheckBox mCheckBox = helper.getView(R.id.media_cbx);
                 mCheckBox.setTag(helper.getPosition());
                 ImageView iv = helper.getView(R.id.media_thumb);
-                x.image().bind(iv,item.getPath(), options);
+                x.image().bind(iv, item.getPath(), options);
                 if (item.isSelected()) {
                     mCheckBox.setChecked(true);
                 } else {
@@ -91,22 +91,26 @@ public class LocalAlbumPreActivity extends BaseActivity implements OnClickListen
                 }
                 mCheckBox.setOnClickListener(checkBoxClick);
             }
+
             OnClickListener checkBoxClick = new OnClickListener() {
                 @Override
-                 public void onClick(View v) {
+                public void onClick(View v) {
                     int index = (int) v.getTag();
-                    if (selectCount>=maxImagesCount){
-                        AppManager.showToast(mActivity,String.format("最多选取%d张",maxImagesCount));
-                        notifyDataSetChanged();
-                        return;
-                    }
                     albumImages.get(index).setSelected(!albumImages.get(index).isSelected());
-                    if (albumImages.get(index).isSelected()){
-                        Animation anim= AnimationUtils.loadAnimation(mActivity,R.anim.xjk_photo_checked);
+
+                    if (albumImages.get(index).isSelected()) {
+                        Animation anim = AnimationUtils.loadAnimation(mActivity, R.anim.xjk_photo_checked);
                         v.startAnimation(anim);
                         selectCount++;
-                    }else {
+                    } else {
                         selectCount--;
+                    }
+                    if (selectCount > maxImagesCount) {
+                        AppManager.showToast(mActivity, String.format("最多选取%d张", maxImagesCount));
+                        albumImages.get(index).setSelected(!albumImages.get(index).isSelected());
+                        selectCount--;
+                        notifyDataSetChanged();
+                        return;
                     }
                     notifyDataSetChanged();
                     updataSelectCount();
@@ -118,15 +122,16 @@ public class LocalAlbumPreActivity extends BaseActivity implements OnClickListen
         mGridView.setAdapter(mAdapter/*new MyAdapter()*/);
         mGridView.setOnItemClickListener(this);
     }
+
     private void updataSelectCount() {
-        if (selectCount>0){
+        if (selectCount > 0) {
             selectedCountBg.setVisibility(View.VISIBLE);
             selectedCountLabel.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             selectedCountBg.setVisibility(View.GONE);
             selectedCountLabel.setVisibility(View.GONE);
         }
-        selectedCountLabel.setText(selectCount+"/"+maxImagesCount);
+        selectedCountLabel.setText(selectCount + "/" + maxImagesCount);
     }
 
     @Override
@@ -135,7 +140,7 @@ public class LocalAlbumPreActivity extends BaseActivity implements OnClickListen
             case R.id.media_send:
                 ArrayList<String> list = new ArrayList<String>();
                 for (ImageEntity obj : albumImages) {
-                    ImageEntity entity =  obj;
+                    ImageEntity entity = obj;
                     if (entity.isSelected()) {
                         list.add(entity.getPath());
                     }
@@ -261,11 +266,17 @@ public class LocalAlbumPreActivity extends BaseActivity implements OnClickListen
 
     @Override
     protected void onDestroy() {
-
         super.onDestroy();
+        for (int i = 0; i < albumImages.size(); i++) {
+            if (albumImages.get(i).isSelected()) {
+                albumImages.get(i).setSelected(false);
+            } else {
+                continue;
+            }
+        }
     }
 
-    class MyAdapter extends BaseAdapter{
+    class MyAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
@@ -285,17 +296,18 @@ public class LocalAlbumPreActivity extends BaseActivity implements OnClickListen
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             Holder holder = null;
-            if (convertView == null){
+            if (convertView == null) {
                 holder = new Holder();
-                convertView = LayoutInflater.from(mActivity).inflate(R.layout.item_grid_album_pre,null);
+                convertView = LayoutInflater.from(mActivity).inflate(R.layout.item_grid_album_pre, null);
                 holder.ivPic = (ImageView) convertView.findViewById(R.id.media_thumb);
                 convertView.setTag(holder);
-            }else{
+            } else {
                 holder = (Holder) convertView.getTag();
             }
-            x.image().bind(holder.ivPic,albumImages.get(position).getPath(),options);
+            x.image().bind(holder.ivPic, albumImages.get(position).getPath(), options);
             return convertView;
         }
+
         class Holder {
             ImageView ivPic;
         }

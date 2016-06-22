@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llty_sort_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33000000"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/capacity"
+            style="@style/capacity_tv"
+            android:text="智能排序" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.3dip"
+            android:background="@color/line_color_bg" />
+
+        <TextView
+            android:id="@+id/newAsk"
+            style="@style/capacity_tv"
+            android:text="最新提问" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.3dip"
+            android:background="@color/line_color_bg" />
+
+        <TextView
+            android:id="@+id/newReply"
+            style="@style/capacity_tv"
+            android:text="最新回复" />
+    </LinearLayout>
+</LinearLayout>

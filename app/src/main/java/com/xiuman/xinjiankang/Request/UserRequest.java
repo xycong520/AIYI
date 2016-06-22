@@ -3,6 +3,7 @@ package com.xiuman.xinjiankang.Request;
 
 import android.content.Context;
 
+import com.xiuman.xinjiankang.app.AppManager;
 import com.xiuman.xinjiankang.app.MyApplication;
 import com.xiuman.xinjiankang.constant.Constant;
 import com.xiuman.xinjiankang.net.HttpDataTask;
@@ -110,7 +111,7 @@ public class UserRequest {
         HttpDataTask httpDataTask = new HttpDataTask(context, httpTaskListener);
         Map<String, Object> parametersPair = new HashMap<String, Object>();
         parametersPair.put("articleId", id);
-        if (MyApplication.getInstance().isUserLogin()) {
+        if (AppManager.isUserLogin()) {
             parametersPair.put("memberId", AppSpUtil.getInstance().getUserInfo().getUserId());
         }
         httpDataTask.get(url, parametersPair);
@@ -142,7 +143,7 @@ public class UserRequest {
         HttpDataTask task = new HttpDataTask(context, listener);
         Map<String, Object> parametersPair = new HashMap<String, Object>();
         parametersPair.put("id", id);
-        if (MyApplication.getInstance().isUserLogin()) {
+        if (AppManager.isUserLogin()) {
             parametersPair.put("memberId", AppSpUtil.getInstance().getUserInfo().getUserId());
         }
         task.get(uri, parametersPair);
@@ -513,7 +514,7 @@ public class UserRequest {
         HttpDataTask task = new HttpDataTask(context, listener);
         Map<String, Object> parametersPair = new HashMap<String, Object>();
         parametersPair.put("doctorId", doctorID);
-        if (MyApplication.getInstance().isUserLogin()) {
+        if (AppManager.isUserLogin()) {
             parametersPair.put("userId", AppSpUtil.getInstance().getUserInfo().getUserId());
         }
         task.get(uri, parametersPair);
@@ -548,5 +549,181 @@ public class UserRequest {
         Map<String, Object> parametersPair = new HashMap<String, Object>();
         parametersPair.put("doctorId", doctorID);
         task.get(uri, parametersPair);
+    }
+    /**
+     * 免费咨询提问
+     *
+     * @param mContext
+     * @param httpTaskListener
+     */
+    public void postFreeConsult(Context mContext, HttpTaskListener httpTaskListener, int isAnonymous, int patientSex, String patientAge, String patientQuest, String department) {
+        String url = Constant.http + "/jk_free_consult!freeConsult.action";
+        HttpDataTask httpDataTask = new HttpDataTask(mContext, httpTaskListener);
+        String userId = AppSpUtil.getInstance().getUserInfo().getUserId();
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("userId", userId);
+        parametersPair.put("isAnonymous", isAnonymous);
+        parametersPair.put("patientSex", patientSex);
+        parametersPair.put("patientAge", patientAge);
+        parametersPair.put("patientQuest", patientQuest);
+        parametersPair.put("department", department);
+        httpDataTask.post(url, parametersPair);//
+    }
+
+    /**
+     * param mContext
+     * param httpTaskListener
+     * param userId
+     * 描述：获取用户等级头衔积分
+     * 时间 2014-11-18
+     */
+    public void getBBSUserInfo(Context mContext,
+                               HttpTaskListener httpTaskListener, String userId) {
+        String url = Constant.PRIVATE_IP + Constant.USER_LEVEL;
+        HttpDataTask httpDataTask = new HttpDataTask(mContext, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("userId", userId);
+        httpDataTask.get(url, parametersPair);
+    }
+    /**
+     * 获取免费咨询列表
+     *
+     * @param httpTaskListener
+     */
+    public void getFreeConsultList(Context context,HttpTaskListener httpTaskListener, int page,  String departmentApp, int sortTypeApp, String keywordsApp) {
+        String url = Constant.http + "/jk_free_consult!getQuestionList.action";
+        HttpDataTask httpDataTask = new HttpDataTask(context, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("pageApp", page);
+        parametersPair.put("pageSizeApp", Constant.PAGE_SIZE);
+        if (!"".equals(departmentApp)) {
+            parametersPair.put("departmentApp", departmentApp);
+        }
+        if (sortTypeApp != -1) {
+            parametersPair.put("sortTypeApp", sortTypeApp);
+        }
+        if (!"".equals(keywordsApp)) {
+            parametersPair.put("keywordsApp", keywordsApp);
+        }
+        httpDataTask.get(url, parametersPair);
+    }
+
+    /**
+     * 获取VIP列表
+     *
+     * @param context
+     * @param listener
+     */
+    public void getVIPList(Context context, HttpTaskListener listener, int pageApp) {
+        String uri = Constant.http + "/jk_vip_consulting!getFinishList.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("pageApp", pageApp);
+        parametersPair.put("pageSizeApp", Constant.PAGE_SIZE);
+        task.post(uri, parametersPair);
+    }
+    /**
+     * 保存
+     *
+     * @param context
+     * @param listener
+     * @param id 医生id
+     * @param rewardAmount 金额
+     * @param thankContent 感谢的内容
+     */
+    public void saveOrderList(Context context, HttpTaskListener listener,String id,String rewardAmount,String thankContent,String priceid,String orderId) {
+        String uri = Constant.http + "/jk_mind!saveOrderList.action";
+        HttpDataTask task = new HttpDataTask(context, listener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("doctorId",id);
+        parametersPair.put("rewardamount",rewardAmount);
+        parametersPair.put("thankContent",thankContent);
+        parametersPair.put("priceid",priceid);
+        parametersPair.put("memberid",AppSpUtil.getInstance().getUserInfo().getUserId());
+        parametersPair.put("orderId",orderId);
+        task.get(uri, parametersPair);
+    }
+
+    /**
+     * 获取医师出诊价格
+     * @param orderId 订单ID
+     * @param httpTaskListener
+     */
+    public void getDoctorPrice(Context context,HttpTaskListener httpTaskListener,String orderId) {
+        String url = Constant.http + "/jk_vip_consulting!questionPrice.action";
+        HttpDataTask httpDataTask = new HttpDataTask(context, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("orderId",orderId);
+        httpDataTask.get(url, parametersPair);
+    }
+    /**
+     * 获取微信支付的参数
+     *
+     * @param context
+     * @param httpTaskListener
+     * @param orderId
+     */
+    public void getWXPayParams(Context context, HttpTaskListener httpTaskListener, String orderId) {
+        String url = Constant.http + "/jk_order!wxPayment.action";
+        HttpDataTask httpDataTask = new HttpDataTask(context, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("orderId",orderId);
+        httpDataTask.post(url,parametersPair);
+    }
+    /**
+     * 获取电话咨询订单的支付串
+     *
+     * @param mContext
+     * @param httpTaskListener
+     * @param orderId
+     */
+    public void getPhoneOrderPay(Context mContext, HttpTaskListener httpTaskListener, String orderId) {
+        String url = Constant.http + "/jk_order!getAlipaySign.action";
+        HttpDataTask httpDataTask = new HttpDataTask(mContext, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("orderId", orderId);
+        httpDataTask.post(url, parametersPair);
+    }
+
+    /**
+     * 获取wx支付结果
+     *
+     * @param mContext
+     * @param httpTaskListener
+     */
+    public void payOrderStatuesWX(Context mContext, HttpTaskListener httpTaskListener, String orderID) {
+        String url = Constant.http + "/jk_order!payOrderStatusWX.action";
+        HttpDataTask httpDataTask = new HttpDataTask(mContext, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("orderId", orderID);
+        httpDataTask.post(url, parametersPair);
+    }
+
+    /**
+     * 我的提问历史
+     *
+     * @param mContext
+     * @param httpTaskListener
+     */
+    public void getQuestionHistoryList(Context mContext, HttpTaskListener httpTaskListener) {
+        String url = Constant.http + "/jk_cases!getCounselHistory.action";
+        HttpDataTask httpDataTask = new HttpDataTask(mContext, httpTaskListener);
+        String userId = AppSpUtil.getInstance().getUserInfo().getUserId();
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("memberId", userId);
+        httpDataTask.get(url, parametersPair);
+    }
+    /**
+     * VIP咨询取消
+     *
+     * @param mContext
+     * @param httpTaskListener
+     */
+    public void cancleVIPConsult(Context mContext, HttpTaskListener httpTaskListener, String consultingId) {
+        String url = Constant.http + "/jk_vip_consulting!cancel.action";
+        HttpDataTask httpDataTask = new HttpDataTask(mContext, httpTaskListener);
+        Map<String, Object> parametersPair = new HashMap<String, Object>();
+        parametersPair.put("consultingId", consultingId);
+        httpDataTask.get(url, parametersPair);
     }
 }

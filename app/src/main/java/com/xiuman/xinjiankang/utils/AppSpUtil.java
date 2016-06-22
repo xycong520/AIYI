@@ -5,6 +5,7 @@ package com.xiuman.xinjiankang.utils;/**
 import com.google.gson.Gson;
 import com.xiuman.xinjiankang.app.AppConfig;
 import com.xiuman.xinjiankang.bean.User;
+import com.xiuman.xinjiankang.bean.UserLevel;
 
 /**
  * 描述: Sp 工具类
@@ -73,7 +74,7 @@ public class AppSpUtil {
    /* *//**
      * @return 描述：获取用户等级头衔信息
      * 时间 2014-11-18
-     *//*
+     */
     public UserLevel getUserLevel() {
         String json_user_level = SpUtils.getString(AppConfig.KEY_USER_LEVEL);
         UserLevel level = null;
@@ -81,7 +82,7 @@ public class AppSpUtil {
             level = new Gson().fromJson(json_user_level, UserLevel.class);
         }
         return level;
-    }*/
+    }
 
 
 

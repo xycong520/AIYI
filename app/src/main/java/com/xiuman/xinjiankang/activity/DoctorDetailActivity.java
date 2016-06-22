@@ -397,10 +397,10 @@ public class DoctorDetailActivity extends BaseActivity implements View.OnClickLi
                 if (doctorDetail != null) {
                     Intent vip = new Intent(mActivity, FreeConsultActivity.class);
                     vip.putExtra(FreeConsultActivity.parameIS_FRESS, false);
-                    vip.putExtra("doctorName", doctorDetail.getDatasource().getDoctorName());
-                    vip.putExtra("doctorID", doctorDetail.getDatasource().getDoctorId());
-                    vip.putExtra("username", doctorDetail.getDatasource().getUsername());
-                    vip.putExtra("icon", doctorDetail.getDatasource().getHeadimgurl());
+                    vip.putExtra(FreeConsultActivity.parameDoctorName, doctorDetail.getDatasource().getDoctorName());
+                    vip.putExtra(FreeConsultActivity.parameDoctorID, doctorDetail.getDatasource().getDoctorId());
+                    vip.putExtra(FreeConsultActivity.parameDoctorUserName, doctorDetail.getDatasource().getUsername());
+                    vip.putExtra(FreeConsultActivity.parameDoctorPhoto, doctorDetail.getDatasource().getHeadimgurl());
                     startActivity(vip);
                     mDialog.dismiss();
                 }
@@ -417,7 +417,7 @@ public class DoctorDetailActivity extends BaseActivity implements View.OnClickLi
                 break;
             //关注
             case R.id.tv_attention:
-                if (MyApplication.getInstance().isUserLogin()) {
+                if (AppManager.isUserLogin()) {
                     takeAttention();
                 } else {
                     Intent login = new Intent(mActivity, LoginActivity.class);

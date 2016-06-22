@@ -1,9 +1,10 @@
 package com.xiuman.xinjiankang.base;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ public abstract class BaseActivity extends BaseSwipeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppManager.addActivity(this);
         setContentView(getView());
         ButterKnife.bind(this);
         AppManager.getAppManager().addActivity(this);
@@ -41,6 +43,36 @@ public abstract class BaseActivity extends BaseSwipeActivity {
         inflater = LayoutInflater.from(this);
         initView();
         initData();
+        /*if (AppManager.currentActivity().getLocalClassName().startsWith("com.xiuman.xinjiankang.activity.ChatActivity")){
+            //注册监听
+            EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
+
+                @Override
+                public void onMessageReceived(List<EMMessage> messages) {
+                    //收到消息
+                }
+
+                @Override
+                public void onCmdMessageReceived(List<EMMessage> messages) {
+                    //收到透传消息
+                }
+
+                @Override
+                public void onMessageReadAckReceived(List<EMMessage> messages) {
+                    //收到已读回执
+                }
+
+                @Override
+                public void onMessageDeliveryAckReceived(List<EMMessage> message) {
+                    //收到已送达回执
+                }
+
+                @Override
+                public void onMessageChanged(EMMessage message, Object change) {
+                    //消息状态变动
+                }
+            });
+        }*/
     }
     protected abstract void initView();
 
@@ -79,7 +111,6 @@ public abstract class BaseActivity extends BaseSwipeActivity {
         if (ab != null) {
             ab.setTitle(title);
         }
-
     }
 
 
@@ -116,5 +147,21 @@ public abstract class BaseActivity extends BaseSwipeActivity {
     public void onBackPressed() {
         finish();
         UIHelper.animSwitchActivity(this, AnimDisplayMode.PUSH_RIGHT);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppManager.finishActivity();
+    }
+
+    public boolean isBackground() {
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(2).get(1).topActivity;
+        //当前界面如果不是在xinjiankang包下则判断为应用在后台
+        if (cn.getClassName().startsWith("com.xiuman.xinjiankang")){
+            return false;
+        }
+        return false;
     }
 }

@@ -7,9 +7,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.adapter.CommonAdapter;
@@ -36,12 +39,22 @@ import com.xiuman.xinjiankang.base.BaseActivity;
 import com.xiuman.xinjiankang.bean.Dministartive;
 import com.xiuman.xinjiankang.bean.FreeConsultNum;
 import com.xiuman.xinjiankang.bean.ImageEntity;
+import com.xiuman.xinjiankang.bean.Result;
+import com.xiuman.xinjiankang.bean.User;
 import com.xiuman.xinjiankang.bean.VipConsultNum;
 import com.xiuman.xinjiankang.constant.Constant;
 import com.xiuman.xinjiankang.net.HttpTaskListener;
 import com.xiuman.xinjiankang.net.Wrapper;
+import com.xiuman.xinjiankang.utils.AppSpUtil;
+import com.xiuman.xinjiankang.utils.BitmapUtils;
 import com.xiuman.xinjiankang.utils.UIHelper;
+import com.xiuman.xinjiankang.utils.logger.Logger;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.HttpMethod;
+import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -51,12 +64,25 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
+ * 咨询页，根据isFree判断是否是免费咨询
  * Created by PCPC on 2016/6/12.
  */
 public class FreeConsultActivity extends BaseActivity implements OnClickListener {
     //标示是否是免费咨询
     public static final String parameIS_FRESS = "isFress";
     boolean isFree = true;
+    //标示医师ID
+    public static final String parameDoctorID = "doctorID";
+    String doctorID = "";
+    //标示医师姓名
+    public static final String parameDoctorName = "doctorName";
+    String doctorName = "";
+    //标示医师用户名
+    public static final String parameDoctorUserName = "doctorUserName";
+    String doctorUserName = "";
+    //标示医师头像
+    public static final String parameDoctorPhoto = "doctorPhoto";
+    String doctorPhoto = "";
     @Bind(R.id.rgSex)
     RadioGroup rgSex;
     //年龄
@@ -81,7 +107,8 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
     ImageView ivAddPic;
     @Bind(R.id.llyt_picture)
     LinearLayout layoutPic;
-
+    //当前的登录用户
+    private User currentUser;
     //动画
     private Animation animation_in;
     private Animation animation_out;
@@ -97,18 +124,22 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
     private int canGetImageCount = 5;
     private String str = "%s用户已咨询";
     private ProgressDialog pd;
-    private String dministartiveId = "";
+    private String administartiveId = "";
 
     @Override
     protected void initView() {
         setupToolbar();
         isFree = getIntent().getBooleanExtra(parameIS_FRESS, true);
-        if (isFree){
+        if (isFree) {
             findViewById(R.id.layoutAddPic).setVisibility(View.GONE);
-        }else{
+        } else {
             setToolbarTitle("VIP咨询");
             findViewById(R.id.layoutClassify).setVisibility(View.GONE);
             findViewById(R.id.layoutAddPic).setVisibility(View.VISIBLE);
+            doctorID = getIntent().getStringExtra(parameDoctorID);
+            doctorName = getIntent().getStringExtra(parameDoctorName);
+            doctorUserName = getIntent().getStringExtra(parameDoctorUserName);
+            doctorPhoto = getIntent().getStringExtra(parameDoctorPhoto);
         }
         rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -142,23 +173,32 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
             new HttpTaskListener() {
                 @Override
                 public void dataSucceed(String result) {
-                    if (isFree){
+                    if (isFree) {
                         FreeConsultNum message = new Gson().fromJson(result, FreeConsultNum.class);
                         if (message != null && message.isSuccess()) {
                             consultNum.setText(String.format(str, message.getDatasource().getCount()));
                         }
-                    }else{
-                        VipConsultNum message = new Gson().fromJson(result,VipConsultNum.class);
+                    } else {
+                        VipConsultNum message = new Gson().fromJson(result, VipConsultNum.class);
                         if (message != null && message.getSuccess()) {
                             consultNum.setText(String.format(str, message.getDatasource()));
                         }
                     }
                 }
+
                 @Override
                 public void dataError(String result) {
                     AppManager.showToast(mActivity, result);
                 }
             };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (AppManager.isUserLogin()) {
+            currentUser = AppSpUtil.getInstance().getUserInfo();
+        }
+    }
 
     //请求科室
     private void requestDepartment() {
@@ -184,10 +224,17 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
         return R.layout.activity_freeconsult;
     }
 
-    @OnClick({R.id.ivAddPic, R.id.llty_see, R.id.llyt_isaniony, R.id.tv_administrative})
+    @OnClick({R.id.ivAddPic, R.id.llty_see, R.id.llyt_isaniony, R.id.tv_administrative, R.id.clicl_see})
     public void onClick(View view) {
         super.onClick(view);
         switch (view.getId()) {
+            //查看
+            case R.id.clicl_see:
+                Intent intent = new Intent(mActivity, LookOverActivity.class);
+                intent.putExtra(LookOverActivity.ISFRESS, isFree);
+                startActivity(intent);
+
+                break;
             //添加图片
             case R.id.ivAddPic:
                 takePhoto();
@@ -232,6 +279,7 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
                 break;
             //咨询人数
             case R.id.llty_see:
+//                i = new Intent(mActivity,)
                 break;
             //选择科室
             case R.id.tv_administrative:
@@ -281,7 +329,7 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
                 Object itemAtPosition = my_gridview.getItemAtPosition(position);
                 if (itemAtPosition instanceof Dministartive) {
                     Dministartive item = (Dministartive) itemAtPosition;
-                    dministartiveId = item.getId();
+                    administartiveId = item.getId();
                     tv_administrative.setText(item.getName());
                     pop.dismiss();
                 }
@@ -304,7 +352,21 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menuSure) {
+            if (AppManager.isUserLogin()) {
+                sendQuestion();
+            } else {
+                Intent intent = new Intent(mActivity, LoginActivity.class);
+                startActivity(intent);
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     ArrayList<String> imgsPath = new ArrayList<>();
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -366,6 +428,7 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
         x.image().bind(iv, url, MyApplication.getOptionsRadius());
         return v;
     }
+
     //打开相机并制定照片路径
     public void doTakePhoto() {
         String state = Environment.getExternalStorageState();
@@ -378,7 +441,8 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
             Toast.makeText(mActivity, "SD卡不存在", Toast.LENGTH_SHORT).show();
         }
     }
-    ArrayList<String> paths = new ArrayList<>();
+
+
     private void initPicture() {
 //        llyt_picture.removeAllViews();
 //        for (int i = 0; i < images.size(); i++) {
@@ -403,5 +467,127 @@ public class FreeConsultActivity extends BaseActivity implements OnClickListener
 //            });
 //            llyt_picture.addView(view);
 //        }
+    }
+
+    private void sendQuestion() {
+        String age = etAge.getText().toString();
+        if (TextUtils.isEmpty(age)) {
+            AppManager.showToast(mActivity, "请输入您的年龄");
+            return;
+        }
+        if (Integer.valueOf(age.toString()) < 1 || Integer.valueOf(age.toString()) > 120) {//
+            AppManager.showToast(mActivity, "年龄只能在1~120之间");
+            return;
+        }
+        String content = etContent.getText().toString();
+        if (TextUtils.isEmpty(content)) {
+            AppManager.showToast(mActivity, "请输入您的问题");
+            return;
+        }
+        pd = new ProgressDialog(this);
+        pd.setMessage("问题提交中...");
+        pd.setCanceledOnTouchOutside(false);
+        pd.show();
+
+        if (isFree) {
+            AppManager.getUserRequest().postFreeConsult(mActivity, freeConsultListener, isAnonymity, Sex, age, content, administartiveId);
+        } else {
+            RequestParams params = new RequestParams(Constant.http + Constant.VIP_SEND);
+            params.addBodyParameter("userId", currentUser.getUserId());
+            params.addBodyParameter("doctorId", doctorID);
+            params.addBodyParameter("isAnonymous", String.valueOf(isAnonymity));
+            params.addBodyParameter("patientSex", String.valueOf(Sex));
+            params.addBodyParameter("patientAge", age);
+            params.addBodyParameter("patientQuest", content);
+            if (imgsPath != null && imgsPath.size() > 0) {
+                StringBuffer sb = new StringBuffer();
+                for (int i = 0; i < imgsPath.size(); i++) {
+                    String substring = imgsPath.get(i).replace("file://", "");
+                    Logger.e("substring==============" + substring);
+                    sb.append(GetImageStr(substring) + "=aiyi=");
+                }
+                String s = sb.toString();
+                String str = s.substring(0, s.length() - 6);
+                Logger.e(str);
+                params.addBodyParameter("imgfiles64", str);
+            }
+            x.http().request(HttpMethod.POST, params, new Callback.CommonCallback<String>() {
+                        @Override
+                        public void onSuccess(String result) {
+                            pd.dismiss();
+                            JSONObject json_obj = null;
+                            try {
+                                json_obj = new JSONObject(result);
+                                boolean success = json_obj.optBoolean("success");
+                                if (success) {
+                                    JSONObject json_result = json_obj.optJSONObject("datasource");
+                                    String orderId = json_result.optString("orderId");
+                                    String questionId = json_result.optString("consultingId");
+
+                                    //跳过支付
+                                    Intent intent2 = new Intent(mActivity, ChatActivity.class);
+                                    intent2.putExtra(ChatActivity.paramDoctorUserName, doctorUserName);
+                                    intent2.putExtra(ChatActivity.paramDoctorName,doctorName);
+                                    intent2.putExtra(ChatActivity.paramQuestionID, questionId);
+                                    startActivityForResult(intent2, 1);
+                                    /*
+                                    Intent intent = new Intent(mActivity, BuyServiceActivity.class);
+                                    intent.putExtra("orderId", orderId);
+                                    intent.putExtra("doctorName", doctorName);
+                                    intent.putExtra("questionId", questionId);
+                                    intent.putExtra("username", doctorUserName);
+                                    intent.putExtra("type", "vip");
+                                    startActivity(intent);*/
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable ex, boolean isOnCallback) {
+                            pd.dismiss();
+                        }
+
+                        @Override
+                        public void onCancelled(CancelledException cex) {
+                            pd.dismiss();
+                        }
+
+                        @Override
+                        public void onFinished() {
+                            pd.dismiss();
+                        }
+                    }
+
+            );
+        }
+    }
+
+    HttpTaskListener freeConsultListener = new HttpTaskListener() {
+        @Override
+        public void dataSucceed(String result) {
+            try {
+                pd.dismiss();
+                Result resultss = new Gson().fromJson(result, Result.class);
+                if (resultss != null) {
+                    if (resultss.getSuccess()) {
+                        AppManager.showToast(mActivity, "提问成功");
+                    }
+                }
+            } catch (JsonSyntaxException e) {
+                AppManager.showToast(mActivity, getResources().getString(R.string.net_error));
+            }
+        }
+
+        @Override
+        public void dataError(String result) {
+            AppManager.showToast(mActivity, getResources().getString(R.string.net_error));
+        }
+    };
+
+    public static String GetImageStr(String imgFile) {//将图片文件转化为字节数组字符串，并对其进行Base64编码处理
+        String base64String = BitmapUtils.bitmapToString(imgFile);
+        return base64String;
     }
 }

@@ -102,8 +102,7 @@ public class ScientifitDetailAdapter extends RecyclerView.Adapter {
             case VIEWTYPE_LOADMORE:
                 TextView tvLoading = (TextView) ((AllpurposeViewHolder)holder).getViewByID(R.id.tvLoading);
                 tvLoading.setVisibility(View.VISIBLE);
-                JumpingBeans jumpingBeans ;
-                jumpingBeans = JumpingBeans.with(tvLoading).appendJumpingDots()
+                JumpingBeans.with(tvLoading).appendJumpingDots()
                         .build();
                 break;
         }

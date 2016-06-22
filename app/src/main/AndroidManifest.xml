@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xiuman.xingjiankang">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"> </uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"> </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -19,8 +19,26 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-
-
+    <!-- 环信相关-->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <permission
+        android:name="com.hyphenate.chatuidemo.permission.C2D_MESSAGE"
+        android:protectionLevel="signature"
+        />
+    <uses-permission android:name="com.hyphenate.chatuidemo.permission.C2D_MESSAGE" />
+    <permission
+        android:name="com.hyphenate.chatuidemo.permission.MIPUSH_RECEIVE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.hyphenate.chatuidemo.permission.MIPUSH_RECEIVE" />
+    <!-- END -->
     <application
         android:name="com.xiuman.xinjiankang.app.MyApplication"
         android:allowBackup="true"
@@ -45,8 +63,8 @@
 
         <activity android:name="com.xiuman.xinjiankang.activity.WelcomeActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"></action>
-                <category android:name="android.intent.category.LAUNCHER"></category>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
@@ -131,6 +149,41 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SwipeBack">
         </activity>
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.EditUserInfoActivity"
+            android:launchMode="singleTask"
+            android:label="个人资料"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack">
+        </activity>
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.LookOverActivity"
+            android:launchMode="singleTask"
+            android:label="查看"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack">
+        </activity>
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.BuyServiceActivity"
+            android:launchMode="singleTask"
+            android:label="支付页面"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack">
+        </activity>
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.QuestionHistoryActivity"
+            android:launchMode="singleTask"
+            android:label="提问历史"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack">
+        </activity>
+        <activity
+            android:name="com.xiuman.xinjiankang.activity.ChatActivity"
+            android:launchMode="singleTask"
+            android:label="咨询"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.SwipeBack">
+        </activity>
 
 
         <!--==============友盟分享===============-->
@@ -199,6 +252,44 @@
 
         <!-- ############ QQ空间和QQ SSO授权的Activity注册 ############ -->
         <!--=================友盟分享结束====-->
+
+        <!--支付宝支付-->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" />
+        <!--微信支付-->
+        <activity
+            android:name="com.xiuman.xinjiankang.pay.wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.SwipeBack" />
+
+        <!--支付结果监听-->
+        <receiver android:name="com.xiuman.xinjiankang.pay.wxapi.AppRegister">
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 设置环信应用的AppKey -->
+        <meta-data android:name="EASEMOB_APPKEY"  android:value="xingduoduo#xingduoduo" />
+        <!-- 声明SDK所需的service SDK核心功能-->
+        <service android:name="com.hyphenate.chat.EMChatService" android:exported="true"/>
+        <!-- 声明SDK所需的receiver -->
+        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+                <data android:scheme="package"/>
+            </intent-filter>
+            <!-- 可选filter -->
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

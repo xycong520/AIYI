@@ -74,6 +74,11 @@ public class FragmentConsult extends Fragment {
         return thisView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
+    }
 
     private void init() {
         mContext = getActivity();

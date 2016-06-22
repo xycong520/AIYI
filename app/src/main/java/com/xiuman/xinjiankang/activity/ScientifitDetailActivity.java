@@ -27,7 +27,6 @@ import com.google.gson.reflect.TypeToken;
 import com.xiuman.xingjiankang.R;
 import com.xiuman.xinjiankang.adapter.ScientifitDetailAdapter;
 import com.xiuman.xinjiankang.app.AppManager;
-import com.xiuman.xinjiankang.app.MyApplication;
 import com.xiuman.xinjiankang.base.BaseActivity;
 import com.xiuman.xinjiankang.bean.Attention;
 import com.xiuman.xinjiankang.bean.BeanCommonViewType;
@@ -296,7 +295,7 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
                     AppManager.showToast(mActivity, "评论内容不能为空");
                     return;
                 }
-                if (MyApplication.getInstance().isUserLogin()) {
+                if (AppManager.isUserLogin()) {
                     btReplay.setEnabled(false);
                     postComment(etReply.getText().toString().trim());
                 } else {
@@ -351,7 +350,7 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
      * 收藏
      */
     private void takeCollect(final TextView view) {
-        if (MyApplication.getInstance().isUserLogin()) {
+        if (AppManager.isUserLogin()) {
             view.setEnabled(false);
             AppManager.getUserRequest().takeAttention(this, new HttpTaskListener() {
                 @Override
@@ -392,7 +391,7 @@ public class ScientifitDetailActivity extends BaseActivity implements View.OnCli
      * @param view
      */
     private void postSupport(final View view) {
-        if (MyApplication.getInstance().isUserLogin()) {
+        if (AppManager.isUserLogin()) {
             AppManager.getUserRequest().getScienceTechologyPraise(this, new HttpTaskListener() {
                 @Override
                 public void dataSucceed(String result) {

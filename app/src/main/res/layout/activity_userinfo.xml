@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_appbar" />
+    <!-- 用户登录之后可打开的用户信息界面 -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdge="none"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- 头像 -->
+
+            <RelativeLayout
+                android:id="@+id/rlyt_userinfo_user_head"
+                android:layout_width="match_parent"
+                android:layout_height="75dip"
+                android:background="@drawable/horizontal_mid_bg_selector"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="@string/user_head"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/txt_size_14" />
+
+                <ImageView
+                    android:id="@+id/iv_userinfo_user_head"
+                    android:layout_width="70dip"
+                    android:layout_height="70dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dip"
+                    android:src="@mipmap/xjk_pic_head_logo" />
+
+                <ImageView
+                    android:layout_width="10dip"
+                    android:layout_height="10dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/xjk_next_icon" />
+            </RelativeLayout>
+
+            <include layout="@layout/line_match" />
+            <!-- 会员名 -->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:background="@drawable/horizontal_mid_bg_selector"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_name"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/txt_size_14" />
+
+                <TextView
+                    android:id="@+id/tv_userinfo_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/txt_size_14" />
+            </RelativeLayout>
+
+            <include layout="@layout/line_match" />
+            <!-- 会员信息 -->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:background="@drawable/horizontal_mid_bg_selector"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_rank"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/txt_size_14" />
+
+                <TextView
+                    android:id="@+id/tv_userinfo_user_rank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/txt_size_14" />
+            </RelativeLayout>
+
+            <include layout="@layout/line_match" />
+
+
+            <!-- 性别 -->
+
+            <RelativeLayout
+                android:id="@+id/rlyt_userinfo_user_sex"
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:background="@drawable/horizontal_mid_bg_selector"
+                android:clickable="true"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/user_sex"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/txt_size_14" />
+
+                <TextView
+                    android:id="@+id/tv_userinfo_user_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/txt_size_14" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/line_match" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dip"
+                android:background="@color/color_bg" />
+
+
+            <include layout="@layout/line_match" />
+            <!-- 修改密码 -->
+
+            <Button
+                android:id="@+id/btn_userinfo_user_update_psw"
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:background="@drawable/whole_bg_selector"
+                android:drawableRight="@mipmap/xjk_next_icon"
+                android:gravity="left|center_vertical"
+                android:padding="15dip"
+                android:text="@string/user_update"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/txt_size_14" />
+
+            <include layout="@layout/line_match" />
+            <!-- 修改个人信息 -->
+
+            <Button
+                android:id="@+id/btn_userinfo_user_update_info"
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:background="@drawable/horizontal_mid_bg_selector"
+                android:drawableRight="@mipmap/xjk_next_icon"
+                android:gravity="left|center_vertical"
+                android:padding="15dip"
+                android:text="@string/user_update_info"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/txt_size_14" />
+
+            <include layout="@layout/line_match" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dip"
+                android:background="@color/color_bg" />
+            <!-- 收货地址 -->
+
+            <!--<include layout="@layout/line_match" />
+
+            <Button
+                android:id="@+id/btn_userinfo_user_address"
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:background="@drawable/horizontal_mid_bg_selector"
+                android:drawableRight="@drawable/xjk_next_icon"
+                android:gravity="left|center_vertical"
+                android:padding="15dip"
+                android:text="@string/user_address"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/txt_size_14" />
+
+            <include layout="@layout/line_match" />-->
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dip"
+                app:mrl_rippleAlpha="0.3"
+                app:mrl_rippleColor="@color/md_cyan_900"
+                app:mrl_rippleDuration="300"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+                <TextView
+                    android:id="@+id/btn_userinfo_exit"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dip"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/holo_blue"
+                    android:gravity="center"
+                    android:text="@string/user_exit"
+                    android:textColor="@color/color_white"
+                    android:textSize="@dimen/txt_size_18" />
+            </com.balysv.materialripple.MaterialRippleLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

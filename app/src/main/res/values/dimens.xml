@@ -31,5 +31,6 @@
     <dimen name="dashHeight">1px</dimen>
     <dimen name="detail_first_sreen_height">154dp</dimen>
 
-
+    <dimen name="margin_chat_activity">5dp</dimen>
+    <dimen name="size_avatar">50dp</dimen>
 </resources>
