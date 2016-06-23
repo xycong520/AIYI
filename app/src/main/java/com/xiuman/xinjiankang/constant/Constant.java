@@ -6,6 +6,7 @@ package com.xiuman.xinjiankang.constant;
  */
 public class Constant {
     public static String http = "http://120.55.242.236:8080/shopxx/app"; //测试
+//    public static String http = "http://192.168.16.41:8080/shopxx/app"; //内网测试
 //    public static final String http = "http://www.popodd.com/shopxx/app";   //线上
 
     //用户登录接口

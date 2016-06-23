@@ -1,5 +1,6 @@
 package com.xiuman.xinjiankang.activity;
 
+import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,14 +9,18 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
@@ -45,7 +50,7 @@ import butterknife.OnClick;
 /**
  * Created by PCPC on 2016/6/20.
  */
-public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,EMMessageListener {
+public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, EMMessageListener {
 
     @Override
     protected int getView() {
@@ -78,15 +83,19 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     int lastVisibleItem;
     LinearLayoutManager layoutManager;
     ArrayList<String> paths = new ArrayList<>();
+    List<EMMessage> msgList = new ArrayList<>();
 
     User curUser = AppSpUtil.getInstance().getUserInfo();
+    EMChatManager chatManager;
 
     @Override
     protected void initView() {
         questionID = getIntent().getStringExtra(paramQuestionID);
         doctorName = getIntent().getStringExtra(paramDoctorName);
         setupToolbar();
-        EMClient.getInstance().chatManager().addMessageListener(this);
+        chatManager = EMClient.getInstance().chatManager();
+        chatManager.addMessageListener(this);
+
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.post(new Runnable() {
@@ -95,7 +104,12 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 swipeRefreshLayout.setRefreshing(true);
             }
         });
-        mRecyclerview.setLayoutManager(layoutManager = new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.setSmoothScrollbarEnabled(true);
+
+        mRecyclerview.setHasFixedSize(true);
+        mRecyclerview.setLayoutManager(layoutManager);
         mRecyclerview.setAdapter(mAdapter = new CommonRecyclerViewAdapter(mDatas) {
 
             @Override
@@ -103,32 +117,69 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 switch (getItemViewType(position)) {
                     //接收文本消息布局
                     case R.layout.hx_row_received_message:
+                        EMMessage msgLeft = (EMMessage) mDatas.get(position).getBeanObj();
+                        TextView tvTimeLeft = holder.getView(R.id.timestamp);
+                        TextView tvMessageLeft = holder.getView(R.id.tv_chatcontent);
+                        ImageView ivPhotoLeft = holder.getView(R.id.iv_userhead);
+                        try {
+                            tvTimeLeft.setText(DateUtils.dateFormat(msgLeft.getMsgTime()));
+                            tvMessageLeft.setText(((EMTextMessageBody) msgLeft.getBody()).getMessage());
+                            x.image().bind(ivPhotoLeft, msgLeft.getStringAttribute(param_avatar));
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     //发送文本消息布局
                     case R.layout.hx_row_sent_message:
                         EMMessage msg = (EMMessage) mDatas.get(position).getBeanObj();
                         TextView tvTime = holder.getView(R.id.timestamp);
                         TextView tvMessage = holder.getView(R.id.tv_chatcontent);
+                        TextView tvStatus = holder.getView(R.id.tvStatus);
                         ImageView ivPhoto = holder.getView(R.id.iv_userhead);
+                        ImageView ivError = holder.getView(R.id.msg_status);
+                        final ProgressBar progressBar = holder.getView(R.id.pb_sending);
                         tvTime.setText(DateUtils.dateFormat(msg.getMsgTime()));
                         tvMessage.setText(((EMTextMessageBody) msg.getBody()).getMessage());
-                        if (msg.isAcked()) {
-                            holder.getView(R.id.pb_sending).setVisibility(View.GONE);
-                            holder.getView(R.id.tv_delivered).setVisibility(View.INVISIBLE);
-                            holder.getView(R.id.tv_ack).setVisibility(View.VISIBLE);
-                        } else if (msg.isDelivered()) {
-                            holder.getView(R.id.tv_delivered).setVisibility(View.VISIBLE);
-                            holder.getView(R.id.tv_ack).setVisibility(View.INVISIBLE);
-                            holder.getView(R.id.pb_sending).setVisibility(View.GONE);
-                        } else if (msg.isUnread()){
-                            holder.getView(R.id.tv_delivered).setVisibility(View.INVISIBLE);
-                            holder.getView(R.id.tv_ack).setVisibility(View.INVISIBLE);
+                        msg.setMessageStatusCallback(new EMCallBack() {
+                            @Override
+                            public void onSuccess() {
+                                Logger.i("发送成功");
+                                progressBar.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onError(int i, String s) {
+                                progressBar.setVisibility(View.GONE);
+                                Logger.i(s);
+                            }
+
+                            @Override
+                            public void onProgress(int i, String s) {
+                                progressBar.setVisibility(View.VISIBLE);
+                                Logger.i(s);
+                            }
+                        });
+                        if (msg.getError() == 0) {
+                            if (msg.isAcked()) {
+                                tvStatus.setText("已读");
+                            } else if (msg.isDelivered()){
+                                tvStatus.setText("送达");
+                            }else{
+                                tvStatus.setText("");
+                            }
+                            progressBar.setVisibility(View.GONE);
+                            tvStatus.setVisibility(View.VISIBLE);
+                            ivError.setVisibility(View.INVISIBLE);
+                        } else {
+                            ivError.setVisibility(View.VISIBLE);
+                            tvStatus.setVisibility(View.INVISIBLE);
                         }
                         try {
                             x.image().bind(ivPhoto, msg.getStringAttribute(param_avatar));
                         } catch (HyphenateException e) {
                             e.printStackTrace();
                         }
+
                         break;
                     case R.layout.layout_caseinfo:
                         CaseConsultDetail caseInfo = (CaseConsultDetail) mDatas.get(position).getBeanObj();
@@ -155,7 +206,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                         sex.setTextColor(0xffffffff);
                         x.image().bind((ImageView) holder.getView(R.id.ivIcon), caseInfo.getDatasource().getDoctorHead(), this.options);
                         GridLayout gridlayout = holder.getView(R.id.gridlayout);
-                        if (gridlayout.getChildCount() == caseInfo.getDatasource().getImgUrl().size()){
+                        if (gridlayout.getChildCount() == caseInfo.getDatasource().getImgUrl().size()) {
                             return;
                         }
                         for (int i = 0; i < caseInfo.getDatasource().getImgUrl().size(); i++) {
@@ -185,7 +236,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 }
             };
         });
-        mRecyclerview.setHasFixedSize(true);
+
         getQuestionInfo();
         etMessage.addTextChangedListener(new TextWatcher() {
             @Override
@@ -209,6 +260,21 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 }
             }
         });
+        etMessage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    mRecyclerview.scrollToPosition(mDatas.size() - 1);
+                } else {
+                    hideWindowSoft(etMessage);
+                }
+            }
+        });
+    }
+
+    private void hideWindowSoft(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     /**
@@ -242,24 +308,35 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             return;
         }
         //获取此会话的所有消息
-        List<EMMessage> messages = conversation.getAllMessages();
+        List<EMMessage> messages = msgList = conversation.getAllMessages();
         //SDK初始化加载的聊天记录为20条，到顶时需要去DB里获取更多
         //获取startMsgId之前的pagesize条消息，此方法获取的messages SDK会自动存入到此会话中，APP中无需再次把获取到的messages添加到会话中
-//        List<EMMessage> messages = conversation.loadMoreMsgFromDB(startMsgId, pagesize);
+//        List<EMMessage> messages = conversation.loadMoreMsgFromDB(msgID, 20);
         for (EMMessage msg : messages) {
             BeanCommonViewType oneMessage = new BeanCommonViewType();
-            oneMessage.setViewType(R.layout.hx_row_sent_message);
+            try {
+                if ("1".equals(msg.getStringAttribute(param_identity))) {
+                    oneMessage.setViewType(R.layout.hx_row_sent_message);
+                } else {
+                    oneMessage.setViewType(R.layout.hx_row_received_message);
+                }
+            } catch (HyphenateException e) {
+                e.printStackTrace();
+            }
             oneMessage.setBeanObj(msg);
+            Logger.d(msg.isDelivered() + "");
             mDatas.add(oneMessage);
         }
-        mAdapter.notifyDataSetChanged();
+
         mRecyclerview.scrollToPosition(mDatas.size());
+        mAdapter.notifyDataSetChanged();
     }
 
 
     @Override
     public void onRefresh() {
-
+//        getHistoryData();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -276,6 +353,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 etMessage.setText("");
                 break;
             case R.id.ivAdd:
+
                 break;
         }
     }
@@ -285,6 +363,7 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     public final String param_identity = "identity";
     public final String param_nickname = "nickname";
     public final String param_questionId = "questionId";
+
 
     private void sendMessage(String msg) {
         //创建一条文本消息，content为消息文字内容，toChatUsername为对方用户或者群聊的id，后文皆是如此
@@ -301,18 +380,28 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             message.setAttribute(param_nickname, curUser.getNickname());
         }
         message.setAttribute(param_questionId, questionID);
+//        message.setChatType(EMMessage.ChatType.ChatRoom);
 
         BeanCommonViewType oneMessage = new BeanCommonViewType();
         oneMessage.setViewType(R.layout.hx_row_sent_message);
         oneMessage.setBeanObj(message);
         mDatas.add(oneMessage);
-        mAdapter.notifyDataSetChanged();
-        mRecyclerview.scrollToPosition(mDatas.size());
+        mRecyclerview.scrollToPosition(mDatas.size() - 1);
+        chatManager.sendMessage(message);
     }
 
     @Override
     public void onMessageReceived(List<EMMessage> list) {
         Logger.i("onMessageReceived");
+        for (EMMessage msg : list) {
+            BeanCommonViewType oneMSG = new BeanCommonViewType();
+            oneMSG.setViewType(R.layout.hx_row_received_message);
+            oneMSG.setBeanObj(msg);
+            mDatas.add(oneMSG);
+        }
+        mAdapter.setDatas(mDatas);
+        mAdapter.notifyDataSetChanged();
+        mRecyclerview.smoothScrollToPosition(mDatas.size()-1);
     }
 
     @Override
@@ -323,15 +412,41 @@ public class ChatActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     public void onMessageReadAckReceived(List<EMMessage> list) {
         Logger.i("onMessageReadAckReceived");
+        for (EMMessage msg : list) {
+            //跳过顶部布局
+            for (int i = 1; i < mDatas.size(); i++) {
+                BeanCommonViewType view = mDatas.get(i);
+                EMMessage mMesg = (EMMessage)view.getBeanObj();
+                if (msg.getMsgId().equals(mMesg.getMsgId())){
+                    view.setBeanObj(msg);
+                    mDatas.set(i,view);
+                    mAdapter.notifyItemChanged(i);
+                }
+            }
+        }
     }
 
     @Override
     public void onMessageDeliveryAckReceived(List<EMMessage> list) {
+        mAdapter.notifyDataSetChanged();
         Logger.i("onMessageDeliveryAckReceived");
+        for (EMMessage msg : list) {
+            //跳过顶部布局
+            for (int i = 1; i < mDatas.size(); i++) {
+                BeanCommonViewType view = mDatas.get(i);
+                EMMessage mMesg = (EMMessage)view.getBeanObj();
+                if (msg.getMsgId().equals(mMesg.getMsgId())){
+                    view.setBeanObj(msg);
+                    mDatas.set(i,view);
+                    mAdapter.notifyItemChanged(i);
+                };
+            }
+        }
     }
 
     @Override
     public void onMessageChanged(EMMessage emMessage, Object o) {
         Logger.i("onMessageChanged");
     }
+
 }

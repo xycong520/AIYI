@@ -181,6 +181,7 @@
             android:name="com.xiuman.xinjiankang.activity.ChatActivity"
             android:launchMode="singleTask"
             android:label="咨询"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SwipeBack">
         </activity>
